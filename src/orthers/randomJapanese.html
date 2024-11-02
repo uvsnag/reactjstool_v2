@@ -1,0 +1,103 @@
+<label>windows: </label>
+<input type="checkbox" id="windows" onclick="openNewWindows()">
+<div id="body">
+    <p id="text"></p>
+    <div id="process">
+        <input type='button' value='>>' onclick="getText()">
+        </br>
+        </br>
+        <div id='checkbox-enable-timer' style="background-color:rgb(150, 154, 155); width:120px;">
+            <label>Disable timer: </label>
+            <input type="checkbox" id="enable-timer" onclick="enableTimer()">
+            <div id='time-area'>
+                <label>Time: </label>
+                <select id="timer">
+                    <option>2000</option>
+                    <option>1000</option>
+                    <option>3000</option>
+                    <option>4000</option>
+                    <option>5000</option>
+                    <option>7000</option>
+                    <option>10000</option>
+                    <option>100</option>
+                    <option>500</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="script">
+    async function enableTimer() {
+        var checkBox = document.getElementById("enable-timer");
+        var text = document.getElementById("time-area");
+        if (checkBox.checked == true) {
+            text.style.display = "none";
+        } else {
+            text.style.display = "block";
+            while (checkBox.checked != true) {
+                getText();
+                var timer = document.getElementById("timer").value;
+                await sleep(timer);
+            }
+        }
+    }
+    function getText() {
+        document.getElementById("text").innerHTML = getRandomArray();
+    }
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    function getRandomArray() {
+        var arrayChar = ["a", "i", "u", "e", "o", "ka", "ki", "ku", "ke",
+            "ko", "sa", "shi", "su", "se", "so", "ta", "chi", "tsu", "te",
+            "to", "na", "ni", "nu", "ne", "no", "ma", "mi", "mu", "me",
+            "mo", "ha", "hi", "fu", "he", "ho"];
+        var numb = Math.floor(Math.random() * arrayChar.length);
+        var result = arrayChar[numb];
+        return result;
+    }
+    function getRandom() {
+        var a = ["", "k", "s", "t", "n", "m", "h"];
+        var b = ["a", "i", "u", "e", "o"];
+        var num1 = Math.floor(Math.random() * a.length);
+        var num2 = Math.floor(Math.random() * b.length);
+        var result = a[num1] + b[num2];
+        switch (result) {
+            case "ti":
+                result = 'chi';
+                break;
+            case "tu":
+                result = 'tsu';
+                break;
+            case "hu":
+                result = 'fu';
+                break;
+            case "si":
+                result = 'shi';
+                break;
+        }
+        return result;
+    }
+    enableTimer();
+</script>
+<script>
+    var newWindows;
+    function openNewWindows() {
+        var checkBox = document.getElementById("windows");
+        var text = document.getElementById("body");
+        if (checkBox.checked != true) {
+            text.style.display = "block";
+            if (newWindows !== undefined && newWindows !== null) {
+                newWindows.close();
+            }
+        } else {
+            text.style.display = "none";
+            var htmlPopup = document.getElementById("body").innerHTML;
+            var scriptPopup = `<script>` + document.getElementById("script").innerHTML + `<\/script>`;
+            var popup = htmlPopup + scriptPopup;
+            console.log(popup);
+            newWindows = window.open("", "", "width=170, height=130");
+            newWindows.document.write(popup);
+        }
+    }
+</script>
