@@ -390,13 +390,25 @@ const YoutubeSub = () => {
         }
         if (e.key === 'ArrowUp') {
             let timemisus = document.getElementById('timemisus').value;
-            document.getElementById('timemisus').value = (timemisus == "2")?1:2;
+            if(timemisus == "1"){
+                document.getElementById('timemisus').value = 2;
+            } else if(timemisus == "2"){
+                document.getElementById('timemisus').value = 3;
+            }else if(timemisus == "3"){
+                document.getElementById('timemisus').value = 1;
+            }else{
+                document.getElementById('timemisus').value = 3;
+            }
+
         }
         if (e.key === 'Shift') {
             onAddPoint()
         }
         if (e.key === 'Control') {
             onClearCusLoop()
+        }
+        if(!Number.isNaN(Number(e.key))){
+            document.getElementById('timemisus').value = Number(e.key)
         }
     }
     const onControlKeyListen = (e) => {
