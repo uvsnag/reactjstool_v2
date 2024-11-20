@@ -368,37 +368,58 @@ const YoutubeSub = () => {
         }
         console.log(player);
     }
+
+    const previous = () => {
+        let currTime = player.getCurrentTime();
+        let timemisus = document.getElementById('timemisus').value;
+        player.seekTo(Number(currTime - Number(timemisus)), true);
+    }
+    const next = ()=>{
+        let currTime = player.getCurrentTime();
+        let timemisus = document.getElementById('timemisus').value;
+        player.seekTo(Number(currTime + Number(timemisus)), true);
+    }
+    const changeTime = ()=>{
+        let timemisus = document.getElementById('timemisus').value;
+        if(timemisus == "1"){
+            document.getElementById('timemisus').value = 2;
+        } else if(timemisus == "2"){
+            document.getElementById('timemisus').value = 3;
+        }else if(timemisus == "3"){
+            document.getElementById('timemisus').value = 1;
+        }else{
+            document.getElementById('timemisus').value = 3;
+        }
+    }
     const onControlKey = (e) => {
         console.log(e.key)
-        console.log(e.nativeEvent.code)
         if (e.key === 'ArrowLeft') {
-            let currTime = player.getCurrentTime();
-            let timemisus = document.getElementById('timemisus').value;
-            console.log(currTime)
-            console.log(timemisus)
-            player.seekTo(Number(currTime - Number(timemisus)), true);
+            previous();
+            // let currTime = player.getCurrentTime();
+            // let timemisus = document.getElementById('timemisus').value;
+            // player.seekTo(Number(currTime - Number(timemisus)), true);
         }
         if (e.key === 'ArrowRight') {
-            let currTime = player.getCurrentTime();
-            let timemisus = document.getElementById('timemisus').value;
-            console.log(currTime)
-            console.log(timemisus)
-            player.seekTo(Number(currTime + Number(timemisus)), true);
+            next();
+            // let currTime = player.getCurrentTime();
+            // let timemisus = document.getElementById('timemisus').value;
+            // player.seekTo(Number(currTime + Number(timemisus)), true);
         }
         if (e.key === 'ArrowDown') {
             onStartStop(e);
         }
         if (e.key === 'ArrowUp') {
-            let timemisus = document.getElementById('timemisus').value;
-            if(timemisus == "1"){
-                document.getElementById('timemisus').value = 2;
-            } else if(timemisus == "2"){
-                document.getElementById('timemisus').value = 3;
-            }else if(timemisus == "3"){
-                document.getElementById('timemisus').value = 1;
-            }else{
-                document.getElementById('timemisus').value = 3;
-            }
+            changeTime();
+            // let timemisus = document.getElementById('timemisus').value;
+            // if(timemisus == "1"){
+            //     document.getElementById('timemisus').value = 2;
+            // } else if(timemisus == "2"){
+            //     document.getElementById('timemisus').value = 3;
+            // }else if(timemisus == "3"){
+            //     document.getElementById('timemisus').value = 1;
+            // }else{
+            //     document.getElementById('timemisus').value = 3;
+            // }
 
         }
         if (e.key === 'Shift') {
@@ -538,12 +559,21 @@ const YoutubeSub = () => {
                         <option value={SIZE_70X50}>70x50</option>
                         <option value={SIZE_CUSTOM}>SIZE_CUSTOM</option>
                     </select> */}
+                <div id="mobe-control">
+                    <input type='submit' className="button-41 margin-zr" value="<" onClick={() => previous()} />
+                    <input type='submit' className="button-41 margin-zr" value="||" onClick={() => onStartStop()} />
+                    <input type='submit' className="button-41 margin-zr" value=">" onClick={() =>  next()} /><br />
+                    <input type='submit' className="button-12 margin-zr"  value="Change times" onClick={() => changeTime()} />
+                </div>
+                <div id='cus-loop-control'>
+                    <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
+                    <input type='submit' className="button-41 margin-zr" value="Add point" onClick={() => onAddPoint()} />
+                    <input type='submit' className="button-41 margin-zr" value="clear" onClick={() => onClearCusLoop()} />
+                </div>
                 <div id="hide1">
                     <input type="text" id="txtSrcMedia" onKeyDown={e => handleKeyDown(e)} />
-                    <input type='submit' value="Load" id='btnExecute' onClick={() => onProcess()} />
-                    <br />
-                    {/* <input type='submit' value="Remove Info"  onClick={() => removeLogo()} />
-                    <br /> */}
+                    <input type='submit' className="button-12 margin-zr" value="Load" id='btnExecute' onClick={() => onProcess()} />
+                    <input type='submit' className="button-12 margin-zr" value="Remove Info"  onClick={() => removeLogo()} />
                     {/* <input className='txt-10-pc' type="text" value={widthYt} onChange={(e) => {
                         onChangeWith(e.target.value)
                     }}
@@ -556,8 +586,8 @@ const YoutubeSub = () => {
             </div>
                 <input className="width-60"  placeholder="control-form"  onKeyDown={e => onControlKey(e)}/>
                 <input className="width-30" id="timemisus" />
-                <input type='submit' value="|>" onClick={() => onStartStop()} />
-                <input type='submit' value="+/-" onClick={() => onShowHideVideo()} />
+                {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
+                <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
                 <div class="tooltip">???
                     <span class="tooltiptext">
                         arrow , and Crtl: clear/ shift: loop
@@ -566,11 +596,7 @@ const YoutubeSub = () => {
             <div id="hide2">
 
                 {/* <input type='submit' value="Custom" onClick={() => onChangeLoop()} /> */}
-                <div id='cus-loop-control'>
-                    <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
-                    <input type='submit' value="Add point" onClick={() => onAddPoint()} />
-                    <input type='submit' value="clear" onClick={() => onClearCusLoop()} />
-                </div>
+                
                 <div id='subline-control'>
                     <select onChange={(e) => {
                         onChangeMode(e.target.value)
@@ -598,11 +624,12 @@ const YoutubeSub = () => {
                     </div>
                     <input type='submit' value="+/-" onClick={() => onShowHide()} />
                 </div>
+                  
                 <div className='option-right'> <br />
                 </div>
                 <div id='load-sub'>
 
-                    <input type='submit' value="loadSub" id='btnLoadSube' onClick={() => loadSub()} /><br />
+                    <input type='submit' className="button-12 margin-zr" value="loadSub" id='btnLoadSube' onClick={() => loadSub()} /><br />
                     <textarea id='media-sub'></textarea>
                 </div>
 

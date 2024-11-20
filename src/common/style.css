@@ -350,3 +350,6 @@ img.flip  {
 .background-color-dark select{
     background-color: #615a5a;
 }
+.margin-zr{
+    margin: 0px !important;
+}
