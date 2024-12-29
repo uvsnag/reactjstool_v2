@@ -21,7 +21,6 @@ let intervalCusLoop;
 
 var arrTime = [];
 console.log("int..ed variables");
-
 const YoutubeSub = () => {
 
     const [arrSub, setArrSub] = useState([]);
@@ -30,6 +29,7 @@ const YoutubeSub = () => {
     const [customLoopAs, setCustomLoopAs] = useState("");
     const [customLoopBs, setCustomLoopBs] = useState("");
     const [size, setSize] = useState(600); 
+    const [height, setHeight] = useState(10); 
     const COLOR_NONE = "";
     const COLOR_CURRENT_BACKGROUND = "#e2e2e2";
 
@@ -62,7 +62,6 @@ const YoutubeSub = () => {
     const SIZE_CUSTOM = 'custom';
 
     useEffect(() => {
-        console.log("useEffect[]:");
         if (!window.YT) { // If not, load the script asynchronously
             const tag = document.createElement('script');
             tag.src = 'https://www.youtube.com/iframe_api';
@@ -85,9 +84,7 @@ const YoutubeSub = () => {
         customLoopB = NOT_VALUE_TIME;
         modeReplay = REPLAY_YES;
         return () => {
-            console.log("destroy interval:" + interval);
             clearInterval(interval);
-            console.log("destroy intervalCusLoop:" + intervalCusLoop);
             clearInterval(intervalCusLoop);
         };
 
@@ -101,9 +98,14 @@ const YoutubeSub = () => {
         }
     }, [arrSub]);
     const handleSizeChange = (event) => {
-        let valueSz =event.target.value;
+        let valueSz = event.target.value;
         setSize(valueSz); // Set the size based on the slider value
         player.setSize(valueSz*1.7, valueSz);
+    };
+    const handleMaskMedia = (event) => {
+        console.log(size)
+        setHeight(event.target.value)
+        player.setSize(size*1.7, size*Number(event.target.value/10));
     };
     const onYouTubeIframeAPIReady = () => {
         player = new window.YT.Player('player', {
@@ -143,9 +145,7 @@ const YoutubeSub = () => {
                     mmss = `${hour}:${mmss}`
                 }
 
-                console.log(mmss);
                 currentTime = currTime;
-                console.log(currentTime);
                 let currentSubEle = document.getElementById(`sub-item${mmss}`);
                 let offsetOgr = document.getElementById(`sub-item0:00`);
                 if(!currentSubEle){
@@ -183,7 +183,6 @@ const YoutubeSub = () => {
                 }
 
                 if (_.isEqual(customLoopMode, LOOP_NONE) && _.isEqual(currentTime, nextTime.toString()) && isReplay === true && modeReplay === REPLAY_YES) {
-                    console.log("replay at:" + startTime);
                     player.seekTo(startTime, true)
                 }
             }
@@ -242,8 +241,6 @@ const YoutubeSub = () => {
         }
         nextTime = arrSub[indexOfCurrSub + 1].time.split(':').reduce((acc, time) => (60 * acc) + +time);
 
-        console.log(startTime);
-        console.log(nextTime);
         player.seekTo(startTime, true);
 
     };
@@ -540,9 +537,11 @@ const YoutubeSub = () => {
     }
     return (
         <div className="background-color-dark">
-        <div className='media-left'>
+      
+        <div id="maincontent-yt" className='media-left background-color-dark'>
             <div id='vd-control'>
-                <input type="range" id="size" name="vol" min="0" max="1000"  value={size} onChange={handleSizeChange}></input><br />
+               
+                {/* <div className="mask-media"></div> */}
                 <div id="player"></div><br />
                     {/* <select onChange={(e) => {
                         onChangeSize(e.target.value)
@@ -559,16 +558,19 @@ const YoutubeSub = () => {
                         <option value={SIZE_70X50}>70x50</option>
                         <option value={SIZE_CUSTOM}>SIZE_CUSTOM</option>
                     </select> */}
+                     <input type="range" id="size" name="vol" min="0" max="1000"  value={size} onChange={handleSizeChange}></input><br />
+                    <input type="range" id="size" name="vol" min="5" max="20" value = {height} onChange={handleMaskMedia}></input><br />
+                    <input className="width-60"  placeholder="control-form"  onKeyDown={e => onControlKey(e)}/>
                 <div id="mobe-control">
-                    <input type='submit' className="button-41 margin-zr" value="<" onClick={() => previous()} />
-                    <input type='submit' className="button-41 margin-zr" value="||" onClick={() => onStartStop()} />
-                    <input type='submit' className="button-41 margin-zr" value=">" onClick={() =>  next()} /><br />
+                    <input type='submit' className="margin-zr" value="<" onClick={() => previous()} />
+                    <input type='submit' className=" margin-zr" value="||" onClick={() => onStartStop()} />
+                    <input type='submit' className=" margin-zr" value=">" onClick={() =>  next()} /><br />
                     <input type='submit' className="button-12 margin-zr"  value="Change times" onClick={() => changeTime()} />
                 </div>
                 <div id='cus-loop-control'>
                     <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
-                    <input type='submit' className="button-41 margin-zr" value="Add point" onClick={() => onAddPoint()} />
-                    <input type='submit' className="button-41 margin-zr" value="clear" onClick={() => onClearCusLoop()} />
+                    <input type='submit' className=" margin-zr" value="Add point" onClick={() => onAddPoint()} />
+                    <input type='submit' className=" margin-zr" value="clear" onClick={() => onClearCusLoop()} />
                 </div>
                 <div id="hide1">
                     <input type="text" id="txtSrcMedia" onKeyDown={e => handleKeyDown(e)} />
@@ -584,7 +586,7 @@ const YoutubeSub = () => {
                     {/* <input type='submit' value="Resize" onClick={() => onChangeSize(SIZE_CUSTOM)} /> */}
                 </div>
             </div>
-                <input className="width-60"  placeholder="control-form"  onKeyDown={e => onControlKey(e)}/>
+                
                 <input className="width-30" id="timemisus" />
                 {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
                 <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
@@ -613,9 +615,9 @@ const YoutubeSub = () => {
                     </select>
                     <input type='submit' value="Continue" onClick={() => onChangeReplay()} />
 
+                    <input className="width-30"  placeholder="control-form"  onKeyDown={e => onControlKeyListen(e)}/>
                     <input type='submit' value="<<" onClick={() => onPrevLine()} />
                     <input type='submit' value=">>" onClick={() => onNextLine()} />
-                    <input className="width-30"  placeholder="control-form"  onKeyDown={e => onControlKeyListen(e)}/>
                     <div id='sub-control' >
                         {arrSub.map((item, index) => <LineSub key={`${item.time}${item.value}`}
                             time={item.time}
@@ -640,6 +642,7 @@ const YoutubeSub = () => {
             <br />
             <input type='submit' value="H" id='btnHide' onClick={() => onHideAll()} />
             <input type='submit' value="S" id='btnShow' onClick={() => onShowAll()} />
+            
         </div>
         </div>
     )

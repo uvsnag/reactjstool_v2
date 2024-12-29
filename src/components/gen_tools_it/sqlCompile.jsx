@@ -56,7 +56,7 @@ const SqlCompile = () => {
 
     const extractArguments = (inputLog) => {
         let arrStrReplace = ["(String)"]
-        let arrStrReplaceNumber = ["(Double)","(Integer)"]
+        let arrStrReplaceNumber = ["(Double)","(Integer)","(Long)","(Short)"]
         let cusType = document.getElementById('cus-type').value.trim();
         if (!_.isEmpty(cusType)){
             let arrExtType = cusType.split(',')
