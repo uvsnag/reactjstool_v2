@@ -364,8 +364,8 @@ img.flip  {
 
 /* Opened state */
 .collapse-content.open {
-    max-height: 200px; /* Set max height large enough to fit content */
+    max-height: 800px; /* Set max height large enough to fit content */
 }
-.height200{
-    height: 200px;
+.height1000{
+    height: 1000px;
 }
