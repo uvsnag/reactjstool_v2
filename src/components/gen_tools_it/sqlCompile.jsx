@@ -5,7 +5,7 @@ import { checkType, replaceArr, randomDate, formatDate, checkIncludesArr } from 
 import _ from 'lodash';
 
 const ERROR = 'ERROR';
-const INT_CHAR = '@i@';
+const DATA_NOT_STRING = '@i@';
 const SqlCompile = () => {
     const [message, setMessage] = useState('');
 
@@ -47,7 +47,7 @@ const SqlCompile = () => {
         const replacedQuery = sqlStatement.split("?").map((_, index) => {
             if (index === 0) return _;
             let str = parametersArr[index - 1];
-            return (str.includes(INT_CHAR)?`${str.replaceAll(INT_CHAR, '')}`:`'${str}'`) + _;
+            return (str.includes(DATA_NOT_STRING)?`${str.replaceAll(DATA_NOT_STRING, '')}`:`'${str}'`) + _;
         }).join("");
         console.log(replacedQuery)
         document.getElementById('txtresult').textContent = replacedQuery;
@@ -55,8 +55,9 @@ const SqlCompile = () => {
     }
 
     const extractArguments = (inputLog) => {
+        inputLog =  inputLog.replaceAll('null, ', `null(${DATA_NOT_STRING}), `)
         let arrStrReplace = ["(String)"]
-        let arrStrReplaceNumber = ["(Double)","(Integer)","(Long)","(Short)"]
+        let arrStrReplaceNumber = ["(Double)","(Integer)","(Long)","(Short)", `(${DATA_NOT_STRING})`]
         let cusType = document.getElementById('cus-type').value.trim();
         if (!_.isEmpty(cusType)){
             let arrExtType = cusType.split(',')
@@ -78,7 +79,7 @@ const SqlCompile = () => {
                 return ERROR;
             }
             let resTemp = replaceArr(val.trim(), arrStrReplace, "");
-            return replaceArr(resTemp, arrStrReplaceNumber, INT_CHAR);
+            return replaceArr(resTemp, arrStrReplaceNumber, DATA_NOT_STRING);
         });
 
         return res;
