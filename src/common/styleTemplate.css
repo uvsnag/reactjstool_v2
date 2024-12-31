@@ -311,3 +311,57 @@
 .button-34 {
     width: 140px;
   }
+
+
+  .range-input[type="range"] {
+    -webkit-appearance: none;
+    /* Remove default styling on WebKit browsers */
+    width: 300px;
+    /* Set the width */
+    height: 8px;
+    /* Set the height */
+    background: #2e2f30;
+    /* Background color of the track */
+    border-radius: 4px;
+    /* Rounded corners for the track */
+    outline: none;
+    /* Remove outline on focus */
+}
+
+/* Style the slider thumb (the handle) */
+.range-input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Remove default styling on WebKit browsers */
+    width: 20px;
+    /* Set the size of the thumb */
+    height: 20px;
+    background: #2e2f30;
+    /* Thumb color */
+    border-radius: 50%;
+    /* Rounded thumb */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Optional shadow */
+}
+
+/* Style the thumb for other browsers (like Firefox) */
+.range-input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #2e2f30;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.range-input[type="range"]::-webkit-slider-thumb:hover {
+    background: #2e2f30;
+    /* Darker color on hover */
+}
+
+/* Optional: Active (pressed) thumb style */
+.range-input[type="range"]::-webkit-slider-thumb:active {
+    background: #2e2f30;
+    /* Even darker on active */
+}

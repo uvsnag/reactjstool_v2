@@ -369,3 +369,15 @@ img.flip  {
 .height1000{
     height: 1000px;
 }
+
+.sidebar-cus {
+    position: fixed;
+    bottom: 0;
+    background-color: #252121;
+    height: 80px;
+    width: 400px;
+}
+.range-input {
+    width: 400px;
+}
+

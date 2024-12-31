@@ -502,15 +502,18 @@ const YoutubeSub = () => {
     }
     return (
         <div className="background-color-dark">
-      
+        <div class="sidebar-cus">
+                <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} />
+                <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
+                <input type="range" className="range-input"  id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
+               
+        </div>
         <div id="maincontent-yt" className='media-left background-color-dark'>
             <div id='vd-control'>
                
                 {/* <div className="mask-media"></div> */}
                 <div id="player"></div><br />
-                     <input type="range" id="size" name="vol" min="0" max="1000"  value={size} onChange={handleSizeChange}></input><br />
-                    <input type="range" id="size" name="vol" min="5" max="20" value = {height} onChange={handleMaskMedia}></input><br />
-                    <input className="width-60"  placeholder="control-form"  onKeyDown={e => onControlKey(e)}/>
+                    
                 </div>
                 <div onClick={() => collapseMobile()}>Mobile</div> 
                 <div id="mobile-control" className="collapse-content background-color-dark">
