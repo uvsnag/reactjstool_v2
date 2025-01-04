@@ -373,11 +373,18 @@ img.flip  {
 .sidebar-cus {
     position: fixed;
     bottom: 0;
-    background-color: #252121;
-    height: 80px;
+    background-color: transparent;
+    height: 100px;
     width: 400px;
+    z-index: 10;
 }
 .range-input {
     width: 400px;
 }
-
+#main-content{
+    position: absolute; 
+    width: 100%;
+}
+#mobile-control{
+    height: 100px;
+}

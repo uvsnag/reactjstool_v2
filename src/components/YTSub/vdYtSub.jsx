@@ -28,8 +28,9 @@ const YoutubeSub = () => {
     const [heightYt, setHeightYt] = useState(720);
     const [customLoopAs, setCustomLoopAs] = useState("");
     const [customLoopBs, setCustomLoopBs] = useState("");
-    const [size, setSize] = useState(600); 
+    const [size, setSize] = useState(390); 
     const [height, setHeight] = useState(10); 
+    const [top, setTop] = useState(0); 
     const COLOR_NONE = "";
     const COLOR_CURRENT_BACKGROUND = "#e2e2e2";
 
@@ -100,6 +101,9 @@ const YoutubeSub = () => {
     const handleSizeChange = (event) => {
         let valueSz = event.target.value;
         setSize(valueSz); // Set the size based on the slider value
+        setHeight(10); // Set the size based on the slider value
+        setTop(0); // Set the size based on the slider value
+        setAttTop(0);
         player.setSize(valueSz*1.7, valueSz);
     };
     const handleMaskMedia = (event) => {
@@ -107,14 +111,20 @@ const YoutubeSub = () => {
         setHeight(event.target.value)
         player.setSize(size*1.7, size*Number(event.target.value/10));
     };
+    const handleTop = (event) => {
+        let valueSz = event.target.value;
+        setAttTop(valueSz);
+    };
+    const setAttTop=(valueSz)=>{
+        setTop(valueSz)
+        const div = document.getElementById('main-content');
+        div.style.top = `-${valueSz}px`
+    }
     const onYouTubeIframeAPIReady = () => {
         player = new window.YT.Player('player', {
             height: 390,
             width: 640,
             videoId: "",
-          /*   modestbranding: 1,
-            rel: 0,
-            controls: 0, */
             playerVars: {
                 'playsinline': 1
             },
@@ -501,11 +511,12 @@ const YoutubeSub = () => {
         toggleCollapse("hide2") 
     }
     return (
-        <div className="background-color-dark">
+        <div className="background-color-dark" id ="main-content">
         <div class="sidebar-cus">
                 <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} />
                 <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
                 <input type="range" className="range-input"  id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
+                <input type="range" className="range-input"  id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
                
         </div>
         <div id="maincontent-yt" className='media-left background-color-dark'>
