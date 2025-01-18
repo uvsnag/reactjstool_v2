@@ -513,7 +513,7 @@ const YoutubeSub = () => {
     return (
         <div className="background-color-dark" id ="main-content">
         <div class="sidebar-cus">
-                <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} />
+                <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
                 <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
                 <input type="range" className="range-input"  id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
                 <input type="range" className="range-input"  id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
@@ -546,8 +546,6 @@ const YoutubeSub = () => {
                     <input type='submit' className="button-12 margin-zr" value="Remove Info"  onClick={() => removeLogo()} />
                 </div>
             
-                
-                <input className="width-30" id="timemisus" />
                 {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
                 <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
                 <div class="tooltip">???
