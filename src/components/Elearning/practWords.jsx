@@ -18,6 +18,7 @@ const PractWords = (props) => {
     const [lastAnsw, setLastAnsw] = useState('');
     const [mode, setMode] = useState(MODE_NONE);
     const [arrLineTemp, setArrLineTemp] = useState([]);
+    const [randomAns, setRandomAns] = useState([]);
     const inputAns = useRef(null)
 
 
@@ -43,10 +44,12 @@ const PractWords = (props) => {
    
 
     const onChangeQuestion = () => {
+        let randomAns = new Set();
         
         if (!_.isEmpty(props.items)) {
             let item = null;
             let arrTemp = _.isEmpty(arrLineTemp) ? _.cloneDeep(props.items) : _.cloneDeep(arrLineTemp);
+            let fullanswers = _.cloneDeep(props.items)
             if (props.oderRandom === 'random') {
                 let index = Math.floor(Math.random() * arrTemp.length);
 
@@ -66,12 +69,21 @@ const PractWords = (props) => {
             }
             setAnswer(item.eng);
             setShowAns("");
-
-
+            randomAns.add(item.eng);
+            let numAnsw = Number(document.getElementById('num-of-ans').value);
+            numAnsw = numAnsw > fullanswers.length ? fullanswers.length : numAnsw;
+            while (randomAns.size < numAnsw) {
+                let randId = Math.floor(Math.random() * fullanswers.length);
+                randomAns.add(fullanswers[randId].eng);
+            }
         }
+        setRandomAns([...randomAns]);
     };
     const onCheck = () => {
         var ans = document.getElementById('answer').value;
+        if(_.isEmpty(ans)){
+            ans = document.getElementById('combo-answer').value
+        }
         if (!_.isNull(ans) && !_.isNull(answer)) {
             var answ = answer.replaceAll('.', '');
             if (ans.trim().toUpperCase() === answ.toUpperCase().trim()) {
@@ -125,10 +137,25 @@ const PractWords = (props) => {
 
     return (
         <div className='prac'>
+            <input type="number" id='num-of-ans' value = '7' /><br />
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
             <div dangerouslySetInnerHTML={{__html: showAns}}></div>
             <input type="text" id='answer' ref={inputAns} onKeyDown={e => handleKeyDown(e)} /><br />
+            <select className='button-33'
+                id="combo-answer"
+                name="combo-ans"
+                onChange={(event) => {
+                    onCheck();
+                }}
+            >
+                <option value=""></option>
+                {randomAns.map((ans, index) => (
+                    <option key={ans} value={ans}>
+                        {`${ans}`}
+                    </option>
+                ))}
+            </select>
            {/*  <div className='msg'>{errorMs === 'wrong!' ? <FaRegFrown /> : <FaRegSmile />}</div> */}
             <input className='button-33' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
             <input className='button-12' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
