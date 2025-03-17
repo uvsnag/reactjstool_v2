@@ -77,7 +77,7 @@ const PractWords = (props) => {
                 randomAns.add(fullanswers[randId].eng);
             }
         }
-        setRandomAns([...randomAns]);
+        setRandomAns([...randomAns].sort());
     };
     const onCheck = () => {
         var ans = document.getElementById('answer').value;
@@ -137,7 +137,7 @@ const PractWords = (props) => {
 
     return (
         <div className='prac'>
-            <input type="number" id='num-of-ans' value = '7' /><br />
+            <input type="number" id='num-of-ans' value = '10' /><br />
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
             <div dangerouslySetInnerHTML={{__html: showAns}}></div>
