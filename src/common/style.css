@@ -81,7 +81,7 @@ html {
 }
 
 .prac {
-    border: 3px solid #035c30;
+    border: 3px solid #020202;
     text-align: center;
 }
 
@@ -274,10 +274,10 @@ html {
     accent-color: #585757;  
 }
 .ans-check-right{
-    color: #035c30;
+    color: #76c29c;
 }
 .ans-check-wrong{
-    color: red;
+    color: rgb(200, 150, 150);
 }
 .ans-check-hint{
     color: rgb(215, 174, 6) !important;
@@ -387,4 +387,13 @@ img.flip  {
 }
 #mobile-control{
     height: 100px;
+}
+.dark-90{
+    background-color: #555;
+}
+.height-1000{
+    height: 1000px;
+}
+.back-ground-dark30{
+    background-color: #b3b3b3;
 }

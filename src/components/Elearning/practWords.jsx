@@ -140,7 +140,7 @@ const PractWords = (props) => {
             <input type="number" id='num-of-ans' value = '10' /><br />
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
-            <div dangerouslySetInnerHTML={{__html: showAns}}></div>
+            <div className="" dangerouslySetInnerHTML={{__html: showAns}}></div>
             <input type="text" id='answer' ref={inputAns} onKeyDown={e => handleKeyDown(e)} /><br />
             <select className='button-33'
                 id="combo-answer"

@@ -376,7 +376,7 @@ const NotifyAuto = () => {
     };
     /** */
     return (
-        <div>
+        <div  className="dark-90">
             <div id='notify-control'>
                 <div className='option-noti block' id='control'>
                     <div className='option-left'>
@@ -489,7 +489,7 @@ const NotifyAuto = () => {
                     getDataFromExcel = {getDataFromExcel}/>
             </div>
             <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
-            <div id='btnHideWhenPrac' onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
+            <div id='btnHideWhenPrac' className="height-1000" onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
         </div>
     );
 
