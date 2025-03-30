@@ -60,10 +60,10 @@
 
 /* CSS */
 .button-33 {
-  background-color: #c2fbd7;
+  background-color: #949594;
   border-radius: 100px;
-  box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px;
-  color: green;
+  /* box-shadow: rgba(44, 187, 99, .2) 0 -25px 18px -14px inset,rgba(44, 187, 99, .15) 0 1px 2px,rgba(44, 187, 99, .15) 0 2px 4px,rgba(44, 187, 99, .15) 0 4px 8px,rgba(44, 187, 99, .15) 0 8px 16px,rgba(44, 187, 99, .15) 0 16px 32px; */
+  /* color: green; */
   cursor: pointer;
   display: inline-block;
   font-family: CerebriSans-Regular,-apple-system,system-ui,Roboto,sans-serif;
@@ -79,7 +79,7 @@
 }
 
 .button-33:hover {
-  box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px;
+  /* box-shadow: rgba(44,187,99,.35) 0 -25px 18px -14px inset,rgba(44,187,99,.25) 0 1px 2px,rgba(44,187,99,.25) 0 2px 4px,rgba(44,187,99,.25) 0 4px 8px,rgba(44,187,99,.25) 0 8px 16px,rgba(44,187,99,.25) 0 16px 32px; */
   transform: scale(1.05) rotate(-1deg);
 }
 .button-33 {
@@ -92,7 +92,7 @@
 
 /* CSS */
 .button-62 {
-  background: linear-gradient(to bottom right, #EF4765, #FF9A5A);
+  /* background: linear-gradient(to bottom right, #EF4765, #FF9A5A); */
   border: 0;
   border-radius: 12px;
   color: #FFFFFF;
@@ -176,7 +176,7 @@
 /* CSS */
 .button-41 {
   background-color: initial;
-  background-image: linear-gradient(-180deg, #00D775, #00BD68);
+  background-image: linear-gradient(-180deg, #74817b, #7a817d);
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
   color: #FFFFFF;
@@ -203,7 +203,7 @@
 }
 
 .button-41:hover {
-  background: #00bd68;
+  /* background: #00bd68; */
 }
 
 /* /<!-- HTML !-->
@@ -212,10 +212,10 @@
 /* CSS */
 .button-23 {
   background-color: #FFFFFF;
-  border: 2px solid #033d06;
+  /* border: 2px solid #033d06; */
   border-radius: 8px;
   box-sizing: border-box;
-  color: #0b4b0e;
+  /* color: #0b4b0e; */
   cursor: pointer;
   display: inline-block;
   font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
