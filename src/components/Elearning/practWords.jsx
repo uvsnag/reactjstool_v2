@@ -6,6 +6,7 @@ import '../../common/styleTemplate.css';
 import { FaVolumeUp, FaRedo, FaVolumeMute } from 'react-icons/fa';
 import { validateArrStrCheck, arrStrCheckToStr} from "../Elearning/commonElearn";
 
+let arrLineTemp = [];
 const PractWords = (props) => {
 
     const MODE_NONE = 'None'
@@ -13,11 +14,9 @@ const PractWords = (props) => {
 
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
-    /* const [errorMs, setErrorMs] = useState(""); */
     const [showAns, setShowAns] = useState('');
     const [lastAnsw, setLastAnsw] = useState('');
     const [mode, setMode] = useState(MODE_NONE);
-    const [arrLineTemp, setArrLineTemp] = useState([]);
     const [randomAns, setRandomAns] = useState([]);
     const inputAns = useRef(null)
 
@@ -28,15 +27,14 @@ const PractWords = (props) => {
     }, []);
     useEffect(() => {
 
-        setArrLineTemp(_.cloneDeep(props.items));
-        console.log("useEffect [props.items]");
+        arrLineTemp = [];
+        onChangeQuestion()
     }, [props.items]);
 
     useEffect(() => {
         if (props.isLoadQuestion) {
             onChangeQuestion();
         }
-        console.log("useEffect [props.isLoadQuestion]");
 
         inputAns.current.focus()
         // eslint-disable-next-line
@@ -45,6 +43,7 @@ const PractWords = (props) => {
 
     const onChangeQuestion = () => {
         let randomAns = new Set();
+        const isChecked = document.getElementById("revertAsw").checked;
         
         if (!_.isEmpty(props.items)) {
             let item = null;
@@ -60,21 +59,42 @@ const PractWords = (props) => {
                 item = arrTemp[0];
                 arrTemp.shift();
             }
-            setArrLineTemp(arrTemp);
+            // setArrLineTemp(arrTemp);
+            arrLineTemp = arrTemp;
 
+            let quest = '';
             if (_.isEmpty(item.customDefine)) {
-                setQuestion(item.vi);
+                // setQuestion(item.vi);
+                quest = item.vi;
             } else {
-                setQuestion(item.customDefine);
+                quest = item.customDefine;
+                // setQuestion(item.customDefine);
             }
-            setAnswer(item.eng);
+            if(isChecked){
+                setAnswer(quest);
+                setQuestion(item.eng);
+                randomAns.add(quest);
+            }else{
+                setAnswer(item.eng);
+                setQuestion(quest);
+                randomAns.add(item.eng);
+            }
             setShowAns("");
-            randomAns.add(item.eng);
             let numAnsw = Number(document.getElementById('num-of-ans').value);
             numAnsw = numAnsw > fullanswers.length ? fullanswers.length : numAnsw;
             while (randomAns.size < numAnsw) {
                 let randId = Math.floor(Math.random() * fullanswers.length);
-                randomAns.add(fullanswers[randId].eng);
+                if (isChecked) {
+                    quest = '';
+                    if (_.isEmpty(fullanswers[randId].customDefine)) {
+                        quest = fullanswers[randId].vi;
+                    } else {
+                        quest = fullanswers[randId].customDefine;
+                    }
+                    randomAns.add(quest);
+                } else {
+                    randomAns.add(fullanswers[randId].eng);
+                }
             }
         }
         setRandomAns([...randomAns].sort());
@@ -102,8 +122,6 @@ const PractWords = (props) => {
         }
     };
     const handleKeyDown = (e) => {
-        console.log(e.key)
-        console.log(e.nativeEvent.code)
         if (e.key === 'Enter') {
             onCheck();
         }
@@ -137,7 +155,9 @@ const PractWords = (props) => {
 
     return (
         <div className='prac'>
-            <input type="number" id='num-of-ans' value = '10' /><br />
+            <input type="number" id='num-of-ans' defaultValue={10}  />
+            <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>Revert</label>
+            <br />
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
             <div className="" dangerouslySetInnerHTML={{__html: showAns}}></div>

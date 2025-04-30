@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // this is a tools for studying english
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import '../../common/style.css';
 import '../../common/styleTemplate.css';
 import _ from 'lodash';
@@ -37,6 +37,7 @@ const NotifyAuto = () => {
     const [isStop, setIsStop] = useState(true);
     const [intervalId, setIntervalId] = useState(-1);
     const [countNotify, setCountNotify] = useState(0);
+    // const isDarkRef = useRef(null);
 
     const styleFlexRow = { display: 'flex', flexDirection: 'row' };
     const styleContainerRatePitch = {
@@ -374,9 +375,8 @@ const NotifyAuto = () => {
     const handleChangeCookie = e => {
         setStrContinue(e.target.value);
     };
-    /** */
     return (
-        <div  className="dark-90">
+        <div className="">
             <div id='notify-control'>
                 <div className='option-noti block' id='control'>
                     <div className='option-left'>
@@ -392,6 +392,7 @@ const NotifyAuto = () => {
                             <option value="Words3!A1:C500">Words3</option>
                             <option value="temp1!A1:C500">temp1</option>
                             <option value="temp2!A1:C500">temp2</option>
+                            <option value="Note!A1:C500">Note</option>
                             <option value="Sentence1!A1:C500">Sentence1</option>
                             <option value="Sentence2!A1:C500">Sentence2</option>
                             <option value="Sentence3!A1:C500">Sentence3</option>
@@ -465,7 +466,7 @@ const NotifyAuto = () => {
                                         {`${option.lang} - ${option.name}`}
                                     </option>
                                 ))}
-                            </select>
+                            </select><br/>
                         </div>
                     </div>
 

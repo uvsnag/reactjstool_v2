@@ -18,10 +18,22 @@ import RedirectUrl from './components/RedirectUrl'
 import reportWebVitals from './reportWebVitals';
 import { FaHome } from 'react-icons/fa';
 import {Link, Route,  Routes, BrowserRouter } from "react-router-dom";
+const handleCheckboxDarkChange = (e) => {
+  const targetDiv = document.getElementById("root");
+  if (targetDiv) {
+      if (e.target.checked) {
+          targetDiv.classList.add("dark-90");
+      } else {
+          targetDiv.classList.remove("dark-90");
+      }
+  }
+};
 ReactDOM.render(
   <React.StrictMode>
      <BrowserRouter>
-    <div><Link to="/"><FaHome/></Link></div>
+    <div><Link to="/"><FaHome/></Link>
+    <label><input type="checkbox" onChange={handleCheckboxDarkChange} defaultChecked={false}/>Dark mode</label>
+    </div>
     <br/>
     <Routes>
         <Route exact path="/" element={<App/>} />

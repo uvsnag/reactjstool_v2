@@ -389,7 +389,17 @@ img.flip  {
     height: 100px;
 }
 .dark-90{
-    background-color: #555;
+    background-color: #2a2929;
+}
+.dark-90 div, .dark-90 #answer{
+    color: rgb(249, 248, 248)
+}
+.dark-90 input[type="submit"],
+.dark-90 select,
+.dark-90 textarea
+{
+    color: rgb(249, 248, 248);
+    background-color: #585858;
 }
 .height-1000{
     height: 1000px;
