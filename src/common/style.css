@@ -404,6 +404,9 @@ img.flip  {
 .height-1000{
     height: 1000px;
 }
+.height-400{
+    height: 400px;
+}
 .back-ground-dark30{
     background-color: #b3b3b3;
 }

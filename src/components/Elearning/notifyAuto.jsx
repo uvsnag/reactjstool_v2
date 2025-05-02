@@ -27,6 +27,7 @@ const NotifyAuto = () => {
     const [voiceIndex, setVoiceIndex] = useState(0);
     const [voiceIndexVie, setVoiceIndexVie] = useState(0);
     const [rate, setRate] = useState(0.6);
+    const [volumn, setVolumn] = useState(0.6);
     const [sheet, setSheet] = useState("");
     const [speakStrEng, setSpeakStrEng] = useState("");
     const [speakStrVie, setSpeakStrVie] = useState("");
@@ -369,7 +370,7 @@ const NotifyAuto = () => {
         } else {
             utterance.voice = voices[vVoiceVie];
         }
-        utterance.volume = 1;
+        utterance.volume = Number(volumn);
         speak(utterance);
     }
     const handleChangeCookie = e => {
@@ -451,6 +452,7 @@ const NotifyAuto = () => {
                                     }}
                                 />
                             </div>
+                            
                             <div>Voice 2:</div>
                             <select className='button-33'
                                 id="voiceVie"
@@ -483,6 +485,24 @@ const NotifyAuto = () => {
             </div>
             {/* <FaStop/> */}
             {/* <button className='button-12 inline' onClick={() => getDataFromExcel()}><FaRedo/></button> */}
+            <div style={styleContainerRatePitch}>
+                <div style={styleFlexRow}>
+                    <label htmlFor="volumn"><FaVolumeUp className='iconSound'/> </label>
+                    <div className="rate-value">{volumn}</div>
+                </div>
+                <input
+                    type="range"
+                    className="range-input"
+                    min="0.1"
+                    max="1"
+                    defaultValue="0.6"
+                    step="0.1"
+                    id="volumn"
+                    onChange={(event) => {
+                        setVolumn(event.target.value);
+                    }}
+                />
+            </div>
             <div id='pracWord'>
                 <PractWords items={items} oderRandom={oderRandomS}
                     speakText={speakText}
@@ -490,7 +510,8 @@ const NotifyAuto = () => {
                     getDataFromExcel = {getDataFromExcel}/>
             </div>
             <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
-            <div id='btnHideWhenPrac' className="height-1000" onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
+            <div id='btnHideWhenPrac' className="height-400" onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
+          
         </div>
     );
 
