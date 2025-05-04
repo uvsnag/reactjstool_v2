@@ -7,6 +7,7 @@ import { FaVolumeUp, FaRedo, FaVolumeMute } from 'react-icons/fa';
 import { validateArrStrCheck, arrStrCheckToStr} from "../Elearning/commonElearn";
 
 let arrLineTemp = [];
+let isCheckedRevert = false;
 const PractWords = (props) => {
 
     const MODE_NONE = 'None'
@@ -43,7 +44,7 @@ const PractWords = (props) => {
 
     const onChangeQuestion = () => {
         let randomAns = new Set();
-        const isChecked = document.getElementById("revertAsw").checked;
+        isCheckedRevert = document.getElementById("revertAsw").checked;
         
         if (!_.isEmpty(props.items)) {
             let item = null;
@@ -61,7 +62,8 @@ const PractWords = (props) => {
             }
             // setArrLineTemp(arrTemp);
             arrLineTemp = arrTemp;
-
+            console.log('arrTemp:', arrTemp)
+            console.log('item:', item)
             let quest = '';
             if (_.isEmpty(item.customDefine)) {
                 // setQuestion(item.vi);
@@ -70,7 +72,7 @@ const PractWords = (props) => {
                 quest = item.customDefine;
                 // setQuestion(item.customDefine);
             }
-            if(isChecked){
+            if(isCheckedRevert){
                 setAnswer(quest);
                 setQuestion(item.eng);
                 randomAns.add(quest);
@@ -84,7 +86,7 @@ const PractWords = (props) => {
             numAnsw = numAnsw > fullanswers.length ? fullanswers.length : numAnsw;
             while (randomAns.size < numAnsw) {
                 let randId = Math.floor(Math.random() * fullanswers.length);
-                if (isChecked) {
+                if (isCheckedRevert) {
                     quest = '';
                     if (_.isEmpty(fullanswers[randId].customDefine)) {
                         quest = fullanswers[randId].vi;
@@ -100,6 +102,7 @@ const PractWords = (props) => {
         setRandomAns([...randomAns].sort());
     };
     const onCheck = () => {
+        // const isChecked = document.getElementById("revertAsw").checked;
         var ans = document.getElementById('answer').value;
         if(_.isEmpty(ans)){
             ans = document.getElementById('combo-answer').value
@@ -107,13 +110,17 @@ const PractWords = (props) => {
         if (!_.isNull(ans) && !_.isNull(answer)) {
             var answ = answer.replaceAll('.', '');
             if (ans.trim().toUpperCase() === answ.toUpperCase().trim()) {
-                onChangeQuestion();
                 /* setErrorMs('correct!'); */
                 document.getElementById('answer').value = "";
                 setLastAnsw(answer);
                 if(mode === MODE_SPEAKE_CHANGE_QUST){
-                    props.speakText(answer, true);
+                    if(isCheckedRevert){
+                        props.speakText(question, true);
+                    }else{
+                        props.speakText(answer, true);
+                    }
                 }
+                onChangeQuestion();
             } else {
                 let arr = validateArrStrCheck(ans, answer, 0)
                 setShowAns(arrStrCheckToStr(arr))
