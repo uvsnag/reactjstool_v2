@@ -174,6 +174,7 @@ const PractWords = (props) => {
                         </select>
             <input type="number" className='width-30'id='num-of-ans' defaultValue={10}  />
             <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>RV</label>
+           
             <input className='button-12 inline' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
             <button className='button-12 inline' onClick={() => setMode(mode === MODE_NONE ? MODE_SPEAKE_CHANGE_QUST : MODE_NONE)}>{mode === MODE_NONE ? <FaVolumeMute /> : <FaVolumeUp />}</button>
             <button className='button-12 inline' onClick={() => props.getDataFromExcel()}><FaRedo /></button>
@@ -200,8 +201,8 @@ const PractWords = (props) => {
                 ))}
             </select>
            {/*  <div className='msg'>{errorMs === 'wrong!' ? <FaRegFrown /> : <FaRegSmile />}</div> */}
-            <input className='button-33' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
-
+           
+           <input className='button-12 inline' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
             
             <br/>
             {/* <div >
