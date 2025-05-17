@@ -16,7 +16,8 @@ const PractWords = (props) => {
     const [question, setQuestion] = useState("");
     const [answer, setAnswer] = useState("");
     const [showAns, setShowAns] = useState('');
-    const [lastAnsw, setLastAnsw] = useState('');
+    const [lastEng, setLastEng] = useState('');
+    const [lastVie, setLastVie] = useState('');
     const [mode, setMode] = useState(MODE_NONE);
     const [randomAns, setRandomAns] = useState([]);
     const inputAns = useRef(null)
@@ -112,7 +113,14 @@ const PractWords = (props) => {
             if (ans.trim().toUpperCase() === answ.toUpperCase().trim()) {
                 /* setErrorMs('correct!'); */
                 document.getElementById('answer').value = "";
-                setLastAnsw(answer);
+                if (isCheckedRevert) {
+                     setLastEng(question);
+                     setLastVie(answer);
+                     
+                }else{
+                    setLastEng(answer);
+                    setLastVie(question);
+                }
                 if(mode === MODE_SPEAKE_CHANGE_QUST){
                     if(isCheckedRevert){
                         props.speakText(question, true);
@@ -139,7 +147,7 @@ const PractWords = (props) => {
             setMode(mode===MODE_NONE?MODE_SPEAKE_CHANGE_QUST:MODE_NONE);
         }
         if (e.nativeEvent.code === 'ShiftRight') {
-            props.speakText(lastAnsw, true);
+            props.speakText(lastEng, true);
         }
         if (e.nativeEvent.code === 'ControlRight') {
             props.speakText(answer, true);
@@ -163,6 +171,8 @@ const PractWords = (props) => {
     return (
         <div className='prac'>
            
+            <div>{_.isEmpty(lastEng) ? <div></div> : <i> {lastEng} : {lastVie}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastEng, true)} />  </i>}
+             </div>
              <select className='button-33 inline ' name="sheet" id="slsheet" onChange={(e) => {
                             props.setSheet(e.target.value)
                         }}>
@@ -173,13 +183,11 @@ const PractWords = (props) => {
                             ))}
                         </select>
             <input type="number" className='width-30'id='num-of-ans' defaultValue={10}  />
-            <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>RV</label>
+            <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>⇆</label>
            
             <input className='button-12 inline' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
             <button className='button-12 inline' onClick={() => setMode(mode === MODE_NONE ? MODE_SPEAKE_CHANGE_QUST : MODE_NONE)}>{mode === MODE_NONE ? <FaVolumeMute /> : <FaVolumeUp />}</button>
             <button className='button-12 inline' onClick={() => props.getDataFromExcel()}><FaRedo /></button>
-            <div>{_.isEmpty(lastAnsw) ? <div></div> : <div>Last : {lastAnsw}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastAnsw, true)} /></div>}
-             </div>
              
             <br />
             <div>{question}</div><br />
