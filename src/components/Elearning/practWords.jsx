@@ -162,8 +162,24 @@ const PractWords = (props) => {
 
     return (
         <div className='prac'>
-            <input type="number" id='num-of-ans' defaultValue={10}  />
-            <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>Revert</label>
+           
+             <select className='button-33 inline ' name="sheet" id="slsheet" onChange={(e) => {
+                            props.setSheet(e.target.value)
+                        }}>
+                            {props.SHEET_NAME.map((option, index) => (
+                                <option key={option.range} value={option.range}>
+                                    {`${option.name}`}
+                                </option>
+                            ))}
+                        </select>
+            <input type="number" className='width-30'id='num-of-ans' defaultValue={10}  />
+            <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>RV</label>
+            <input className='button-12 inline' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
+            <button className='button-12 inline' onClick={() => setMode(mode === MODE_NONE ? MODE_SPEAKE_CHANGE_QUST : MODE_NONE)}>{mode === MODE_NONE ? <FaVolumeMute /> : <FaVolumeUp />}</button>
+            <button className='button-12 inline' onClick={() => props.getDataFromExcel()}><FaRedo /></button>
+            <div>{_.isEmpty(lastAnsw) ? <div></div> : <div>Last : {lastAnsw}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastAnsw, true)} /></div>}
+             </div>
+             
             <br />
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
@@ -185,13 +201,12 @@ const PractWords = (props) => {
             </select>
            {/*  <div className='msg'>{errorMs === 'wrong!' ? <FaRegFrown /> : <FaRegSmile />}</div> */}
             <input className='button-33' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
-            <input className='button-12' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
-            <div>{_.isEmpty(lastAnsw) ? <div></div> : <div>Last : {lastAnsw}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastAnsw, true)} /></div>} </div>
+
+            
             <br/>
-            <div >
-                <button className='button-12 inline' onClick={() => setMode(mode===MODE_NONE?MODE_SPEAKE_CHANGE_QUST:MODE_NONE)}>{mode === MODE_NONE?<FaVolumeMute/>:<FaVolumeUp/>}</button>
-                <button className='button-12 inline' onClick={() => props.getDataFromExcel()}><FaRedo/></button>
-            </div>
+            {/* <div >
+                
+            </div> */}
         </div>
     );
 }

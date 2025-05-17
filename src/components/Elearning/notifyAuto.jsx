@@ -10,8 +10,20 @@ import { load } from './api/sheetDataRepository.js';
 import PractWords from './practWords.jsx'
 import { FaCircleNotch} from 'react-icons/fa';
 import { useSpeechSynthesis } from "react-speech-kit";
-import { FaVolumeUp } from 'react-icons/fa';
+import { FaVolumeUp, FaRedo } from 'react-icons/fa';
 import { useCookies } from 'react-cookie'
+
+const SHEET_NAME = [
+    {range:"Words1!A1:C500", name:"Words1"},
+    {range:"Words2!A1:C500", name:"Words2"},
+    {range:"Words3!A1:C500", name:"Words3"},
+    {range:"temp1!A1:C500", name:"temp1"},
+    {range:"temp2!A1:C500", name:"temp2"},
+    {range:"Note!A1:C500", name:"Note"},
+    {range:"Sentence1!A1:C500", name:"Sentence1"},
+    {range:"Sentence2!A1:C500", name:"Sentence2"},
+    {range:"Sentence3!A1:C500", name:"Sentence3"},
+]
 
 const NotifyAuto = () => {
     const onEnd = () => {
@@ -116,6 +128,7 @@ const NotifyAuto = () => {
         console.log(strContinue);
         console.log(cookies);
     }, [strContinue]);
+
 
     /** */
     const getDataFromExcel = () => {
@@ -385,19 +398,16 @@ const NotifyAuto = () => {
                         <br />
                     </div>
                     <div className='option-right notify-right'>
-                        <select className='button-34' name="sheet" id="slsheet" onChange={(e) => {
+                        <select className='button-33 inline' name="sheet" id="slsheet" onChange={(e) => {
                             setSheet(e.target.value)
                         }}>
-                            <option value="Words1!A1:C500">Words1</option>
-                            <option value="Words2!A1:C500">Words2</option>
-                            <option value="Words3!A1:C500">Words3</option>
-                            <option value="temp1!A1:C500">temp1</option>
-                            <option value="temp2!A1:C500">temp2</option>
-                            <option value="Note!A1:C500">Note</option>
-                            <option value="Sentence1!A1:C500">Sentence1</option>
-                            <option value="Sentence2!A1:C500">Sentence2</option>
-                            <option value="Sentence3!A1:C500">Sentence3</option>
+                            {SHEET_NAME.map((option, index) => (
+                                <option key={option.range} value={option.range}>
+                                    {`${option.name}`}
+                                </option>
+                            ))}
                         </select>
+                        <button className='button-12 inline' onClick={() => getDataFromExcel()}><FaRedo/></button>
 
                         <select className='button-33' name="genData" id="slGenData" onChange={(e) => {
                             onChangeOrder(e.target.value)
@@ -470,6 +480,7 @@ const NotifyAuto = () => {
                                 ))}
                             </select><br/>
                         </div>
+                        <textarea id="strContinue" value={strContinue} onChange={handleChangeCookie}></textarea>
                     </div>
 
                 </div>
@@ -479,12 +490,13 @@ const NotifyAuto = () => {
                     <input className='button-23' type="text" id='timeValue' />
                     <input className='button-33' type='submit' value="Show" id='btnShow' onClick={() => onShowAll()} />
                     <input className='button-33' type='submit' value="Practice" id='btnPract' onClick={() => onShowPract()} />
-                    <input className='button-59' type="submit" id='isNotify' value={!isStop ? IND_VALUE_ON : IND_VALUE_OFF} /><br />
+                    <input className='button-59' type="submit" id='isNotify' value={!isStop ? IND_VALUE_ON : IND_VALUE_OFF} />
                 </div>
-                <textarea id="strContinue" value={strContinue} onChange={handleChangeCookie}></textarea>
+               
             </div>
             {/* <FaStop/> */}
             {/* <button className='button-12 inline' onClick={() => getDataFromExcel()}><FaRedo/></button> */}
+           
             <div style={styleContainerRatePitch}>
                 <div style={styleFlexRow}>
                     <label htmlFor="volumn"><FaVolumeUp className='iconSound'/> </label>
@@ -507,7 +519,10 @@ const NotifyAuto = () => {
                 <PractWords items={items} oderRandom={oderRandomS}
                     speakText={speakText}
                     isLoadQuestion={isLoadQuestion} 
-                    getDataFromExcel = {getDataFromExcel}/>
+                    getDataFromExcel = {getDataFromExcel}
+                    setSheet = {setSheet}
+                    SHEET_NAME = {SHEET_NAME}
+                    />
             </div>
             <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
             <div id='btnHideWhenPrac' className="height-400" onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>

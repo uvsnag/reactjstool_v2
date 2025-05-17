@@ -396,16 +396,26 @@ img.flip  {
 }
 .dark-90 input[type="submit"],
 .dark-90 select,
-.dark-90 textarea
+.dark-90 textarea,
+.dark-90 button
 {
     color: rgb(249, 248, 248);
     background-color: #585858;
+}
+.dark-90 .range-input[type="range"] {
+    background: #ffffffd2;
 }
 .height-1000{
     height: 1000px;
 }
 .height-400{
     height: 400px;
+}
+.width-30{
+    width:  30px;
+}
+.width-100{
+    width:  100px !important;
 }
 .back-ground-dark30{
     background-color: #b3b3b3;
