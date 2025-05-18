@@ -510,16 +510,22 @@ const YoutubeSub = () => {
     function collapsecontrol(){
         toggleCollapse("hide2") 
     }
+    function collapseControlFrame(){
+        toggleCollapse("hide-control-frame") 
+    }
     return (
-        <div className="background-color-dark" id ="main-content">
-        <div class="sidebar-cus">
+        <div className="" id ="main-content">
+            <div  class="sidebar-cus">
                 <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
-                <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
-                <input type="range" className="range-input"  id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
-                <input type="range" className="range-input"  id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
-               
-        </div>
-        <div id="maincontent-yt" className='media-left background-color-dark'>
+                <span onClick={() => collapseControlFrame()}>+/-</span>
+                <div id="hide-control-frame" class="collapse-content">
+                    <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
+                    <input type="range" className="range-input" id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
+                    <input type="range" className="range-input" id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
+                </div>
+
+            </div>
+        <div id="maincontent-yt" className='media-left '>
             <div id='vd-control'>
                
                 {/* <div className="mask-media"></div> */}
@@ -527,7 +533,7 @@ const YoutubeSub = () => {
                     
                 </div>
                 <div onClick={() => collapseMobile()}>Mobile</div> 
-                <div id="mobile-control" className="collapse-content background-color-dark">
+                <div id="mobile-control" className="collapse-content ">
                     <input type='submit' className="margin-zr" value="<" onClick={() => previous()} />
                     <input type='submit' className=" margin-zr" value="||" onClick={() => onStartStop()} />
                     <input type='submit' className=" margin-zr" value=">" onClick={() =>  next()} /><br />
@@ -596,7 +602,7 @@ const YoutubeSub = () => {
             
             </div>
         </div>
-        <div className="background-color-dark height1000"></div>
+        <div className=" height1000"></div>
         </div>
     )
 

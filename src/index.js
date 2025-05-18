@@ -17,7 +17,7 @@ import SpeechRecogn from './components/recognize_text/recognizeText'
 import RedirectUrl from './components/RedirectUrl'
 import reportWebVitals from './reportWebVitals';
 import { FaHome } from 'react-icons/fa';
-import {Link, Route,  Routes, BrowserRouter } from "react-router-dom";
+import {Link, Route,  Routes, BrowserRouter, HashRouter } from "react-router-dom";
 const handleCheckboxDarkChange = (e) => {
   const targetDiv = document.getElementById("root");
   if (targetDiv) {
@@ -30,7 +30,7 @@ const handleCheckboxDarkChange = (e) => {
 };
 ReactDOM.render(
   <React.StrictMode>
-     <BrowserRouter>
+     <HashRouter >
     <div><Link to="/"><FaHome/></Link>
     <label><input type="checkbox" onChange={handleCheckboxDarkChange} defaultChecked={false}/>Dark mode</label>
     </div>
@@ -52,7 +52,7 @@ ReactDOM.render(
          <Route path="/ScreenCapture" element={<ScreenCapture/>} />
           
       </Routes>
-    </BrowserRouter>
+    </HashRouter >
     {/* <App /> */}
   </React.StrictMode>,
   document.getElementById('root')

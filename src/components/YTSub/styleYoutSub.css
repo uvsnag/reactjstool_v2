@@ -12,7 +12,7 @@
   overflow: scroll;
 }
 .sub-item:hover {
- background-color: antiquewhite;
+ background-color: rgba(250, 235, 215, 0.299);
  cursor: pointer;
 }
 .txt-10-pc {

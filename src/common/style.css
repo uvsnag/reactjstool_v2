@@ -357,7 +357,7 @@ img.flip  {
     max-height: 0; /* Start hidden */
     overflow: hidden;
     transition: max-height 0.3s ease-out; /* Smooth expand/collapse */
-    background-color: #252121;
+    /* background-color: #252121; */
     padding: 0 20px;
     border: 1px solid #252121;
 }
@@ -382,8 +382,8 @@ img.flip  {
     width: 400px;
 }
 #main-content{
-    position: absolute; 
-    width: 100%;
+    /* position: absolute;  */
+    /* width: 100%; */
 }
 #mobile-control{
     height: 100px;
