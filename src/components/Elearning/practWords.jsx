@@ -6,6 +6,7 @@ import '../../common/styleTemplate.css';
 import { FaVolumeUp, FaRedo, FaVolumeMute } from 'react-icons/fa';
 import { validateArrStrCheck, arrStrCheckToStr} from "../Elearning/commonElearn";
 
+let lastEngVar = ''
 let arrLineTemp = [];
 let isCheckedRevert = false;
 const PractWords = (props) => {
@@ -52,10 +53,11 @@ const PractWords = (props) => {
             let arrTemp = _.isEmpty(arrLineTemp) ? _.cloneDeep(props.items) : _.cloneDeep(arrLineTemp);
             let fullanswers = _.cloneDeep(props.items)
             if (props.oderRandom === 'random') {
-                let index = Math.floor(Math.random() * arrTemp.length);
+                const validOptions = arrTemp.filter(item => item.eng !== lastEngVar);
 
-                item = arrTemp[index];
-                arrTemp.splice(index, 1);
+                let index = Math.floor(Math.random() * validOptions.length);
+                item = validOptions[index];
+                arrTemp = arrTemp.filter(it => it.eng != item.eng)
 
             } else {
                 item = arrTemp[0];
@@ -114,10 +116,12 @@ const PractWords = (props) => {
                 /* setErrorMs('correct!'); */
                 document.getElementById('answer').value = "";
                 if (isCheckedRevert) {
+                    lastEngVar = question;
                      setLastEng(question);
                      setLastVie(answer);
                      
                 }else{
+                    lastEngVar = answer;
                     setLastEng(answer);
                     setLastVie(question);
                 }
@@ -143,14 +147,14 @@ const PractWords = (props) => {
         if (e.nativeEvent.code === 'ShiftLeft') {
             onShow();
         }
-        if (e.nativeEvent.code === 'ControlLeft') {
-            setMode(mode===MODE_NONE?MODE_SPEAKE_CHANGE_QUST:MODE_NONE);
-        }
         if (e.nativeEvent.code === 'ShiftRight') {
             props.speakText(lastEng, true);
         }
-        if (e.nativeEvent.code === 'ControlRight') {
+        if (e.nativeEvent.code === 'ControlLeft') {
             props.speakText(answer, true);
+        }
+        if (e.nativeEvent.code === 'ControlRight') {
+            setMode(mode===MODE_NONE?MODE_SPEAKE_CHANGE_QUST:MODE_NONE);
         }
         if (e.nativeEvent.code === 'End') {
             onChangeQuestion();
@@ -182,7 +186,7 @@ const PractWords = (props) => {
                                 </option>
                             ))}
                         </select>
-            <input type="number" className='width-30'id='num-of-ans' defaultValue={10}  />
+            <input type="number" className='width-30'id='num-of-ans' defaultValue={3}  />
             <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>⇆</label>
            
             <input className='button-12 inline' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />

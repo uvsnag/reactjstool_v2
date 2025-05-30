@@ -297,7 +297,7 @@ html {
     width: auto;
     height: 50px;
     overflow-y: scroll;
-    opacity: 85%;
+    /* opacity: 85% !important; */
 }
 
 ul.mst-menu {
