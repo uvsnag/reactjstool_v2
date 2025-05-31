@@ -3,13 +3,25 @@ import React, { useEffect, useState, useRef  } from "react";
 import '../../common/style.css';
 import _ from 'lodash';
 import '../../common/styleTemplate.css';
-import { FaVolumeUp, FaRedo, FaVolumeMute } from 'react-icons/fa';
+import { FaVolumeUp, FaRedo, FaVolumeMute, FaMicrophone } from 'react-icons/fa';
+import { MdHearing } from 'react-icons/md';
+
 import { validateArrStrCheck, arrStrCheckToStr} from "../Elearning/commonElearn";
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 let lastEngVar = ''
 let arrLineTemp = [];
 let isCheckedRevert = false;
 const PractWords = (props) => {
+     const { transcript
+        , resetTranscript
+        , listening
+        , browserSupportsSpeechRecognition
+        , isMicrophoneAvailable
+        , interimTranscript
+        ,finalTranscript } = useSpeechRecognition();
+      const messagesEndRef = React.createRef()
+    
 
     const MODE_NONE = 'None'
     const MODE_SPEAKE_CHANGE_QUST = 'Speak';
@@ -20,14 +32,23 @@ const PractWords = (props) => {
     const [lastEng, setLastEng] = useState('');
     const [lastVie, setLastVie] = useState('');
     const [mode, setMode] = useState(MODE_NONE);
+    const [isStartRecord, setIsStartRecord] = useState(false);
     const [randomAns, setRandomAns] = useState([]);
     const inputAns = useRef(null)
 
 
     useEffect(() => {
-        console.log("useEffect []");
+        if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
+            alert("Browser does not support speech to text");
+        }
         
     }, []);
+
+    useEffect(() => {
+        console.log('transcript:', transcript)
+        inputAns.current.value = transcript;
+      }, [transcript]);
+
     useEffect(() => {
 
         arrLineTemp = [];
@@ -141,6 +162,10 @@ const PractWords = (props) => {
         }
     };
     const handleKeyDown = (e) => {
+        console.log(e.key)
+        if (e.key === 'ArrowUp') {
+            processRecord();
+        }
         if (e.key === 'Enter') {
             onCheck();
         }
@@ -172,6 +197,28 @@ const PractWords = (props) => {
         
     }
 
+    const startListening = () => {
+        setIsStartRecord(true);
+        console.log('Start recoding...');
+        resetTranscript();
+        SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
+        setTimeout(() => {
+            console.log(transcript)
+            console.log('listening:' + String(listening))
+            console.log('browserSupportsSpeechRecognition:' + String(browserSupportsSpeechRecognition))
+            console.log('isMicrophoneAvailable:' + String(isMicrophoneAvailable))
+            console.log('interimTranscript:' + String(interimTranscript))
+            console.log('finalTranscript:' + String(finalTranscript))
+        }, 1000);
+    }
+    const stopListening = () => {
+        setIsStartRecord(false);
+        console.log('Stoped record');
+        SpeechRecognition.stopListening();
+    }
+    const processRecord = () => {
+        isStartRecord ? stopListening() : startListening()
+    }
     return (
         <div className='prac'>
            
@@ -197,7 +244,9 @@ const PractWords = (props) => {
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
             <div className="" dangerouslySetInnerHTML={{__html: showAns}}></div>
-            <input type="text" id='answer' ref={inputAns} onKeyDown={e => handleKeyDown(e)} /><br />
+            <input type="text" id='answer' ref={inputAns} onKeyDown={e => handleKeyDown(e)} />
+            <button className='button-12 inline' onClick={() => processRecord()}>
+                {isStartRecord ? <MdHearing />: <FaMicrophone /> } </button><br/>
             <select className='button-33'
                 id="combo-answer"
                 name="combo-ans"
@@ -216,10 +265,17 @@ const PractWords = (props) => {
            
            <input className='button-12 inline' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
             
-            <br/>
-            {/* <div >
-                
-            </div> */}
+         <div class="tooltip">?
+                    <span class="tooltiptext">
+                        <p>ArrowUp: Record/Stop</p>
+                        <p>ShiftLeft: Show answer</p>
+                        <p>ShiftRight: Speak Last Eng</p>
+                        <p>ControlLeft: Speak Current</p>
+                        <p>ControlRight: Turn On/Off Speak</p>
+                        <p>Home: Reload data</p>
+                        <p> End: Next Answer</p>
+                        </span>
+                </div>
         </div>
     );
 }

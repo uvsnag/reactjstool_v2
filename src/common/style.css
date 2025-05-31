@@ -216,7 +216,7 @@ html {
     padding: 5px 0;
     position: absolute;
     z-index: 1;
-    bottom: 125%;
+    /* bottom: 125%; */
     left: 50%;
     margin-left: -60px;
     opacity: 0;
