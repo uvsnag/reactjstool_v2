@@ -420,3 +420,10 @@ img.flip  {
 .back-ground-dark30{
     background-color: #b3b3b3;
 }
+
+.dark-90 .sub-item.active{
+    background-color: #250909 !important;
+}
+.sub-item.active{
+    background-color: #f5ce85 !important;
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import './styleYoutSub.css';
 import _ from 'lodash';
 import { Sub } from './subtitle.jsx'
+import { useCookies } from 'react-cookie'
 
 let player;
 let interval;
@@ -20,6 +21,8 @@ let customLoopB = null;
 let intervalCusLoop;
 
 var arrTime = [];
+const urlCookieNm = 'lis-url';
+const subCookieNm = 'lis-sub';
 console.log("int..ed variables");
 const YoutubeSub = () => {
 
@@ -28,11 +31,16 @@ const YoutubeSub = () => {
     const [heightYt, setHeightYt] = useState(720);
     const [customLoopAs, setCustomLoopAs] = useState("");
     const [customLoopBs, setCustomLoopBs] = useState("");
-    const [size, setSize] = useState(390); 
-    const [height, setHeight] = useState(10); 
-    const [top, setTop] = useState(0); 
+    const [size, setSize] = useState(390);
+    const [height, setHeight] = useState(10);
+    const [top, setTop] = useState(0);
+
+    const [url, setUrl] = useState("");
+    const [sub, setSub] = useState("");
+
+
     const COLOR_NONE = "";
-    const COLOR_CURRENT_BACKGROUND = "#e2e2e2";
+    const COLOR_CURRENT_BACKGROUND = "#580e0e";
 
     const MODE_NOMAL = 'NOMAL';
     const MODE_FOCUS_SUB = 'FOCUS_SUB';
@@ -63,6 +71,11 @@ const YoutubeSub = () => {
     const SIZE_CUSTOM = 'custom';
 
     useEffect(() => {
+        if (!_.isEmpty(localStorage)) {
+            setUrl(localStorage.getItem(urlCookieNm));
+            setSub(localStorage.getItem(subCookieNm));
+        }
+
         if (!window.YT) { // If not, load the script asynchronously
             const tag = document.createElement('script');
             tag.src = 'https://www.youtube.com/iframe_api';
@@ -98,24 +111,33 @@ const YoutubeSub = () => {
             document.getElementById('subline-control').style.display = "block";
         }
     }, [arrSub]);
+
+    useEffect(() => {
+        localStorage.setItem(urlCookieNm, url);
+    }, [url]);
+
+    useEffect(() => {
+        localStorage.setItem(subCookieNm, sub);
+    }, [sub]);
+
     const handleSizeChange = (event) => {
         let valueSz = event.target.value;
         setSize(valueSz); // Set the size based on the slider value
         setHeight(10); // Set the size based on the slider value
         setTop(0); // Set the size based on the slider value
         setAttTop(0);
-        player.setSize(valueSz*1.7, valueSz);
+        player.setSize(valueSz * 1.7, valueSz);
     };
     const handleMaskMedia = (event) => {
         console.log(size)
         setHeight(event.target.value)
-        player.setSize(size*1.7, size*Number(event.target.value/10));
+        player.setSize(size * 1.7, size * Number(event.target.value / 10));
     };
     const handleTop = (event) => {
         let valueSz = event.target.value;
         setAttTop(valueSz);
     };
-    const setAttTop=(valueSz)=>{
+    const setAttTop = (valueSz) => {
         setTop(valueSz)
         const div = document.getElementById('main-content');
         div.style.top = `-${valueSz}px`
@@ -146,50 +168,52 @@ const YoutubeSub = () => {
                 let min = Math.floor(player.getCurrentTime() / 60);
                 let sec = Math.floor((player.getCurrentTime() % 60));
                 let hour = 0;
-                if(min>60){
-                    hour = Math.floor(min/60);
-                    min = Math.floor(min%60);
+                if (min > 60) {
+                    hour = Math.floor(min / 60);
+                    min = Math.floor(min % 60);
                 }
                 let mmss = sec > 9 ? `${min}:${sec}` : `${min}:0${sec}`;
-                if(hour>0){
+                if (hour > 0) {
                     mmss = `${hour}:${mmss}`
                 }
-
                 currentTime = currTime;
-                let currentSubEle = document.getElementById(`sub-item${mmss}`);
+                let currentSubEle = null;
                 let offsetOgr = document.getElementById(`sub-item0:00`);
-                if(!currentSubEle){
-                    
-                    // let time = ''
-                    // for(let i=0; i<arrTime.length; i++){
-                    //     let itemS = arrTime[i];
-                    //     if(itemS.length === mmss.length && itemS.substring(0, itemS.length-2) === itemS.substring(0, itemS.length-2)){
-                    //     if(Number(tmpArr[tmpArr.length-1]<Number(arrmmss[tmpArr.length-1]))){
-                    //         time = itemS;
-                    //     }else{
-                    //         if(time && time.length>0){
-                    //             // currentSubEle = document.getElementById(`sub-item${time}`);
-                    //             break;
-                    //             console.log(time)
-                    //             }
-                    //        }
-                    //     }
+                let arrTimeNums = arrTime.map(itm => {
+                    return {
+                        str: itm,
+                        num: Number(itm.replaceAll(":", ""))
+                    }
+                })
 
-                    // }
+
+
+                let currTm = Number(`${hour}${mmss}`.replaceAll(":", ""));
+                console.log(currTm)
+                for (let i = 0; i < arrTimeNums.length; i++) {
+                    if (currTm < arrTimeNums[i].num) {
+                        let oldClass = document.getElementById(`${oldClickClass}`)
+                        if (oldClass) {
+                            oldClass.classList.remove("active");
+                        }
+                        mmss = arrTimeNums[i >= 1 ? i - 1 : i].str;
+                        console.log(arrTimeNums[i > 1 ? i - 1 : i])
+                        console.log(mmss)
+                        currentSubEle = document.getElementById(`sub-item${mmss}`);
+                        currentSubEle.classList.add("active");
+                        oldClickClass = `sub-item${mmss}`;
+                        break;
+                    }
+
                 }
+
                 if (currentSubEle && offsetOgr) {
-                    currentSubEle.style.backgroundColor = COLOR_CURRENT_BACKGROUND;
                     let MINUS_TOP = _.isEqual(mode, MODE_FOCUS_SUB) ? -10 :
                         document.getElementById(`sub-control`).offsetHeight / 3;
                     let distanTop = (offsetOgr) ? offsetOgr.offsetTop : 0;
                     var scrollDiv = currentSubEle.offsetTop - distanTop - MINUS_TOP;
                     let subControl = document.getElementById('sub-control');
                     subControl.scrollTo({ top: (scrollDiv), behavior: 'smooth' });
-                    let oldClass = document.getElementById(`${oldClickClass}`)
-                    if (oldClass) {
-                        oldClass.style.backgroundColor = COLOR_NONE;
-                    }
-                    oldClickClass = `sub-item${mmss}`;
                 }
 
                 if (_.isEqual(customLoopMode, LOOP_NONE) && _.isEqual(currentTime, nextTime.toString()) && isReplay === true && modeReplay === REPLAY_YES) {
@@ -224,7 +248,7 @@ const YoutubeSub = () => {
             count++;
 
         });
-        
+
         setArrSub(arrTemp);
         if (!_.isEmpty(arrTemp)) {
             document.getElementById('load-sub').style.display = "none";
@@ -263,10 +287,10 @@ const YoutubeSub = () => {
     const removeLogo = () => {
         var icon = document.querySelectorAll(".ytp-player-content.ytp-iv-player-content");
         if (icon && icon[0]) {
-                icon[0].style.display = "none";
-            }
-         console.log(`document.querySelectorAll(".ytp-player-content.ytp-iv-player-content")[0].style.display="none"`);
-         navigator.clipboard.writeText(`document.querySelectorAll(".ytp-player-content.ytp-iv-player-content")[0].style.display="none"`);
+            icon[0].style.display = "none";
+        }
+        console.log(`document.querySelectorAll(".ytp-player-content.ytp-iv-player-content")[0].style.display="none"`);
+        navigator.clipboard.writeText(`document.querySelectorAll(".ytp-player-content.ytp-iv-player-content")[0].style.display="none"`);
     }
     const onChangeReplay = () => {
         isReplay = false;
@@ -347,7 +371,7 @@ const YoutubeSub = () => {
         }
     }
     const onStartStop = (e) => {
-        if(player.getVideoUrl()==="https://www.youtube.com/watch"){
+        if (player.getVideoUrl() === "https://www.youtube.com/watch") {
             onProcess();
         }
         if (player.getPlayerState() !== 1) {
@@ -363,20 +387,20 @@ const YoutubeSub = () => {
         let timemisus = document.getElementById('timemisus').value;
         player.seekTo(Number(currTime - Number(timemisus)), true);
     }
-    const next = ()=>{
+    const next = () => {
         let currTime = player.getCurrentTime();
         let timemisus = document.getElementById('timemisus').value;
         player.seekTo(Number(currTime + Number(timemisus)), true);
     }
-    const changeTime = ()=>{
+    const changeTime = () => {
         let timemisus = document.getElementById('timemisus').value;
-        if(timemisus == "1"){
+        if (timemisus == "1") {
             document.getElementById('timemisus').value = 2;
-        } else if(timemisus == "2"){
+        } else if (timemisus == "2") {
             document.getElementById('timemisus').value = 3;
-        }else if(timemisus == "3"){
+        } else if (timemisus == "3") {
             document.getElementById('timemisus').value = 1;
-        }else{
+        } else {
             document.getElementById('timemisus').value = 3;
         }
     }
@@ -401,7 +425,7 @@ const YoutubeSub = () => {
         if (e.key === 'Control') {
             onClearCusLoop()
         }
-        if(!Number.isNaN(Number(e.key))){
+        if (!Number.isNaN(Number(e.key))) {
             document.getElementById('timemisus').value = Number(e.key)
         }
     }
@@ -437,7 +461,7 @@ const YoutubeSub = () => {
         } else {
             customLoopB = player.getCurrentTime().toFixed(FIXED_VALUE);
             setCustomLoopBs(customLoopB);
-            if (isReplay === true && modeReplay === REPLAY_YES && customLoopA> 1 &&customLoopB >1) {
+            if (isReplay === true && modeReplay === REPLAY_YES && customLoopA > 1 && customLoopB > 1) {
                 let periodLoop = customLoopB - customLoopA
                 console.log(periodLoop)
                 player.seekTo(customLoopA, true)
@@ -454,7 +478,7 @@ const YoutubeSub = () => {
                             player.seekTo(customLoopA, true)
                         }
                     }
-                }, periodLoop*1000);
+                }, periodLoop * 1000);
             }
         }
     }
@@ -476,7 +500,7 @@ const YoutubeSub = () => {
         document.getElementById('hide2').style.display = "block";
     }
     const onHideAll = () => {
-        
+
         document.getElementById('hide1').style.display = "none";
         document.getElementById('hide2').style.display = "none";
     }
@@ -488,11 +512,11 @@ const YoutubeSub = () => {
                 break;
             case MODE_FOCUS_SUB:
                 document.getElementById(`sub-control`).style.height = '30px';
-                document.getElementById('vd-control').style.display = "none";
+                // document.getElementById('vd-control').style.display = "none";
                 break;
             case MODE_FOCUS_SUB2:
                 document.getElementById(`sub-control`).style.height = '100px';
-                document.getElementById('vd-control').style.display = "none";
+                // document.getElementById('vd-control').style.display = "none";
                 break;
             default:
                 console.log("Error: Not have data to set mode!");
@@ -504,18 +528,18 @@ const YoutubeSub = () => {
         const content = document.getElementById(id);
         content.classList.toggle('open'); // Add or remove the 'open' class
     }
-    function collapseMobile(){
-        toggleCollapse("mobile-control") 
+    function collapseMobile() {
+        toggleCollapse("mobile-control")
     }
-    function collapsecontrol(){
-        toggleCollapse("hide2") 
+    function collapsecontrol() {
+        toggleCollapse("hide2")
     }
-    function collapseControlFrame(){
-        toggleCollapse("hide-control-frame") 
+    function collapseControlFrame() {
+        toggleCollapse("hide-control-frame")
     }
     return (
-        <div className="" id ="main-content">
-            <div  class="sidebar-cus">
+        <div className="" id="main-content">
+            <div class="sidebar-cus">
                 <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
                 <span onClick={() => collapseControlFrame()}>+/-</span>
                 <div id="hide-control-frame" class="collapse-content">
@@ -525,84 +549,89 @@ const YoutubeSub = () => {
                 </div>
 
             </div>
-        <div id="maincontent-yt" className='media-left '>
-            <div id='vd-control'>
-               
-                {/* <div className="mask-media"></div> */}
-                <div id="player"></div><br />
-                    
+            <div id="maincontent-yt" className='media-left '>
+                <div id='vd-control'>
+
+                    {/* <div className="mask-media"></div> */}
+                    <div id="player"></div><br />
+
                 </div>
-                <div onClick={() => collapseMobile()}>Mobile</div> 
+                <div onClick={() => collapseMobile()}>Mobile</div>
                 <div id="mobile-control" className="collapse-content ">
                     <input type='submit' className="margin-zr" value="<" onClick={() => previous()} />
                     <input type='submit' className=" margin-zr" value="||" onClick={() => onStartStop()} />
-                    <input type='submit' className=" margin-zr" value=">" onClick={() =>  next()} /><br />
-                    <input type='submit' className="button-12 margin-zr"  value="Change times" onClick={() => changeTime()} />
+                    <input type='submit' className=" margin-zr" value=">" onClick={() => next()} /><br />
+                    <input type='submit' className="button-12 margin-zr" value="Change times" onClick={() => changeTime()} />
                 </div>
                 <div onClick={() => collapsecontrol()}>Control</div>
                 <div id="hide2" class="collapse-content">
-                <div id='cus-loop-control'>
-                    <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
-                    <input type='submit' className=" margin-zr" value="Add point" onClick={() => onAddPoint()} />
-                    <input type='submit' className=" margin-zr" value="clear" onClick={() => onClearCusLoop()} />
-                </div>
-                <div id="hide1">
-                    <input type="text" id="txtSrcMedia" onKeyDown={e => handleKeyDown(e)} />
-                    <input type='submit' className="button-12 margin-zr" value="Load" id='btnExecute' onClick={() => onProcess()} />
-                    <input type='submit' className="button-12 margin-zr" value="Remove Info"  onClick={() => removeLogo()} />
-                </div>
-            
-                {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
-                <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
-                <div class="tooltip">???
-                    <span class="tooltiptext">
-                        arrow , and Crtl: clear/ shift: loop
-                        </span>
-                </div>
-           
-                <div id='subline-control'>
-                    <select onChange={(e) => {
-                        onChangeMode(e.target.value)
-                    }}>
-                        <option value={MODE_NOMAL}>Nomal</option>
-                        <option value={MODE_FOCUS_SUB}>Focus</option>
-                        <option value={MODE_FOCUS_SUB2}>Focus2</option>
-                    </select>
-                    <select onChange={(e) => {
-                        modeReplay = e.target.value;
-                    }}>
-                        <option value={REPLAY_YES}>REPLAY_YES</option>
-                        <option value={REPLAY_NO}>REPLAY_NO</option>
-                    </select>
-                    <input type='submit' value="Continue" onClick={() => onChangeReplay()} />
-
-                    <input className="width-30"  placeholder="control-form"  onKeyDown={e => onControlKeyListen(e)}/>
-                    <input type='submit' value="<<" onClick={() => onPrevLine()} />
-                    <input type='submit' value=">>" onClick={() => onNextLine()} />
-                    <div id='sub-control' >
-                        {arrSub.map((item, index) => <LineSub key={`${item.time}${item.value}`}
-                            time={item.time}
-                            value={item.value}
-                        />)}
+                    <div id='cus-loop-control'>
+                        <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
+                        <input type='submit' className=" margin-zr" value="Add point" onClick={() => onAddPoint()} />
+                        <input type='submit' className=" margin-zr" value="clear" onClick={() => onClearCusLoop()} />
                     </div>
-                    <input type='submit' value="+/-" onClick={() => onShowHide()} />
-                </div>
-                  
-                <div className='option-right'> <br />
-                </div>
-                <div id='load-sub'>
+                    <div id="hide1">
+                        <input type="text" id="txtSrcMedia" value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
+                            setUrl(event.target.value);
+                        }} />
+                        <input type='submit' className="button-12 margin-zr" value="Load" id='btnExecute' onClick={() => onProcess()} />
+                        <input type='submit' className="button-12 margin-zr" value="Remove Info" onClick={() => removeLogo()} />
+                    </div>
 
-                    <input type='submit' className="button-12 margin-zr" value="loadSub" id='btnLoadSube' onClick={() => loadSub()} /><br />
-                    <textarea id='media-sub'></textarea>
-                </div>
+                    {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
+                    <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
+                    <div class="tooltip">???
+                        <span class="tooltiptext">
+                            arrow , and Crtl: clear/ shift: loop
+                        </span>
+                    </div>
 
-                <br />
-            <input type='submit' value="H" id='btnHide' onClick={() => onHideAll()} />
-            <input type='submit' value="S" id='btnShow' onClick={() => onShowAll()} />
-            
+                    <div id='subline-control'>
+                        <select onChange={(e) => {
+                            onChangeMode(e.target.value)
+                        }}>
+                            <option value={MODE_NOMAL}>Nomal</option>
+                            <option value={MODE_FOCUS_SUB}>Focus</option>
+                            <option value={MODE_FOCUS_SUB2}>Focus2</option>
+                        </select>
+                        <select onChange={(e) => {
+                            modeReplay = e.target.value;
+                        }}>
+                            <option value={REPLAY_YES}>REPLAY_YES</option>
+                            <option value={REPLAY_NO}>REPLAY_NO</option>
+                        </select>
+                        <input type='submit' value="Continue" onClick={() => onChangeReplay()} />
+
+                        <input className="width-30" placeholder="control-form" onKeyDown={e => onControlKeyListen(e)} />
+                        <input type='submit' value="<<" onClick={() => onPrevLine()} />
+                        <input type='submit' value=">>" onClick={() => onNextLine()} />
+                        <div id='sub-control' >
+                            {arrSub.map((item, index) => <LineSub key={`${item.time}${item.value}`}
+                                time={item.time}
+                                value={item.value}
+                            />)}
+                        </div>
+                        <input type='submit' value="+/-" onClick={() => onShowHide()} />
+                    </div>
+
+                    <div className='option-right'> <br />
+                    </div>
+                    <div id='load-sub'>
+
+                        <input type='submit' className="button-12 margin-zr" value="loadSub" id='btnLoadSube' onClick={() => loadSub()} /><br />
+                        <textarea id='media-sub' value={sub} onChange={(event) => {
+                            setSub(event.target.value);
+                        }}
+                        ></textarea>
+                    </div>
+
+                    <br />
+                    <input type='submit' value="H" id='btnHide' onClick={() => onHideAll()} />
+                    <input type='submit' value="S" id='btnShow' onClick={() => onShowAll()} />
+
+                </div>
             </div>
-        </div>
-        <div className=" height1000"></div>
+            <div className=" height1000"></div>
         </div>
     )
 
