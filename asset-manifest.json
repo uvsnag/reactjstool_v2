@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/reactjstool_v2/static/css/main.4b411eed.chunk.css",
-    "main.js": "/reactjstool_v2/static/js/main.65edf599.chunk.js",
-    "main.js.map": "/reactjstool_v2/static/js/main.65edf599.chunk.js.map",
+    "main.css": "/reactjstool_v2/static/css/main.e505389f.chunk.css",
+    "main.js": "/reactjstool_v2/static/js/main.5dd74490.chunk.js",
+    "main.js.map": "/reactjstool_v2/static/js/main.5dd74490.chunk.js.map",
     "runtime-main.js": "/reactjstool_v2/static/js/runtime-main.3c637643.js",
     "runtime-main.js.map": "/reactjstool_v2/static/js/runtime-main.3c637643.js.map",
-    "static/js/2.44632965.chunk.js": "/reactjstool_v2/static/js/2.44632965.chunk.js",
-    "static/js/2.44632965.chunk.js.map": "/reactjstool_v2/static/js/2.44632965.chunk.js.map",
+    "static/js/2.9c1c7d5b.chunk.js": "/reactjstool_v2/static/js/2.9c1c7d5b.chunk.js",
+    "static/js/2.9c1c7d5b.chunk.js.map": "/reactjstool_v2/static/js/2.9c1c7d5b.chunk.js.map",
     "static/js/3.c33bf1a8.chunk.js": "/reactjstool_v2/static/js/3.c33bf1a8.chunk.js",
     "static/js/3.c33bf1a8.chunk.js.map": "/reactjstool_v2/static/js/3.c33bf1a8.chunk.js.map",
     "index.html": "/reactjstool_v2/index.html",
-    "static/css/main.4b411eed.chunk.css.map": "/reactjstool_v2/static/css/main.4b411eed.chunk.css.map",
-    "static/js/2.44632965.chunk.js.LICENSE.txt": "/reactjstool_v2/static/js/2.44632965.chunk.js.LICENSE.txt"
+    "static/css/main.e505389f.chunk.css.map": "/reactjstool_v2/static/css/main.e505389f.chunk.css.map",
+    "static/js/2.9c1c7d5b.chunk.js.LICENSE.txt": "/reactjstool_v2/static/js/2.9c1c7d5b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.3c637643.js",
-    "static/js/2.44632965.chunk.js",
-    "static/css/main.4b411eed.chunk.css",
-    "static/js/main.65edf599.chunk.js"
+    "static/js/2.9c1c7d5b.chunk.js",
+    "static/css/main.e505389f.chunk.css",
+    "static/js/main.5dd74490.chunk.js"
   ]
 }
