@@ -550,36 +550,37 @@ const YoutubeSub = () => {
 
             </div>
             <div id="maincontent-yt" className='media-left '>
+        
                 <div id='vd-control'>
 
                     {/* <div className="mask-media"></div> */}
                     <div id="player"></div><br />
 
                 </div>
-                <div onClick={() => collapseMobile()}>Mobile</div>
+                <div onClick={() => collapseMobile()}>Control</div>
                 <div id="mobile-control" className="collapse-content ">
                     <input type='submit' className="margin-zr" value="<" onClick={() => previous()} />
                     <input type='submit' className=" margin-zr" value="||" onClick={() => onStartStop()} />
                     <input type='submit' className=" margin-zr" value=">" onClick={() => next()} /><br />
                     <input type='submit' className="button-12 margin-zr" value="Change times" onClick={() => changeTime()} />
+                    <input type='submit' className=" margin-zr" value="Add point" onClick={() => onAddPoint()} />
+                    <input type='submit' className=" margin-zr" value="clear" onClick={() => onClearCusLoop()} />
+                    <input type='submit' className="button-12 margin-zr" value="Remove Info" onClick={() => removeLogo()} />
+                    <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
+                    <input type="text" id="txtSrcMedia" value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
+                        setUrl(event.target.value);
+                    }} />
+                    <input type='submit' className="button-12 margin-zr" value="Load" id='btnExecute' onClick={() => onProcess()} />
                 </div>
-                <div onClick={() => collapsecontrol()}>Control</div>
+                <div onClick={() => collapsecontrol()}>Sub</div>
                 <div id="hide2" class="collapse-content">
                     <div id='cus-loop-control'>
                         <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
-                        <input type='submit' className=" margin-zr" value="Add point" onClick={() => onAddPoint()} />
-                        <input type='submit' className=" margin-zr" value="clear" onClick={() => onClearCusLoop()} />
+                      
                     </div>
                     <div id="hide1">
-                        <input type="text" id="txtSrcMedia" value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
-                            setUrl(event.target.value);
-                        }} />
-                        <input type='submit' className="button-12 margin-zr" value="Load" id='btnExecute' onClick={() => onProcess()} />
-                        <input type='submit' className="button-12 margin-zr" value="Remove Info" onClick={() => removeLogo()} />
                     </div>
-
                     {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
-                    <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
                     <div class="tooltip">???
                         <span class="tooltiptext">
                             arrow , and Crtl: clear/ shift: loop

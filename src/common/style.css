@@ -386,7 +386,7 @@ img.flip  {
     /* width: 100%; */
 }
 #mobile-control{
-    height: 100px;
+    height: 200px;
 }
 .dark-90{
     background-color: #2a2929;
@@ -422,7 +422,10 @@ img.flip  {
 }
 
 .dark-90 .sub-item.active{
-    background-color: #250909 !important;
+    background-color: #a6a6a6 !important;
+}
+.dark-90 .sub-item.active{
+    color: #0c0202 !important;
 }
 .sub-item.active{
     background-color: #f5ce85 !important;
