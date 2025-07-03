@@ -21,7 +21,7 @@ báo lỗi ở lib nào thì xóa khai báo trong file package.json rồi instal
 ============ clean cache=========
 npm cache clean --force
 
-
+   
 
 # deploy.
 
