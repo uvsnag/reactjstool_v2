@@ -115,36 +115,38 @@ const YoutubeSub = () => {
     useEffect(() => {
         localStorage.setItem(urlCookieNm, url);
     }, [url]);
-    // useEffect(() => {
-    //     if (customLoopAs) {
-    //         customLoopAVal = customLoopAs;
-    //         clearInterval(intervalCusLoop);
-    //         createInteval();
-    //     }
-    // }, [customLoopAs]);
-
-    // useEffect(() => {
-    //     if (customLoopBs) {
-    //         customLoopBVal = customLoopBs;
-    //         clearInterval(intervalCusLoop);
-    //         createInteval();
-    //     }
-    // }, [customLoopBs]);
 
     const handleBlurA = () => {
         if (customLoopAs) {
-            customLoopAVal = customLoopAs;
+            customLoopAVal = Number(customLoopAs);
             clearInterval(intervalCusLoop);
             createInteval();
         }
     };
     const handleBlurB = () => {
          if (customLoopBs) {
-            customLoopBVal = customLoopBs;
+            customLoopBVal = Number(customLoopBs);
             clearInterval(intervalCusLoop);
             createInteval();
         }
     };
+
+    const changeTimeLoop = (isStart, isCre) => {
+        const SECOND_UNIT = 0.1;
+        if (isStart) {
+            let value = (Number(customLoopAs) + (isCre ? (SECOND_UNIT) : (-SECOND_UNIT))).toFixed(FIXED_VALUE);
+            setCustomLoopAs(value);
+            clearInterval(intervalCusLoop);
+            customLoopAVal = value;
+            createInteval();
+        } else {
+            let value = (Number(customLoopBs) + (isCre ? (SECOND_UNIT) : (-SECOND_UNIT))).toFixed(FIXED_VALUE);
+            setCustomLoopBs(value);
+             clearInterval(intervalCusLoop);
+            customLoopBVal = value;
+            createInteval();
+        }
+    }
 
 
     useEffect(() => {
@@ -494,23 +496,6 @@ const YoutubeSub = () => {
             setCustomLoopBs(customLoopBVal);
             if (isReplay === true && modeReplay === REPLAY_YES && customLoopAVal > 1 && customLoopBVal > 1) {
                 createInteval();
-                // let periodLoop = customLoopBVal - customLoopAVal
-                // console.log(periodLoop)
-                // player.seekTo(customLoopAVal, true)
-                // intervalCusLoop = setInterval(() => {
-                //     if (customLoopAVal == NOT_VALUE_TIME || customLoopBVal == NOT_VALUE_TIME) {
-                //         clearInterval(intervalCusLoop);
-                //         return
-                //     }
-                //     console.log('loop')
-                //     if (_.isEqual(customLoopMode, LOOP_CUSTOM)) {
-                //         // let cusCurrentTime = player.getCurrentTime().toFixed(FIXED_VALUE);
-                //         if (isReplay === true && modeReplay === REPLAY_YES) {
-                //             console.log("replay at:" + customLoopAVal);
-                //             player.seekTo(customLoopAVal, true)
-                //         }
-                //     }
-                // }, periodLoop * 1000);
             }
         }
     }
@@ -631,14 +616,18 @@ const YoutubeSub = () => {
                         {/* <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div> */}
                         
                         <input type="text" value={customLoopAs} onChange={(event) => {
-                            setCustomLoopAs(Number(event.target.value));
+                            setCustomLoopAs(event.target.value);
                         }} 
                          onBlur={handleBlurA}/>
+                        <input type='submit' value="^" onClick={() => changeTimeLoop(true,true)} />
+                        <input type='submit' value="v" onClick={() => changeTimeLoop(true,false)} />
                         <span>-</span>
                         <input type="text" value={customLoopBs} onChange={(event) => {
-                            setCustomLoopBs(Number(event.target.value));
+                            setCustomLoopBs(event.target.value);
                         }} 
                         onBlur={handleBlurB}/>
+                        <input type='submit' value="^" onClick={() => changeTimeLoop(false,true)} />
+                        <input type='submit' value="v" onClick={() => changeTimeLoop(false,false)} />
                       
                     </div>
                     <div id="hide1">
