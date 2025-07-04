@@ -16,8 +16,8 @@ let mode = '';
 let indexOfCurrSub = 0;
 
 let customLoopMode = null;
-let customLoopA = null;
-let customLoopB = null;
+let customLoopAVal = null;
+let customLoopBVal = null;
 let intervalCusLoop;
 
 var arrTime = [];
@@ -94,8 +94,8 @@ const YoutubeSub = () => {
         document.getElementById(`timemisus`).value = 2;
         mode = MODE_NOMAL;
         customLoopMode = LOOP_CUSTOM;
-        customLoopA = NOT_VALUE_TIME;
-        customLoopB = NOT_VALUE_TIME;
+        customLoopAVal = NOT_VALUE_TIME;
+        customLoopBVal = NOT_VALUE_TIME;
         modeReplay = REPLAY_YES;
         return () => {
             clearInterval(interval);
@@ -115,6 +115,37 @@ const YoutubeSub = () => {
     useEffect(() => {
         localStorage.setItem(urlCookieNm, url);
     }, [url]);
+    // useEffect(() => {
+    //     if (customLoopAs) {
+    //         customLoopAVal = customLoopAs;
+    //         clearInterval(intervalCusLoop);
+    //         createInteval();
+    //     }
+    // }, [customLoopAs]);
+
+    // useEffect(() => {
+    //     if (customLoopBs) {
+    //         customLoopBVal = customLoopBs;
+    //         clearInterval(intervalCusLoop);
+    //         createInteval();
+    //     }
+    // }, [customLoopBs]);
+
+    const handleBlurA = () => {
+        if (customLoopAs) {
+            customLoopAVal = customLoopAs;
+            clearInterval(intervalCusLoop);
+            createInteval();
+        }
+    };
+    const handleBlurB = () => {
+         if (customLoopBs) {
+            customLoopBVal = customLoopBs;
+            clearInterval(intervalCusLoop);
+            createInteval();
+        }
+    };
+
 
     useEffect(() => {
         localStorage.setItem(subCookieNm, sub);
@@ -443,45 +474,67 @@ const YoutubeSub = () => {
     }
 
     const onClearCusLoop = () => {
-        customLoopA = NOT_VALUE_TIME;
-        customLoopB = NOT_VALUE_TIME;
+        customLoopAVal = NOT_VALUE_TIME;
+        customLoopBVal = NOT_VALUE_TIME;
         setCustomLoopAs("");
         setCustomLoopBs("");
     }
     const onAddPoint = () => {
-        if (customLoopA !== NOT_VALUE_TIME && customLoopB !== NOT_VALUE_TIME) {
+        if (customLoopAVal !== NOT_VALUE_TIME && customLoopBVal !== NOT_VALUE_TIME) {
             onClearCusLoop();
         }
 
-        if (customLoopA === NOT_VALUE_TIME) {
-            customLoopA = player.getCurrentTime().toFixed(FIXED_VALUE);
-            setCustomLoopAs(customLoopA);
+        if (customLoopAVal === NOT_VALUE_TIME) {
+            customLoopAVal = player.getCurrentTime().toFixed(FIXED_VALUE);
+            setCustomLoopAs(customLoopAVal);
             console.log("destroy intervalCusLoop:" + intervalCusLoop);
             clearInterval(intervalCusLoop);
         } else {
-            customLoopB = player.getCurrentTime().toFixed(FIXED_VALUE);
-            setCustomLoopBs(customLoopB);
-            if (isReplay === true && modeReplay === REPLAY_YES && customLoopA > 1 && customLoopB > 1) {
-                let periodLoop = customLoopB - customLoopA
-                console.log(periodLoop)
-                player.seekTo(customLoopA, true)
-                intervalCusLoop = setInterval(() => {
-                    if (customLoopA == NOT_VALUE_TIME || customLoopB == NOT_VALUE_TIME) {
-                        clearInterval(intervalCusLoop);
-                        return
-                    }
-                    console.log('loop')
-                    if (_.isEqual(customLoopMode, LOOP_CUSTOM)) {
-                        // let cusCurrentTime = player.getCurrentTime().toFixed(FIXED_VALUE);
-                        if (isReplay === true && modeReplay === REPLAY_YES) {
-                            console.log("replay at:" + customLoopA);
-                            player.seekTo(customLoopA, true)
-                        }
-                    }
-                }, periodLoop * 1000);
+            customLoopBVal = player.getCurrentTime().toFixed(FIXED_VALUE);
+            setCustomLoopBs(customLoopBVal);
+            if (isReplay === true && modeReplay === REPLAY_YES && customLoopAVal > 1 && customLoopBVal > 1) {
+                createInteval();
+                // let periodLoop = customLoopBVal - customLoopAVal
+                // console.log(periodLoop)
+                // player.seekTo(customLoopAVal, true)
+                // intervalCusLoop = setInterval(() => {
+                //     if (customLoopAVal == NOT_VALUE_TIME || customLoopBVal == NOT_VALUE_TIME) {
+                //         clearInterval(intervalCusLoop);
+                //         return
+                //     }
+                //     console.log('loop')
+                //     if (_.isEqual(customLoopMode, LOOP_CUSTOM)) {
+                //         // let cusCurrentTime = player.getCurrentTime().toFixed(FIXED_VALUE);
+                //         if (isReplay === true && modeReplay === REPLAY_YES) {
+                //             console.log("replay at:" + customLoopAVal);
+                //             player.seekTo(customLoopAVal, true)
+                //         }
+                //     }
+                // }, periodLoop * 1000);
             }
         }
     }
+
+    const createInteval = () => {
+        let periodLoop = customLoopBVal - customLoopAVal
+        // console.log(periodLoop)
+        player.seekTo(customLoopAVal, true)
+        intervalCusLoop = setInterval(() => {
+            if (customLoopAVal == NOT_VALUE_TIME || customLoopBVal == NOT_VALUE_TIME) {
+                clearInterval(intervalCusLoop);
+                return
+            }
+            // console.log('loop')
+            if (_.isEqual(customLoopMode, LOOP_CUSTOM)) {
+                // let cusCurrentTime = player.getCurrentTime().toFixed(FIXED_VALUE);
+                if (isReplay === true && modeReplay === REPLAY_YES) {
+                    console.log("replay at:" + customLoopAVal);
+                    player.seekTo(customLoopAVal, true)
+                }
+            }
+        }, periodLoop * 1000);
+    }
+
     const onChangeLoop = () => {
         onClearCusLoop();
         customLoopMode = (customLoopMode === LOOP_CUSTOM) ? LOOP_NONE : LOOP_CUSTOM;
@@ -575,7 +628,17 @@ const YoutubeSub = () => {
                 <div onClick={() => collapsecontrol()}>Sub</div>
                 <div id="hide2" class="collapse-content">
                     <div id='cus-loop-control'>
-                        <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div>
+                        {/* <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div> */}
+                        
+                        <input type="text" value={customLoopAs} onChange={(event) => {
+                            setCustomLoopAs(Number(event.target.value));
+                        }} 
+                         onBlur={handleBlurA}/>
+                        <span>-</span>
+                        <input type="text" value={customLoopBs} onChange={(event) => {
+                            setCustomLoopBs(Number(event.target.value));
+                        }} 
+                        onBlur={handleBlurB}/>
                       
                     </div>
                     <div id="hide1">
