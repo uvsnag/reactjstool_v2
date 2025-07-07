@@ -597,18 +597,20 @@ const YoutubeSub = () => {
                 </div>
                 <div onClick={() => collapseMobile()}>Control</div>
                 <div id="mobile-control" className="collapse-content ">
-                    <input type='submit' className="margin-zr" value="<" onClick={() => previous()} />
-                    <input type='submit' className=" margin-zr" value="||" onClick={() => onStartStop()} />
-                    <input type='submit' className=" margin-zr" value=">" onClick={() => next()} /><br />
-                    <input type='submit' className="button-12 margin-zr" value="Change times" onClick={() => changeTime()} />
-                    <input type='submit' className=" margin-zr" value="Add point" onClick={() => onAddPoint()} />
-                    <input type='submit' className=" margin-zr" value="clear" onClick={() => onClearCusLoop()} />
-                    <input type='submit' className="button-12 margin-zr" value="Remove Info" onClick={() => removeLogo()} />
-                    <input type='submit' className="button-12 margin-zr" value="+/-" onClick={() => onShowHideVideo()} />
-                    <input type="text" id="txtSrcMedia" value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
+                    <input type="text" id="txtSrcMedia"  value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
                         setUrl(event.target.value);
                     }} />
-                    <input type='submit' className="button-12 margin-zr" value="Load" id='btnExecute' onClick={() => onProcess()} />
+                    <input type='submit' className="button-12 inline" value="Load" id='btnExecute' onClick={() => onProcess()} />
+                    <input type='submit' className="button-12 inline" value="Remove Info" onClick={() => removeLogo()} />
+                    <input type='submit' className="button-12 inline" value="+/-" onClick={() => onShowHideVideo()} /><br/>
+                    
+                    <input type='submit' className='button-12 inline' value="<" onClick={() => previous()} />
+                    <input type='submit' className='button-12 inline' value="||" onClick={() => onStartStop()} />
+                    <input type='submit' className='button-12 inline' value=">" onClick={() => next()} />
+                    <input type='submit' className="button-12 inline" value="Change times" onClick={() => changeTime()} /><br/>
+
+                    <input type='submit' className='button-12 inline' value="Add point" onClick={() => onAddPoint()} />
+                    <input type='submit' className='button-12 inline' value="clear" onClick={() => onClearCusLoop()} />
                 </div>
                 <div onClick={() => collapsecontrol()}>Sub</div>
                 <div id="hide2" class="collapse-content">
@@ -619,15 +621,15 @@ const YoutubeSub = () => {
                             setCustomLoopAs(event.target.value);
                         }} 
                          onBlur={handleBlurA}/>
-                        <input type='submit' value="^" onClick={() => changeTimeLoop(true,true)} />
-                        <input type='submit' value="v" onClick={() => changeTimeLoop(true,false)} />
+                        <input type='submit' className='button-12 inline' value="^" onClick={() => changeTimeLoop(true,true)} />
+                        <input type='submit' className='button-12 inline' value="v" onClick={() => changeTimeLoop(true,false)} />
                         <span>-</span>
                         <input type="text" value={customLoopBs} onChange={(event) => {
                             setCustomLoopBs(event.target.value);
                         }} 
                         onBlur={handleBlurB}/>
-                        <input type='submit' value="^" onClick={() => changeTimeLoop(false,true)} />
-                        <input type='submit' value="v" onClick={() => changeTimeLoop(false,false)} />
+                        <input type='submit' className='button-12 inline' value="^" onClick={() => changeTimeLoop(false,true)} />
+                        <input type='submit' className='button-12 inline' value="v" onClick={() => changeTimeLoop(false,false)} />
                       
                     </div>
                     <div id="hide1">
