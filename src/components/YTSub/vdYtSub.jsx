@@ -576,23 +576,24 @@ const YoutubeSub = () => {
         toggleCollapse("hide-control-frame")
     }
     return (
-        <div className="" id="main-content">
-            <div class="sidebar-cus">
-                <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
-                <span onClick={() => collapseControlFrame()}>+/-</span>
-                <div id="hide-control-frame" class="collapse-content">
-                    <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
-                    <input type="range" className="range-input" id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
-                    <input type="range" className="range-input" id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
-                </div>
-
-            </div>
+        <div className="yt-sub" id="main-content"  tabIndex={0} onKeyDown={e => onControlKey(e)} >
             <div id="maincontent-yt" className='media-left '>
         
                 <div id='vd-control'>
 
                     {/* <div className="mask-media"></div> */}
                     <div id="player"></div><br />
+
+                </div>
+                {/* <div class="sidebar-cus"> */}
+                <div>
+                    <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
+                    <span onClick={() => collapseControlFrame()}>+/-</span>
+                    <div id="hide-control-frame" class="collapse-content">
+                        <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
+                        <input type="range" className="range-input" id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
+                        <input type="range" className="range-input" id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
+                    </div>
 
                 </div>
                 <div onClick={() => collapseMobile()}>Control</div>

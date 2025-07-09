@@ -52,12 +52,12 @@ const PractWords = (props) => {
     useEffect(() => {
 
         arrLineTemp = [];
-        onChangeQuestion()
+        onChangeQuestion(true)
     }, [props.items]);
 
     useEffect(() => {
         if (props.isLoadQuestion) {
-            onChangeQuestion();
+            onChangeQuestion(true);
         }
 
         inputAns.current.focus()
@@ -65,13 +65,13 @@ const PractWords = (props) => {
     }, [props.isLoadQuestion]);
    
 
-    const onChangeQuestion = () => {
+    const onChangeQuestion = (isInit=false) => {
         let randomAns = new Set();
         isCheckedRevert = document.getElementById("revertAsw").checked;
         
         if (!_.isEmpty(props.items)) {
             let item = null;
-            let arrTemp = _.isEmpty(arrLineTemp) ? _.cloneDeep(props.items) : _.cloneDeep(arrLineTemp);
+            let arrTemp = (_.isEmpty(arrLineTemp)|| isInit )? _.cloneDeep(props.items) : _.cloneDeep(arrLineTemp);
             let fullanswers = _.cloneDeep(props.items)
             if (props.oderRandom === 'random') {
                 const validOptions = arrTemp.filter(item => item.eng !== lastEngVar);
@@ -162,7 +162,6 @@ const PractWords = (props) => {
         }
     };
     const handleKeyDown = (e) => {
-        console.log(e.key)
         if (e.key === 'ArrowUp') {
             processRecord();
         }

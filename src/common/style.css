@@ -430,3 +430,7 @@ img.flip  {
 .sub-item.active{
     background-color: #f5ce85 !important;
 }
+.yt-sub,
+.yt-sub input{
+    font-family: 'Courier New', Courier, monospace;
+}
