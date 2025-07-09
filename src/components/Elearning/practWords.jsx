@@ -132,7 +132,8 @@ const PractWords = (props) => {
             ans = document.getElementById('combo-answer').value
         }
         if (!_.isNull(ans) && !_.isNull(answer)) {
-            var answ = answer.replaceAll('.', '');
+            // var answ = answer.replaceAll('.', '');
+            var answ = answer
             if (ans.trim().toUpperCase() === answ.toUpperCase().trim()) {
                 /* setErrorMs('correct!'); */
                 document.getElementById('answer').value = "";
