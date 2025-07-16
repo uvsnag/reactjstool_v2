@@ -11,6 +11,7 @@ import NotifyAuto from './components/Elearning/notifyAuto.jsx'
 import ListenPract from './components/Elearning/listenPract.jsx'
 import ListenTensPract from './components/Elearning/listenTensPract.jsx'
 import YoutubeSub from './components/YTSub/vdYtSub'
+import NextSentence from './components/Elearning/next-sent.jsx'
 import ImageGridGenerator from './components/yout_tools/ImageGridGenerator.jsx'
 import ScreenCapture from './components/yout_tools/ScreenCapture.jsx'
 import SpeechRecogn from './components/recognize_text/recognizeText'
@@ -46,6 +47,7 @@ ReactDOM.render(
          <Route path="/listen" element={<ListenPract/>} />
          <Route path="/listenTens" element={<ListenTensPract/>} />
          <Route path="/youtube-sub" element={<YoutubeSub/>} />
+         <Route path="/next-sent" element={<NextSentence/>} />
          <Route path="/voiceToText" element={<SpeechRecogn/>} />
          <Route path="/sqlcompile" element={<SqlCompile/>} />
          <Route path="/ImageGridGenerator" element={<ImageGridGenerator/>} />

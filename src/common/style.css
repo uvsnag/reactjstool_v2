@@ -434,3 +434,12 @@ img.flip  {
 .yt-sub input{
     font-family: 'Courier New', Courier, monospace;
 }
+
+#sentence-text{
+    height: 400px;
+    width: 100%;
+}
+
+.full-with{
+    width: 100%;
+}
