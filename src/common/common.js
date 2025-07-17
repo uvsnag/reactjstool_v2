@@ -90,3 +90,12 @@ export const setCharAt = (str,index,chr) => {
     if(index > str.length-1) return str;
     return str.substring(0,index) + chr + str.substring(index+1);
 }
+
+export function toggleCollapse(id) {
+    const content = document.getElementById(id);
+    content.classList.toggle('open'); // Add or remove the 'open' class
+}
+export const copyContent = (nm) => {
+    let val = document.getElementById(nm).value
+    navigator.clipboard.writeText(val);
+};

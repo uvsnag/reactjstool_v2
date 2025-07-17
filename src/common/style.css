@@ -450,3 +450,8 @@ img.flip  {
 .height-2lines{
     height: 70px;
 }
+
+.ai-session{
+    height: 800px;
+    width: 90%;
+}

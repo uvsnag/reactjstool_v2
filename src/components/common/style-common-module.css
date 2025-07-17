@@ -1,0 +1,30 @@
+.response-ai{
+    height: 400px;
+    /* width: 100%; */
+    overflow-y: scroll;
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    background: #fffcfc;
+    font-size: 11px;
+}
+.ai-promt {
+    border-radius: 5px;
+    width: 70%;
+}
+
+.container-block {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.block {
+  width: 50vw; /* half of screen width */
+  /* height: 200px;   */
+  box-sizing: border-box;
+  border: 1px solid #333;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* font-weight: bold; */
+}

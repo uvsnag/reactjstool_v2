@@ -3,7 +3,7 @@ import './styleYoutSub.css';
 import _ from 'lodash';
 import { Sub } from './subtitle.jsx'
 import { useCookies } from 'react-cookie'
-
+import { toggleCollapse } from '../../common/common.js';
 let player;
 let interval;
 let currentTime;
@@ -562,19 +562,6 @@ const YoutubeSub = () => {
         }
 
     }
-    function toggleCollapse(id) {
-        const content = document.getElementById(id);
-        content.classList.toggle('open'); // Add or remove the 'open' class
-    }
-    function collapseMobile() {
-        toggleCollapse("mobile-control")
-    }
-    function collapsecontrol() {
-        toggleCollapse("hide2")
-    }
-    function collapseControlFrame() {
-        toggleCollapse("hide-control-frame")
-    }
     return (
         <div className="yt-sub" id="main-content"  tabIndex={0} onKeyDown={e => onControlKey(e)} >
             <div id="maincontent-yt" className='media-left '>
@@ -588,7 +575,7 @@ const YoutubeSub = () => {
                 {/* <div class="sidebar-cus"> */}
                 <div>
                     <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
-                    <span onClick={() => collapseControlFrame()}>+/-</span>
+                    <span onClick={() => toggleCollapse("hide-control-frame")}>+/-</span>
                     <div id="hide-control-frame" class="collapse-content">
                         <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
                         <input type="range" className="range-input" id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
@@ -596,7 +583,7 @@ const YoutubeSub = () => {
                     </div>
 
                 </div>
-                <div onClick={() => collapseMobile()}>Control</div>
+                <div onClick={() => toggleCollapse("mobile-control")}>Control</div>
                 <div id="mobile-control" className="collapse-content ">
                     <input type="text" id="txtSrcMedia"  value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
                         setUrl(event.target.value);
@@ -613,7 +600,7 @@ const YoutubeSub = () => {
                     <input type='submit' className='button-12 inline' value="Add point" onClick={() => onAddPoint()} />
                     <input type='submit' className='button-12 inline' value="clear" onClick={() => onClearCusLoop()} />
                 </div>
-                <div onClick={() => collapsecontrol()}>Sub</div>
+                <div onClick={() => toggleCollapse("hide2")}>Sub</div>
                 <div id="hide2" class="collapse-content">
                     <div id='cus-loop-control'>
                         {/* <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div> */}
