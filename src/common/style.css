@@ -443,3 +443,10 @@ img.flip  {
 .full-with{
     width: 100%;
 }
+.width-93{
+    width: 93%;
+}
+
+.height-2lines{
+    height: 70px;
+}
