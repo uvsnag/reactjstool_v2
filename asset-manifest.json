@@ -1,22 +1,15 @@
 {
   "files": {
-    "main.css": "/reactjstool_v2/static/css/main.e57eab80.chunk.css",
-    "main.js": "/reactjstool_v2/static/js/main.bbcc6f35.chunk.js",
-    "main.js.map": "/reactjstool_v2/static/js/main.bbcc6f35.chunk.js.map",
-    "runtime-main.js": "/reactjstool_v2/static/js/runtime-main.3c637643.js",
-    "runtime-main.js.map": "/reactjstool_v2/static/js/runtime-main.3c637643.js.map",
-    "static/js/2.eba5655c.chunk.js": "/reactjstool_v2/static/js/2.eba5655c.chunk.js",
-    "static/js/2.eba5655c.chunk.js.map": "/reactjstool_v2/static/js/2.eba5655c.chunk.js.map",
-    "static/js/3.c33bf1a8.chunk.js": "/reactjstool_v2/static/js/3.c33bf1a8.chunk.js",
-    "static/js/3.c33bf1a8.chunk.js.map": "/reactjstool_v2/static/js/3.c33bf1a8.chunk.js.map",
+    "main.css": "/reactjstool_v2/static/css/main.ab853a9c.css",
+    "main.js": "/reactjstool_v2/static/js/main.338f9571.js",
+    "static/js/453.08637cfa.chunk.js": "/reactjstool_v2/static/js/453.08637cfa.chunk.js",
     "index.html": "/reactjstool_v2/index.html",
-    "static/css/main.e57eab80.chunk.css.map": "/reactjstool_v2/static/css/main.e57eab80.chunk.css.map",
-    "static/js/2.eba5655c.chunk.js.LICENSE.txt": "/reactjstool_v2/static/js/2.eba5655c.chunk.js.LICENSE.txt"
+    "main.ab853a9c.css.map": "/reactjstool_v2/static/css/main.ab853a9c.css.map",
+    "main.338f9571.js.map": "/reactjstool_v2/static/js/main.338f9571.js.map",
+    "453.08637cfa.chunk.js.map": "/reactjstool_v2/static/js/453.08637cfa.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/runtime-main.3c637643.js",
-    "static/js/2.eba5655c.chunk.js",
-    "static/css/main.e57eab80.chunk.css",
-    "static/js/main.bbcc6f35.chunk.js"
+    "static/css/main.ab853a9c.css",
+    "static/js/main.338f9571.js"
   ]
 }
