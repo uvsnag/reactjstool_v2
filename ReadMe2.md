@@ -1,5 +1,6 @@
 node
-v14.21.3
+v22.17.1
+reactjs v16.14.0
 npm
 6.14.18
 # start src
