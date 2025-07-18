@@ -10,7 +10,7 @@ const AI = () => {
 
     return (
         <div>
-            <MulAI size = {3} prefix ='ai'></MulAI>
+            <MulAI size = {3} prefix ='ai' enableHis = {true}></MulAI>
         </div>
     )
 

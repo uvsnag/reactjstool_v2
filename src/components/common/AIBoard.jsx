@@ -16,17 +16,19 @@ const MODEL_AI = [
     { value: "gpt-4o", name: "gpt-4o", type: TP_GPT },
 ]
 
-const AICk = ({ index, prefix }) => {
+const AICk = ({ index, prefix, enableHis }) => {
     const keyGeminiNm = `gemi-key-${prefix}${index}`;
     const keyChatGptNm = `gpt-key-${prefix}${index}`;
     const sysPromptNm = `sys-promt-${prefix}${index}`;
     let aiGem = useRef(null)
+    let aiGemHis = useRef(null)
     let openai = useRef(null)
 
     const [gemKey, setGemKey] = useState(null);
     const [gptKey, setGptKey] = useState(null);
     const [aiName, setAIName] = useState('Gemini');
     const [model, setModel] = useState(MODEL_AI[0]);
+    const [useHis, setUseHis] = useState(enableHis);
 
     const [prompt, setPrompt] = useState("");
     const [sysPrompt, setSysPrompt] = useState("");
@@ -45,6 +47,19 @@ const AICk = ({ index, prefix }) => {
 
     useEffect(() => {
         aiType = model.type;
+        if (useHis) {
+            aiGemHis.current = aiGem.current.chats.create({
+                model: model.value,
+            });
+        }
+    }, [useHis]);
+    useEffect(() => {
+        aiType = model.type;
+        if (useHis) {
+            aiGemHis.current = aiGem.current.chats.create({
+                model: model.value,
+            });
+        }
     }, [model]);
     useEffect(() => {
         if (gemKey) {
@@ -72,8 +87,19 @@ const AICk = ({ index, prefix }) => {
     async function askGemini(promVal) {
         const aiResponse = await aiGem.current.models.generateContent({
             model: model.value,
-            contents: `${sysPrompt} ${promVal}`,
+            contents: promVal,
+            config: {
+                systemInstruction: sysPrompt,
+            },
         });
+        return aiResponse.text;
+    }
+
+    async function askGeminiHis(promVal) {
+        const aiResponse = await aiGemHis.current.sendMessage({
+            message: promVal,
+        });
+
         return aiResponse.text;
     }
 
@@ -105,7 +131,7 @@ const AICk = ({ index, prefix }) => {
             setAIName('GPT')
         } else {
             setAIName('Gemini')
-            responseTxt = await askGemini(promVal);
+            responseTxt = useHis ? await askGeminiHis(promVal) : await askGemini(promVal);
         }
         addLog(fomatRawResponse(responseTxt), false);
         toggleClass(`loading${prefix}${index}`, true)
@@ -214,6 +240,12 @@ const AICk = ({ index, prefix }) => {
                             {`${option.name}`}
                         </option>
                     ))}
+                </select>
+                <select value ={useHis} onChange={(e) => {
+                    setUseHis(e.target.value)
+                }}>
+                    <option value={true}>Yes</option>
+                    <option value={false}>No</option>
                 </select>
 
                 <div onClick={() => toggleCollapse(`config-${prefix}${index}`)}>Config</div>
