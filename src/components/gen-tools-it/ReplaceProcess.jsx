@@ -1,7 +1,7 @@
 // this file is converted from javascript to reactjs so some code is not optimized
 //state is not used in this file
-import React, { useEffect } from "react";
-import '../common/style.css';
+import { useEffect } from "react";
+import '../../common/style.css';
 
 const ReplaceProcess = () => {
 

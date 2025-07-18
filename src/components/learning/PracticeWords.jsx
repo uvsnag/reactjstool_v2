@@ -2,11 +2,11 @@
 import React, { useEffect, useState, useRef  } from "react";
 import '../../common/style.css';
 import _ from 'lodash';
-import '../../common/styleTemplate.css';
+import '../../common/style-template.css';
 import { FaVolumeUp, FaRedo, FaVolumeMute, FaMicrophone } from 'react-icons/fa';
 import { MdHearing } from 'react-icons/md';
 
-import { validateArrStrCheck, arrStrCheckToStr} from "../Elearning/commonElearn";
+import { validateArrStrCheck, arrStrCheckToStr} from "./commonElearn";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 let lastEngVar = ''

@@ -1,7 +1,7 @@
 // this file is converted from javascript to reactjs so some code is not optimized
-import React, { useEffect, useState } from "react";
-import '../common/style.css';
-import {checkType,  randomDate, formatDate} from "../common/common.js";
+import  { useEffect, useState } from "react";
+import '../../common/style.css';
+import {checkType,  randomDate, formatDate} from "../../common/common.js";
 
 const JsonProcess = () => {
     const NEW_LINE = '\n';

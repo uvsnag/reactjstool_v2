@@ -1,6 +1,4 @@
-import React from 'react';
 import { useState, useRef } from 'react';
-import { useImageUploader } from './useImageUploader';
 import '../../common/style.css';
 import html2canvas from 'html2canvas';
 
@@ -84,7 +82,7 @@ const ImageGridGenerator = () => {
                 for (let file of element) {
                     let nameWithoutExtension = file.name.split('.').slice(0, -1).join('.');
                     let lastChar = nameWithoutExtension.slice(-1);
-                    if (lastChar == 'a') {
+                    if (lastChar === 'a') {
                         // setImage1(URL.createObjectURL(file));
                         file1 = URL.createObjectURL(file);
                     } else {

@@ -1,14 +1,14 @@
 // this is a tools for studying english
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import '../../common/style.css';
-import '../../common/styleTemplate.css';
+import '../../common/style-template.css';
 import { FaEyeSlash } from 'react-icons/fa';
 import { useSpeechSynthesis } from "react-speech-kit";
 import { replaceArr, isEqualStr, getPosition } from "../../common/common.js";
 import {
     validateArrStrCheck, arrStrCheckToStr,
     autoCorrectLetter, genHintStrAns, TYPE_WRONG, TYPE_CORRECT
-} from "../Elearning/commonElearn";
+} from "./commonElearn.js";
 import _ from 'lodash';
 
 let arrSentence = []

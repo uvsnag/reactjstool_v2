@@ -1,6 +1,6 @@
 // this file is converted from javascript to reactjs so some code is not optimized
-import React, { useEffect } from "react";
-import '../common/style.css';
+import  { useEffect } from "react";
+import '../../common/style.css';
 
 const MediaProcess = () => {
     useEffect(() => {

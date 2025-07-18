@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
-import './styleYoutSub.css';
+import { useEffect, useState } from "react";
+import './style-yout-sub.css';
 import _ from 'lodash';
-import { Sub } from './subtitle.jsx'
-import { useCookies } from 'react-cookie'
+import { Sub } from './Subtitle.jsx'
 import { toggleCollapse } from '../../common/common.js';
 let player;
 let interval;
@@ -576,7 +575,7 @@ const YoutubeSub = () => {
                 <div>
                     <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
                     <span onClick={() => toggleCollapse("hide-control-frame")}>+/-</span>
-                    <div id="hide-control-frame" class="collapse-content">
+                    <div id="hide-control-frame" class="collapse-content bolder">
                         <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
                         <input type="range" className="range-input" id="size" name="vol" min="5" max="20" value={height} onChange={handleMaskMedia}></input><br />
                         <input type="range" className="range-input" id="size" name="vol" min="5" max="700" value={top} onChange={handleTop}></input><br />
@@ -584,7 +583,7 @@ const YoutubeSub = () => {
 
                 </div>
                 <div onClick={() => toggleCollapse("mobile-control")}>Control</div>
-                <div id="mobile-control" className="collapse-content ">
+                <div id="mobile-control" className="collapse-content bolder">
                     <input type="text" id="txtSrcMedia"  value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
                         setUrl(event.target.value);
                     }} />
@@ -601,7 +600,7 @@ const YoutubeSub = () => {
                     <input type='submit' className='button-12 inline' value="clear" onClick={() => onClearCusLoop()} />
                 </div>
                 <div onClick={() => toggleCollapse("hide2")}>Sub</div>
-                <div id="hide2" class="collapse-content">
+                <div id="hide2" class="collapse-content bolder">
                     <div id='cus-loop-control'>
                         {/* <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div> */}
                         

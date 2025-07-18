@@ -1,8 +1,8 @@
 // this is a tools for studying english
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import '../../common/style.css';
 import _ from 'lodash';
-import '../../common/styleTemplate.css';
+import '../../common/style-template.css';
 import { FaRegFrown, FaRegSmile, FaVolumeUp } from 'react-icons/fa';
 import { gapi } from 'gapi-script';
 import config from '../../common/config.js';

@@ -22,6 +22,7 @@ function App() {
       </ul>
       <span>Other:</span>
       <ul className='mst-menu'>
+        <li className='mst-menu-li'><Link to="/ai">AI</Link></li>
         <li className='mst-menu-li'><Link to="/media">Media</Link></li>
         <li className='mst-menu-li'><Link to="/ImageGridGenerator">Image Grid Generator</Link></li>
         <li className='mst-menu-li'><Link to="/ScreenCapture">Screen Capture To Image YT</Link></li>

@@ -336,7 +336,7 @@ img.flip  {
     user-select: none;
 }
 /* dark mode */
-.background-color-dark{
+/* .background-color-dark{
     background-color: #252121;
     height: 100%;
 }
@@ -349,7 +349,7 @@ img.flip  {
 }
 .background-color-dark select{
     background-color: #615a5a;
-}
+} */
 .margin-zr{
     margin: 0px !important;
 }
@@ -359,7 +359,7 @@ img.flip  {
     transition: max-height 0.3s ease-out; /* Smooth expand/collapse */
     /* background-color: #252121; */
     padding: 0 20px;
-    border: 1px solid #252121;
+    /* border: 1px solid #252121; */
 }
 
 /* Opened state */
@@ -451,7 +451,11 @@ img.flip  {
     height: 70px;
 }
 
-.ai-session{
-    height: 800px;
-    width: 90%;
+.loading {
+    width: 30px !important;
+    height: 30px !important;
+    z-index: 1000;
+}
+.bolder{
+    border: 1px solid #252121;
 }

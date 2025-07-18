@@ -2,30 +2,32 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import SqlProcess from './components/gen_tools_it/sqlProcess'
-import JsonProcess from './components/jsonProcess.jsx'
-import SqlCompile from './components/gen_tools_it/sqlCompile'
-import ReplaceProcess from './components/replaceProcess.jsx'
-import MediaProcess from './components/mediaProcess.jsx'
-import NotifyAuto from './components/Elearning/notifyAuto.jsx'
-import ListenPract from './components/Elearning/listenPract.jsx'
-import ListenTensPract from './components/Elearning/listenTensPract.jsx'
-import YoutubeSub from './components/YTSub/vdYtSub'
-import NextSentence from './components/Elearning/next-sent.jsx'
-import ImageGridGenerator from './components/yout_tools/ImageGridGenerator.jsx'
-import ScreenCapture from './components/yout_tools/ScreenCapture.jsx'
-import SpeechRecogn from './components/recognize_text/recognizeText'
+import SqlProcess from './components/gen-tools-it/SqlProcessCK.jsx'
+import JsonProcess from './components/gen-tools-it/JsonProcess.jsx'
+import SqlCompile from './components/gen-tools-it/SqlCompileCK.jsx'
+import ReplaceProcess from './components/gen-tools-it/ReplaceProcess.jsx'
+import MediaProcess from './components/YTSub/MediaProcess.jsx'
+import NotifyAuto from './components/learning/NotifyAutoE.jsx'
+import ListenPract from './components/learning/ListenPractice.jsx'
+import ListenTensPract from './components/learning/ListenTensPractice.jsx'
+import YoutubeSub from './components/YTSub/VideoYtSub.jsx'
+import NextSentence from './components/learning/NextSentence.jsx'
+import AI from './components/learning/AI.jsx'
+import ImageGridGenerator from './components/yout-tools/ImageGridGenerator.jsx'
+import ScreenCapture from './components/yout-tools/ScreenCapture.jsx'
+import SpeechRecogn from './components/recognize-text/RecognizeText.jsx'
 import RedirectUrl from './components/RedirectUrl'
 import reportWebVitals from './reportWebVitals';
 import { FaHome } from 'react-icons/fa';
-import {Link, Route,  Routes, BrowserRouter, HashRouter } from "react-router-dom";
+import {Link, Route,  Routes, HashRouter } from "react-router-dom";
 const handleCheckboxDarkChange = (e) => {
-  const targetDiv = document.getElementById("root");
-  if (targetDiv) {
+  // const targetDiv = document.getElementById("root");
+  const bodyElement = document.body;
+  if (bodyElement) {
       if (e.target.checked) {
-          targetDiv.classList.add("dark-90");
+          bodyElement.classList.add("dark-90");
       } else {
-          targetDiv.classList.remove("dark-90");
+          bodyElement.classList.remove("dark-90");
       }
   }
 };
@@ -48,6 +50,7 @@ ReactDOM.render(
          <Route path="/listenTens" element={<ListenTensPract/>} />
          <Route path="/youtube-sub" element={<YoutubeSub/>} />
          <Route path="/next-sent" element={<NextSentence/>} />
+         <Route path="/ai" element={<AI/>} />
          <Route path="/voiceToText" element={<SpeechRecogn/>} />
          <Route path="/sqlcompile" element={<SqlCompile/>} />
          <Route path="/ImageGridGenerator" element={<ImageGridGenerator/>} />

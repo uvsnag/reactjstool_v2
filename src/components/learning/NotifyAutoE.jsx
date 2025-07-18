@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // this is a tools for studying english
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import '../../common/style.css';
-import '../../common/styleTemplate.css';
+import '../../common/style-template.css';
 import _ from 'lodash';
 import { gapi } from 'gapi-script';
 import config from '../../common/config.js';
 import { load } from './api/sheetDataRepository.js';
-import PractWords from './practWords.jsx'
+import PractWords from './PracticeWords.jsx'
 import { FaCircleNotch} from 'react-icons/fa';
 import { useSpeechSynthesis } from "react-speech-kit";
 import { FaVolumeUp, FaRedo } from 'react-icons/fa';
