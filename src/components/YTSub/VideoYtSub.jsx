@@ -3,6 +3,8 @@ import './style-yout-sub.css';
 import _ from 'lodash';
 import { Sub } from './Subtitle.jsx'
 import { toggleCollapse } from '../../common/common.js';
+import MulAI from '../common/MultiAI.jsx';
+import StackBtn from '../common/StackButton.jsx';
 let player;
 let interval;
 let currentTime;
@@ -36,10 +38,6 @@ const YoutubeSub = () => {
 
     const [url, setUrl] = useState("");
     const [sub, setSub] = useState("");
-
-
-    const COLOR_NONE = "";
-    const COLOR_CURRENT_BACKGROUND = "#580e0e";
 
     const MODE_NOMAL = 'NOMAL';
     const MODE_FOCUS_SUB = 'FOCUS_SUB';
@@ -601,23 +599,20 @@ const YoutubeSub = () => {
                 </div>
                 <div onClick={() => toggleCollapse("hide2")}>Sub</div>
                 <div id="hide2" class="collapse-content bolder">
-                    <div id='cus-loop-control'>
-                        {/* <div>{customLoopAs}{_.isEmpty(customLoopAs) ? '' : '-'}{customLoopBs}</div> */}
-                        
+                    <div id='cus-loop-control' >
+
                         <input type="text" value={customLoopAs} onChange={(event) => {
                             setCustomLoopAs(event.target.value);
-                        }} 
-                         onBlur={handleBlurA}/>
-                        <input type='submit' className='button-12 inline' value="^" onClick={() => changeTimeLoop(true,true)} />
-                        <input type='submit' className='button-12 inline' value="v" onClick={() => changeTimeLoop(true,false)} />
+                        }}
+                            onBlur={handleBlurA} />
+                        <StackBtn onUp={() => changeTimeLoop(true, true)} onDown={() => changeTimeLoop(true, false)}></StackBtn>
                         <span>-</span>
                         <input type="text" value={customLoopBs} onChange={(event) => {
                             setCustomLoopBs(event.target.value);
-                        }} 
-                        onBlur={handleBlurB}/>
-                        <input type='submit' className='button-12 inline' value="^" onClick={() => changeTimeLoop(false,true)} />
-                        <input type='submit' className='button-12 inline' value="v" onClick={() => changeTimeLoop(false,false)} />
-                      
+                        }}
+                            onBlur={handleBlurB} />
+                        <StackBtn onUp={() => changeTimeLoop(false, true)} onDown={() => changeTimeLoop(false, false)}></StackBtn>
+
                     </div>
                     <div id="hide1">
                     </div>
@@ -673,7 +668,11 @@ const YoutubeSub = () => {
 
                 </div>
             </div>
-            {/* <div className=" height1000"></div> */}
+            <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
+
+            <div id="ai-section" className='collapse-content bolder'>
+                <MulAI size={1} prefix='lis-yt' enableHis={true}></MulAI>
+            </div>
         </div>
     )
 

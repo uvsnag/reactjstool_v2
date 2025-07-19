@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AICk from './AIBoard';
+import StackBtn from './StackButton';
 import './style-common-module.css';
 
 const MulAI = ({size, prefix, enableHis}) => {
@@ -17,16 +18,14 @@ const MulAI = ({size, prefix, enableHis}) => {
             <div>
                 <span>Instances:</span>
                 <input type="number" className="width-30" value={numAI} onChange={(event) => {
-                    if (event.target.value < 10) {
-                        setNumAI(event.target.value);
-                    }
+                    setNumAI(event.target.value);
                 }} />
+                <StackBtn onUp={() =>  setNumAI(numAI + 1)} onDown={() =>  setNumAI(numAI - 1)}></StackBtn>
                 <span>Cols:</span>
                 <input type="number" className="width-30" value={column} onChange={(event) => {
-                    if (event.target.value <= 5 && event.target.value> 0) {
-                        setColumn(event.target.value);
-                    }
+                    setColumn(event.target.value);
                 }} />
+                <StackBtn onUp={()=> setColumn(column + 1)} onDown={()=> setColumn(column - 1)}></StackBtn>
             </div>
             <div class='container-block'>
                 {/* Create an array of a specific length and then map over it */}

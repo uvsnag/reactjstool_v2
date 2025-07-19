@@ -1,27 +1,17 @@
 // this is a tools for studying english
-import React, { useEffect, useState, useRef  } from "react";
+import  { useEffect, useState, useRef  } from "react";
 import '../../common/style.css';
 import _ from 'lodash';
 import '../../common/style-template.css';
-import { FaVolumeUp, FaRedo, FaVolumeMute, FaMicrophone } from 'react-icons/fa';
-import { MdHearing } from 'react-icons/md';
+import { FaVolumeUp, FaRedo, FaVolumeMute } from 'react-icons/fa';
+import VoiceToText from '../common/VoiceToText';
 
 import { validateArrStrCheck, arrStrCheckToStr} from "./commonElearn";
-import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 let lastEngVar = ''
 let arrLineTemp = [];
 let isCheckedRevert = false;
 const PractWords = (props) => {
-     const { transcript
-        , resetTranscript
-        , listening
-        , browserSupportsSpeechRecognition
-        , isMicrophoneAvailable
-        , interimTranscript
-        ,finalTranscript } = useSpeechRecognition();
-      const messagesEndRef = React.createRef()
-    
 
     const MODE_NONE = 'None'
     const MODE_SPEAKE_CHANGE_QUST = 'Speak';
@@ -36,21 +26,7 @@ const PractWords = (props) => {
     const [randomAns, setRandomAns] = useState([]);
     const inputAns = useRef(null)
 
-
     useEffect(() => {
-        if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-            alert("Browser does not support speech to text");
-        }
-        
-    }, []);
-
-    useEffect(() => {
-        console.log('transcript:', transcript)
-        inputAns.current.value = transcript;
-      }, [transcript]);
-
-    useEffect(() => {
-
         arrLineTemp = [];
         onChangeQuestion(true)
     }, [props.items]);
@@ -64,6 +40,9 @@ const PractWords = (props) => {
         // eslint-disable-next-line
     }, [props.isLoadQuestion]);
    
+    function setInputAns(text){
+        inputAns.current.value = text;
+    }
 
     const onChangeQuestion = (isInit=false) => {
         let randomAns = new Set();
@@ -164,7 +143,7 @@ const PractWords = (props) => {
     };
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowUp') {
-            processRecord();
+            // processRecord();
         }
         if (e.key === 'Enter') {
             onCheck();
@@ -197,28 +176,6 @@ const PractWords = (props) => {
         
     }
 
-    const startListening = () => {
-        setIsStartRecord(true);
-        console.log('Start recoding...');
-        resetTranscript();
-        SpeechRecognition.startListening({ continuous: true, language: 'en-US' });
-        setTimeout(() => {
-            console.log(transcript)
-            console.log('listening:' + String(listening))
-            console.log('browserSupportsSpeechRecognition:' + String(browserSupportsSpeechRecognition))
-            console.log('isMicrophoneAvailable:' + String(isMicrophoneAvailable))
-            console.log('interimTranscript:' + String(interimTranscript))
-            console.log('finalTranscript:' + String(finalTranscript))
-        }, 1000);
-    }
-    const stopListening = () => {
-        setIsStartRecord(false);
-        console.log('Stoped record');
-        SpeechRecognition.stopListening();
-    }
-    const processRecord = () => {
-        isStartRecord ? stopListening() : startListening()
-    }
     return (
         <div className='prac'>
            
@@ -245,8 +202,9 @@ const PractWords = (props) => {
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
             <div className="" dangerouslySetInnerHTML={{__html: showAns}}></div>
             <input type="text" id='answer' ref={inputAns} onKeyDown={e => handleKeyDown(e)} />
-            <button className='button-12 inline' onClick={() => processRecord()}>
-                {isStartRecord ? <MdHearing />: <FaMicrophone /> } </button><br/>
+               
+             <VoiceToText setText={setInputAns} index ={0}></VoiceToText>
+              <br/>
             <select className='button-33'
                 id="combo-answer"
                 name="combo-ans"

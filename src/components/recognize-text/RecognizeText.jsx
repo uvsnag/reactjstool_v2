@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
-
+import VoiceToText from '../common/VoiceToText';
 const SpeechRecogn = () => {
   const { transcript
     , resetTranscript
@@ -64,6 +64,7 @@ const SpeechRecogn = () => {
   return (
     <div className='container'>
       <div id='control'>
+         {/* <VoiceToText setText={setInputAns} index ={0}></VoiceToText> */}
         <button className='button' onClick={() => startListening()}>
           Start
         </button>

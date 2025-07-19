@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { MdHearing } from 'react-icons/md';
 import { FaMicrophone } from 'react-icons/fa';
 import _ from 'lodash';
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 
 
-const VoiceToText = ({setText}) => {
+const VoiceToText = ({setText, index}) => {
 
     const { transcript
         , resetTranscript
@@ -15,11 +15,13 @@ const VoiceToText = ({setText}) => {
         , interimTranscript
         , finalTranscript } = useSpeechRecognition();
 
-
+    let activeIndx = useRef(null);
 
     const [isStartRecord, setIsStartRecord] = useState(false);
     useEffect(() => {
-        setText(transcript);
+        if(index === activeIndx.current){
+            setText(transcript);
+        }
     }, [transcript]);
     useEffect(() => {
         if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -29,6 +31,7 @@ const VoiceToText = ({setText}) => {
 
 
     const startListening = () => {
+        activeIndx.current = index;
         setIsStartRecord(true);
         console.log('Start recoding...');
         resetTranscript();
@@ -41,6 +44,7 @@ const VoiceToText = ({setText}) => {
         setIsStartRecord(false);
         console.log('Stoped record');
         SpeechRecognition.stopListening();
+        activeIndx.current = null;
     }
     const processRecord = () => {
         isStartRecord ? stopListening() : startListening()

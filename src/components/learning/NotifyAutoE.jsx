@@ -12,6 +12,9 @@ import { FaCircleNotch} from 'react-icons/fa';
 import { useSpeechSynthesis } from "react-speech-kit";
 import { FaVolumeUp, FaRedo } from 'react-icons/fa';
 import { useCookies } from 'react-cookie'
+import MulAI from '../common/MultiAI.jsx';
+import { toggleCollapse } from '../../common/common.js';
+
 
 const SHEET_NAME = [
     {range:"Words1!A1:C500", name:"Words1"},
@@ -528,7 +531,13 @@ const NotifyAuto = () => {
                     />
             </div>
             <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
-            <div id='btnHideWhenPrac' className="height-400" onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
+            <div id='btnHideWhenPrac' onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
+
+            <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
+
+            <div id="ai-section" className='collapse-content bolder'>
+                <MulAI size={2} prefix='noti' enableHis={true}></MulAI>
+            </div>
           
         </div>
     );

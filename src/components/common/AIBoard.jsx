@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { Configuration, OpenAIApi } from "openai-edge"
-import { toggleCollapse } from '../../common/common.js';
+import { toggleCollapse, KEY_GPT_NM, KEY_GEMINI_NM } from '../../common/common.js';
 import VoiceToText from './VoiceToText.jsx';
 import './style-common-module.css';
 import loadingImg from './loading.webp';
@@ -33,12 +33,18 @@ const AICk = ({ index, prefix, enableHis }) => {
     const [prompt, setPrompt] = useState("");
     const [sysPrompt, setSysPrompt] = useState("");
     useEffect(() => {
-        let locGem = localStorage.getItem(keyGeminiNm) ?? 'no-key';
-        let locgpt = localStorage.getItem(keyChatGptNm) ?? 'no-key';
+        let gmLcal =  localStorage.getItem(keyGeminiNm);
+        let gptLcal =  localStorage.getItem(keyChatGptNm);
+        let locGem = gmLcal ? gmLcal: (localStorage.getItem(KEY_GEMINI_NM));
+        let locgpt = gptLcal ? gptLcal: (localStorage.getItem(KEY_GPT_NM));
         let sysPromptVa = localStorage.getItem(sysPromptNm) ?? '';
         console.log(locGem)
-        setGemKey(locGem);
-        setGptKey(locgpt);
+        if(gmLcal){
+            setGemKey(locGem);
+        }
+        if(gptLcal){
+            setGptKey(locgpt);
+        }
         setSysPrompt(sysPromptVa);
         toggleCollapse(`gemini-${prefix}${index}`)
         aiGem.current = new GoogleGenAI({ apiKey: locGem });
@@ -62,18 +68,28 @@ const AICk = ({ index, prefix, enableHis }) => {
         }
     }, [model]);
     useEffect(() => {
-        if (gemKey) {
-            aiGem.current = new GoogleGenAI({ apiKey: gemKey });
-            localStorage.setItem(keyGeminiNm, gemKey);
+        let key = gemKey ? gemKey:localStorage.getItem(KEY_GEMINI_NM)
+        aiGem.current = new GoogleGenAI({ apiKey: key });
+        localStorage.setItem(keyGeminiNm, gemKey);
+        if (useHis) {
+            aiGemHis.current = aiGem.current.chats.create({
+                model: model.value,
+            });
+        }
+        if(gemKey === null){
+            setGemKey('')
         }
 
     }, [gemKey]);
 
     useEffect(() => {
-        if (gptKey) {
-            openai.current = new OpenAIApi(new Configuration({ apiKey: gptKey }));
-            localStorage.setItem(keyChatGptNm, gptKey);
+        let key = gptKey ? gptKey: localStorage.getItem(KEY_GPT_NM)
+        openai.current = new OpenAIApi(new Configuration({ apiKey: key }));
+        localStorage.setItem(keyChatGptNm, gptKey);
+         if(gptKey === null){
+            setGptKey('')
         }
+
     }, [gptKey]);
 
     useEffect(() => {
@@ -230,7 +246,7 @@ const AICk = ({ index, prefix, enableHis }) => {
                     onKeyDown={e => handleKeyDown(e, prompt)}
                 /><br />
                 <button onClick={() => askDec(prompt)} className="button-12 inline" >Send</button>
-                <VoiceToText setText={setPrompt}></VoiceToText>
+               <VoiceToText setText={setPrompt} index ={index}></VoiceToText>
                 <button onClick={() => clearLog()} className="button-12 inline">Clear</button>
                 <select onChange={(e) => {
                     setModel(e.target.value)
@@ -241,6 +257,7 @@ const AICk = ({ index, prefix, enableHis }) => {
                         </option>
                     ))}
                 </select>
+                <span>History</span>
                 <select value ={useHis} onChange={(e) => {
                     setUseHis(e.target.value)
                 }}>

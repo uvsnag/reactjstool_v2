@@ -99,3 +99,6 @@ export const copyContent = (nm) => {
     let val = document.getElementById(nm).value
     navigator.clipboard.writeText(val);
 };
+
+export const KEY_GEMINI_NM = 'gemi-key'
+export const KEY_GPT_NM = 'gpt-key'

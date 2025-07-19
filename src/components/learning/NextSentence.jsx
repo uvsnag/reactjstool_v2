@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import _ from 'lodash';
 import { copyContent } from '../../common/common.js';
 import MulAI from '../common/MultiAI.jsx';
@@ -52,7 +52,6 @@ const NextSentence = () => {
                 ></textarea>
             </div>
             <MulAI size = {3} prefix ='nxt' enableHis = {false}></MulAI>
-            {/* <div className=" height1000"></div> */}
         </div>
     )
 

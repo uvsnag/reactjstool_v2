@@ -1,6 +1,28 @@
 import { Link } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { toggleCollapse, KEY_GPT_NM, KEY_GEMINI_NM } from './common/common.js';
 function App() {
+
+  const [gemKey, setGemKey] = useState(null);
+  const [gptKey, setGptKey] = useState(null);
+  useEffect(() => {
+    let locGem = localStorage.getItem(KEY_GEMINI_NM);
+    let locgpt = localStorage.getItem(KEY_GPT_NM);
+    setGemKey(locGem);
+    setGptKey(locgpt);
+  }, []);
+  useEffect(() => {
+    if (gemKey) {
+      localStorage.setItem(KEY_GEMINI_NM, gemKey);
+    }
+
+  }, [gemKey]);
+
+  useEffect(() => {
+    if (gptKey) {
+      localStorage.setItem(KEY_GPT_NM, gptKey);
+    }
+  }, [gptKey]);
   return (
 
     <div className="App">
@@ -26,7 +48,18 @@ function App() {
         <li className='mst-menu-li'><Link to="/media">Media</Link></li>
         <li className='mst-menu-li'><Link to="/ImageGridGenerator">Image Grid Generator</Link></li>
         <li className='mst-menu-li'><Link to="/ScreenCapture">Screen Capture To Image YT</Link></li>
+        <li className='mst-menu-li' onClick={() => toggleCollapse(`config`)}>Config</li>
       </ul>
+      <div id='config' className='collapse-content bolder' >
+        <span>gem:</span>
+        <input type="text" value={gemKey} onChange={(event) => {
+          setGemKey(event.target.value);
+        }} placeholder="gem" />
+         <span>gpt:</span>
+        <input type="text" value={gptKey} onChange={(event) => {
+          setGptKey(event.target.value);
+        }} placeholder="gpt" /><br />
+      </div>
     </div>
     
   );

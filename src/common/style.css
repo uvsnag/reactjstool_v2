@@ -246,6 +246,9 @@ html {
 .inline {
     display: inline !important;
 }
+.inline-block {
+     display: inline-block !important;
+}
 
 .ans-center {
     text-align: center !important;
@@ -310,6 +313,7 @@ ul.mst-menu {
 
 li.mst-menu-li {
     float: left;
+     color: white;
 }
 
 li.mst-menu-li a {
@@ -458,4 +462,10 @@ img.flip  {
 }
 .bolder{
     border: 1px solid #252121;
+}
+
+.offset-top-10 {
+  position: relative;
+  top: -10px;
+  margin-top: 10px;
 }
