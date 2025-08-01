@@ -5,7 +5,8 @@ import './style-common-module.css';
 
 const MulAI = ({size, prefix, enableHis}) => {
     const [numAI, setNumAI] = useState(size);
-    const [column, setColumn] = useState(3);
+    const [column, setColumn] = useState(4);
+    const [height, setHeight] = useState(400);
 
     useEffect(() => {
     }, []);
@@ -13,6 +14,10 @@ const MulAI = ({size, prefix, enableHis}) => {
     useEffect(() => {
 
     }, [column]);
+
+    function clearAllLog(){
+        document.querySelectorAll('div.response-ai').forEach(el => el.innerHTML = '');
+    }
     return (
         <div>
             <div>
@@ -26,12 +31,28 @@ const MulAI = ({size, prefix, enableHis}) => {
                     setColumn(event.target.value);
                 }} />
                 <StackBtn onUp={()=> setColumn(column + 1)} onDown={()=> setColumn(column - 1)}></StackBtn>
+                <button onClick={() => clearAllLog()} className="button-12 inline">Clear All</button>
+                <div >
+                    <p className="height-value">{height}</p>
+                    <input className="width-220 range-color"
+                        type="range"
+                        min="10"
+                        max="800"
+                        defaultValue="400"
+                        step="5"
+                        id="height"
+                        onChange={(event) => {
+                            setHeight(event.target.value);
+                        }}
+                    />
+                </div>
+
             </div>
             <div class='container-block'>
                 {/* Create an array of a specific length and then map over it */}
                 {Array.from({ length: numAI }).map((_, index) => (
                     <div className={`block block-${column}cols`}><AICk key={index} index={index} prefix={prefix}
-                    enableHis={enableHis} /></div>
+                    enableHis={enableHis} heightRes ={height} /></div>
                 ))}
 
             </div>

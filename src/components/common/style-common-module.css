@@ -1,5 +1,5 @@
 .response-ai {
-  height: 400px;
+  /* height: 400px; */
   /* width: 100%; */
   overflow-y: scroll;
   border: 1px solid #ddd;
@@ -48,7 +48,7 @@
 .my-quest {
   color: rgb(51, 6, 6);
   border-radius: 3px;
-  background-color: #f3e5d4;
+  background-color: #ecececc2;
   text-align: left;
   padding: 10px;
   margin-left: 20%;
@@ -57,7 +57,7 @@
 
 .dark-90 .my-quest {
   color: rgb(226, 226, 226);
-  background-color: #010a02;
+  background-color: #444444;
 
 }
 
@@ -73,7 +73,7 @@
 }
 
 .dark-90 .response-ai {
-  background-color: #2c2727;
+  background-color: #333232;
   color: #ddd;
 }
 

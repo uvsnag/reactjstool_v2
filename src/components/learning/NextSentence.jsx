@@ -51,7 +51,7 @@ const NextSentence = () => {
                 }}
                 ></textarea>
             </div>
-            <MulAI size = {3} prefix ='nxt' enableHis = {false}></MulAI>
+            <MulAI size = {4} prefix ='nxt' enableHis = {false}></MulAI>
         </div>
     )
 

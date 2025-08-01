@@ -16,7 +16,7 @@ const MODEL_AI = [
     { value: "gpt-4o", name: "gpt-4o", type: TP_GPT },
 ]
 
-const AICk = ({ index, prefix, enableHis }) => {
+const AICk = ({ index, prefix, enableHis, heightRes }) => {
     const keyGeminiNm = `gemi-key-${prefix}${index}`;
     const keyChatGptNm = `gpt-key-${prefix}${index}`;
     const sysPromptNm = `sys-promt-${prefix}${index}`;
@@ -138,10 +138,12 @@ const AICk = ({ index, prefix, enableHis }) => {
             return;
         }
         let responseTxt;
-        setPrompt('')
+        setTimeout(() => {
+            setPrompt('')
+        }, 100);
         toggleClass(`loading${prefix}${index}`, false)
         // let responseTmp = response;
-        addLog(formatMyQus(promVal) + '<br/>');
+        addLog(formatMyQus(promVal) + '<br/>', true);
         if (aiType === TP_GPT) {
             responseTxt = await askChatGPT(promVal);
             setAIName('GPT')
@@ -161,13 +163,21 @@ const AICk = ({ index, prefix, enableHis }) => {
         }
     }
 
-    function addLog(message, isScroll = true) {
+    function addLog(message, isQuest) {
         let logElement = document.getElementById(`response-ai-${prefix}${index}`)
         const logEntry = document.createElement('div');
         logEntry.innerHTML = message;
         logElement.appendChild(logEntry);
-        if(isScroll){
-            logElement.scrollTop = logElement.scrollHeight;
+        logElement.scrollTop = logElement.scrollHeight;
+        if(isQuest){
+        }else{
+            setTimeout(() => {
+                let extraHeight = logEntry.offsetHeight
+                logElement.scrollBy({
+                    top: (-extraHeight + heightRes - 40), // negative value scrolls up
+                    behavior: 'smooth' // optional for smooth scroll
+                });
+            }, 100);
         }
     }
     function clearLog() {
@@ -175,7 +185,9 @@ const AICk = ({ index, prefix, enableHis }) => {
         logElement.innerHTML = '';
     }
     function handleKeyDown(e, promVal) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && e.shiftKey) {
+            console.log('Shift + Enter detected');
+        } else if (e.key === 'Enter') {
             askDec(promVal);
         }
     }
@@ -236,37 +248,39 @@ const AICk = ({ index, prefix, enableHis }) => {
             <div onClick={() => toggleCollapse(`gemini-${prefix}${index}`)}>{`Instance ${index + 1}`}</div>
             <div className='collapse-content bolder' id={`gemini-${prefix}${index}`}>
                 <img id={`loading${prefix}${index}`} className='collapse-content loading' src={loadingImg} />
-                <div id={`response-ai-${prefix}${index}`} className="response-ai">
+                <div style={{ height: `${heightRes}px` }} id={`response-ai-${prefix}${index}`} className="response-ai">
                 </div><br />
-                <textarea className='ai-promt'
+                <textarea id={`prompt-${prefix}${index}`} className='ai-promt'
                     rows="3"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="Ask something..."
+                    placeholder="..."
                     onKeyDown={e => handleKeyDown(e, prompt)}
-                /><br />
-                <button onClick={() => askDec(prompt)} className="button-12 inline" >Send</button>
-               <VoiceToText setText={setPrompt} index ={index}></VoiceToText>
-                <button onClick={() => clearLog()} className="button-12 inline">Clear</button>
-                <select onChange={(e) => {
-                    setModel(e.target.value)
-                }}>
-                    {MODEL_AI.map((option, index) => (
-                        <option key={option.value} value={option.value}>
-                            {`${option.name}`}
-                        </option>
-                    ))}
-                </select>
-                <span>History</span>
-                <select value ={useHis} onChange={(e) => {
-                    setUseHis(e.target.value)
-                }}>
-                    <option value={true}>Yes</option>
-                    <option value={false}>No</option>
-                </select>
+                />
+                <br />
 
                 <div onClick={() => toggleCollapse(`config-${prefix}${index}`)}>Config</div>
                 <div className='collapse-content bolder' id={`config-${prefix}${index}`}>
+                    <button onClick={() => askDec(prompt)} className="button-12 inline" >Send</button>
+                <VoiceToText setText={setPrompt} index ={index}></VoiceToText>
+                    <button onClick={() => clearLog()} className="button-12 inline">Clear</button>
+                    <select onChange={(e) => {
+                        setModel(e.target.value)
+                    }}>
+                        {MODEL_AI.map((option, index) => (
+                            <option key={option.value} value={option.value}>
+                                {`${option.name}`}
+                            </option>
+                        ))}
+                    </select>
+                    <span>History</span>
+                    <select value ={useHis} onChange={(e) => {
+                        setUseHis(e.target.value)
+                    }}>
+                        <option value={true}>Yes</option>
+                        <option value={false}>No</option>
+                    </select>
+                    <br/>
                     <input type="text" value={gemKey} onChange={(event) => {
                         setGemKey(event.target.value);
                     }} placeholder="gem" />
