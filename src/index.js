@@ -13,6 +13,7 @@ import ListenTensPract from './components/learning/ListenTensPractice.jsx'
 import YoutubeSub from './components/YTSub/VideoYtSub.jsx'
 import NextSentence from './components/learning/NextSentence.jsx'
 import AI from './components/learning/AI.jsx'
+import Board1 from './components/dashboard/Board1.jsx'
 import ImageGridGenerator from './components/yout-tools/ImageGridGenerator.jsx'
 import ScreenCapture from './components/yout-tools/ScreenCapture.jsx'
 import SpeechRecogn from './components/recognize-text/RecognizeText.jsx'
@@ -55,6 +56,7 @@ ReactDOM.render(
          <Route path="/sqlcompile" element={<SqlCompile/>} />
          <Route path="/ImageGridGenerator" element={<ImageGridGenerator/>} />
          <Route path="/ScreenCapture" element={<ScreenCapture/>} />
+         <Route path="/board1" element={<Board1/>} />
           
       </Routes>
     </HashRouter >

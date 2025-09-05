@@ -174,7 +174,8 @@ const AICk = ({ index, prefix, enableHis, heightRes }) => {
             setTimeout(() => {
                 let extraHeight = logEntry.offsetHeight
                 logElement.scrollBy({
-                    top: (-extraHeight + heightRes - 40), // negative value scrolls up
+                    top: (-Number(extraHeight) + Number(heightRes) - 40), // negative value scrolls up
+                    // top: (-extraHeight + heightRes - 40), // negative value scrolls up
                     behavior: 'smooth' // optional for smooth scroll
                 });
             }, 100);

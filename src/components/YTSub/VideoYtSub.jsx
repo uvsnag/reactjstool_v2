@@ -668,11 +668,11 @@ const YoutubeSub = () => {
 
                 </div>
             </div>
-            <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
+            {/* <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
 
             <div id="ai-section" className='collapse-content bolder'>
                 <MulAI size={1} prefix='lis-yt' enableHis={true}></MulAI>
-            </div>
+            </div> */}
         </div>
     )
 

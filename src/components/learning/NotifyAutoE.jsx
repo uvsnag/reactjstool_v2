@@ -398,8 +398,8 @@ const NotifyAuto = () => {
     return (
         <div className="">
             <div id='notify-control'>
-                <div className='option-noti block' id='control'>
-                    <div className='option-left'>
+                <div className='option-noti bolder' id='control'>
+                    <div className='option-left  notify-left'>
                         <textarea title='f' id='txtField'></textarea>
                         <br />
                     </div>
@@ -533,11 +533,11 @@ const NotifyAuto = () => {
             <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
             <div id='btnHideWhenPrac' onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
 
-            <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
+            {/* <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
 
             <div id="ai-section" className='collapse-content bolder'>
                 <MulAI size={2} prefix='noti' enableHis={true}></MulAI>
-            </div>
+            </div> */}
           
         </div>
     );

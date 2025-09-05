@@ -103,7 +103,7 @@ html {
     margin-top: 10px;
 }
 
-@media (min-width: 1400px) {
+/* @media (min-width: 1400px) {
     .option-noti {
         width: 50%;
     }
@@ -119,8 +119,20 @@ html {
     .option-noti {
         width: 92%;
     }
+} */
+.option-noti{
+    max-width: 1000px;
 }
-
+.notify-left{
+    width: 83% !important
+}
+ .notify-right {
+     display: flex;
+     flex-direction: column;
+     align-items: flex-start;
+     width: 15% !important
+ }
+    
 @media (min-width: 700px) {
     .option-right {
         width: 37%;
@@ -134,12 +146,6 @@ html {
     .option-left {
         float: left;
         width: 57%;
-    }
-
-    .notify-right {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
     }
 
     .prac {
@@ -156,10 +162,10 @@ html {
 }
 
 @media (max-width: 700px) {
-    .option-right {
+    /* .option-right {
         text-align: center;
         width: 100%;
-    }
+    } */
 
     .button-33,
     .button-59,
@@ -362,7 +368,7 @@ img.flip  {
     overflow: hidden;
     transition: max-height 0.3s ease-out; /* Smooth expand/collapse */
     /* background-color: #252121; */
-    padding: 0 20px;
+    /* padding: 0 20px; */
     /* border: 1px solid #252121; */
 }
 
@@ -447,6 +453,9 @@ img.flip  {
 .full-with{
     width: 100%;
 }
+.half-with{
+    width: 50%;
+}
 .width-93{
     width: 93%;
 }
@@ -468,4 +477,15 @@ img.flip  {
   position: relative;
   top: -10px;
   margin-top: 10px;
+}
+
+.container-55 {
+    display: grid !important;
+    grid-template-columns: 50% 50%; /* Two equal columns */
+    gap: 3px;
+}
+.container-64 {
+    display: grid !important;
+    grid-template-columns: 60% 40%; /* Two equal columns */
+    gap: 3px;
 }

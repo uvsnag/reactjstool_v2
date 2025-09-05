@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { toggleCollapse, KEY_GPT_NM, KEY_GEMINI_NM } from './common/common.js';
+import { toggleCollapse, KEY_GPT_NM, KEY_GEMINI_NM, KEY_GOOGLE_SHEET_NM } from './common/common.js';
 function App() {
 
   const [gemKey, setGemKey] = useState(null);
   const [gptKey, setGptKey] = useState(null);
+  const [googleSheetKey, setGoogleSheetKey] = useState(null);
   useEffect(() => {
     let locGem = localStorage.getItem(KEY_GEMINI_NM);
     let locgpt = localStorage.getItem(KEY_GPT_NM);
+    let locGoogleSheet = localStorage.getItem(KEY_GOOGLE_SHEET_NM);
     setGemKey(locGem);
     setGptKey(locgpt);
+    setGoogleSheetKey(locGoogleSheet);
   }, []);
   useEffect(() => {
     if (gemKey) {
@@ -23,6 +26,13 @@ function App() {
       localStorage.setItem(KEY_GPT_NM, gptKey);
     }
   }, [gptKey]);
+
+  useEffect(() => {
+    if (googleSheetKey) {
+      localStorage.setItem(KEY_GOOGLE_SHEET_NM, googleSheetKey);
+    }
+  }, [googleSheetKey]);
+
   return (
 
     <div className="App">
@@ -42,6 +52,10 @@ function App() {
         <li className='mst-menu-li'><Link to="/listenTens">Listen Passage Prac</Link></li>
         <li className='mst-menu-li'><Link to="/voiceToText">Speed To Text</Link></li>
       </ul>
+      <span>Board:</span>
+      <ul className='mst-menu'>
+        <li className='mst-menu-li'><Link to="/board1">Board1</Link></li>
+      </ul>
       <span>Other:</span>
       <ul className='mst-menu'>
         <li className='mst-menu-li'><Link to="/ai">AI</Link></li>
@@ -59,6 +73,10 @@ function App() {
         <input type="text" value={gptKey} onChange={(event) => {
           setGptKey(event.target.value);
         }} placeholder="gpt" /><br />
+         <span>Google sheet:</span>
+        <input type="text" value={googleSheetKey} onChange={(event) => {
+          setGoogleSheetKey(event.target.value);
+        }} placeholder="google sheet key" /><br />
       </div>
     </div>
     

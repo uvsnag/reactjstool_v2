@@ -32,20 +32,18 @@ const MulAI = ({size, prefix, enableHis}) => {
                 }} />
                 <StackBtn onUp={()=> setColumn(column + 1)} onDown={()=> setColumn(column - 1)}></StackBtn>
                 <button onClick={() => clearAllLog()} className="button-12 inline">Clear All</button>
-                <div >
-                    <p className="height-value">{height}</p>
-                    <input className="width-220 range-color"
-                        type="range"
-                        min="10"
-                        max="800"
-                        defaultValue="400"
-                        step="5"
-                        id="height"
-                        onChange={(event) => {
-                            setHeight(event.target.value);
-                        }}
-                    />
-                </div>
+                <i>{height}</i>
+                <input className="width-220 range-color"
+                    type="range"
+                    min="10"
+                    max="800"
+                    defaultValue="400"
+                    step="5"
+                    // id="height"
+                    onChange={(event) => {
+                        setHeight(event.target.value);
+                    }}
+                />
 
             </div>
             <div class='container-block'>

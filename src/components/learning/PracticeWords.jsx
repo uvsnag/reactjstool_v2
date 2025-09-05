@@ -201,7 +201,7 @@ const PractWords = (props) => {
             <div>{question}</div><br />
             {/* <div>{showAns}{_.isEmpty(showAns) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => props.speakText(showAns, true)} />}</div> */}
             <div className="" dangerouslySetInnerHTML={{__html: showAns}}></div>
-            <input type="text" id='answer' ref={inputAns} onKeyDown={e => handleKeyDown(e)} />
+            <input type="text" id='answer' autocomplete="off" ref={inputAns} onKeyDown={e => handleKeyDown(e)} />
                
              <VoiceToText setText={setInputAns} index ={0}></VoiceToText>
               <br/>
