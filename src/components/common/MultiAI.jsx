@@ -3,10 +3,10 @@ import AICk from './AIBoard';
 import StackBtn from './StackButton';
 import './style-common-module.css';
 
-const MulAI = ({size, prefix, enableHis}) => {
+const MulAI = ({size, prefix, enableHis, heightProp}) => {
     const [numAI, setNumAI] = useState(size);
     const [column, setColumn] = useState(4);
-    const [height, setHeight] = useState(400);
+    const [height, setHeight] = useState(heightProp??400);
 
     useEffect(() => {
     }, []);

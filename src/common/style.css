@@ -374,7 +374,7 @@ img.flip  {
 
 /* Opened state */
 .collapse-content.open {
-    max-height: 800px; /* Set max height large enough to fit content */
+    max-height: 1800px;
 }
 .height1000{
     height: 1000px;
@@ -488,4 +488,7 @@ img.flip  {
     display: grid !important;
     grid-template-columns: 60% 40%; /* Two equal columns */
     gap: 3px;
+}
+.title-board{
+    font-weight: bold;
 }

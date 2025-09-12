@@ -1,9 +1,9 @@
 export default {
   notify: {
-    sheetDefault: "Words1!A1:C100",
+    sheetDefault: "Notify!A2:C500",
   },
   listen: {
-    sheetDefault: "Listen1!A1:C100"
+    sheetDefault: "Notify!Y2:AA500"
   },
     apiKey: "AIzaSyBXTCDVZLRPsWanb_ab5Lp9GJa1upX8bf8",
     clientId: "897570143608-dvfjhqfsi125cne619dvu3qqfdep6ui6.apps.googleusercontent.com",

@@ -66,7 +66,6 @@ const PractWords = (props) => {
             // setArrLineTemp(arrTemp);
             arrLineTemp = arrTemp;
             console.log('arrTemp:', arrTemp)
-            console.log('item:', item)
             let quest = '';
             if (_.isEmpty(item.customDefine)) {
                 // setQuestion(item.vi);

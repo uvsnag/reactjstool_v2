@@ -6,36 +6,48 @@ import '../../common/style-template.css';
 import _ from 'lodash';
 import MulAI from '../common/MultiAI.jsx';
 import NotifyAuto from '../learning/NotifyAutoE.jsx';
-import SpeechRecogn from '../recognize-text/RecognizeText.jsx';
+// import SpeechRecogn from '../recognize-text/RecognizeText.jsx';
+import VoiceToText from '../common/VoiceToText.jsx';
 import NextSentence from '../learning/NextSentence.jsx';
 import YoutubeSub from '../YTSub/VideoYtSub.jsx';
 import { toggleCollapse } from '../../common/common.js';
 
 const Board1 = () => {
-
+ const [prompt, setPrompt] = useState("");
     /**  */
     useEffect(() => {
+        toggleCollapse("ai-section");
     }, []);
     return (
         <div className="">
-            <div className="container-64">
+            <div className="title-board" onClick={() => toggleCollapse("pract-section")}>Practice</div>
+            <div className="container-64 collapse-content" id="pract-section">
 
-            <NotifyAuto></NotifyAuto>
-            <SpeechRecogn></SpeechRecogn>
+                <NotifyAuto></NotifyAuto>
+                <div>
+                    <div className="title-board" onClick={() => toggleCollapse("speed-section")}>Speed</div>
+                    <div id="speed-section" className='collapse-content '>
+                        <textarea className='width-93'
+                            rows="5"
+                            value={prompt}
+                            onChange={(e) => setPrompt(e.target.value)}
+                        />
+                        <br />
+                        <VoiceToText setText={setPrompt} index={"board1"}></VoiceToText>
+                    </div>
+                </div>
             </div>
-            <div  onClick={() => toggleCollapse("ai-section")}>AI</div>
+            <div className="title-board" onClick={() => toggleCollapse("ai-section")}>AI</div>
 
             <div id="ai-section" className='collapse-content '>
-                {/* <MulAI size={2} prefix='board1' enableHis={false}></MulAI> */}
-                <NextSentence></NextSentence>
+                <NextSentence heightProp = {300}></NextSentence>
             </div>
-              <div  onClick={() => toggleCollapse("yt-section")}>YT</div>
-            {/* <input type='submit' className="button-12 inline" value="YT-Sub" onClick={() => toggleCollapse("yt-section")} /> */}
+            <div className="title-board" onClick={() => toggleCollapse("yt-section")}>YT</div>
 
             <div id="yt-section" className='collapse-content bolder'>
                 <YoutubeSub></YoutubeSub>
             </div>
-          
+
         </div>
     );
 

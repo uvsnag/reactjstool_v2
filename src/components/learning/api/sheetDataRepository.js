@@ -11,9 +11,8 @@ window.gapi.client.load("sheets", "v4", () => {
     })
     .then(
       response => {
-        const data = response.result.values;
-        console.log(data)
-        const items = data.filter(item => !_.isEmpty(item))
+        const data = response.result?.values;
+        const items = data?.filter(item => !_.isEmpty(item))
         .map(item => ({
           eng: item[0],
           vi: item[1],

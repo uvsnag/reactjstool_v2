@@ -8,7 +8,7 @@ const currSentenceNm = 'current-sentence';
 const orgTextNm = 'org-text';
 
 let commonArr = [];
-const NextSentence = () => {
+const NextSentence =  ({heightProp}) =>  {
 
     const [currentSentence, setCurrentSentence] = useState('');
     const [orgText, setOrgText] = useState('');
@@ -18,7 +18,7 @@ const NextSentence = () => {
             setCurrentSentence(localStorage.getItem(currSentenceNm));
             setOrgText(localStorage.getItem(orgTextNm));
         }
-        toggleCollapse("sentence")
+        // toggleCollapse("sentence")
     }, []);
 
     useEffect(() => {
@@ -40,18 +40,18 @@ const NextSentence = () => {
         <div>
             <div id="sentence" className='collapse-content bolder'>
                 <div>{currentSentence}</div>
+                <input type='submit' className="button-12 inline" value="Next" id='btnExecute' onClick={() => onProcess()} />
+                <input type='submit' className="button-12 inline" value="Copy" id='btnCoppy' onClick={() => copyContent('note')} />
             </div>
-            <input type='submit' className="button-12 inline" value="Next" id='btnExecute' onClick={() => onProcess()} />
-            <input type='submit' className="button-12 inline" value="Copy" id='btnCoppy' onClick={() => copyContent('note')} />
-            <input type='submit' className="button-12 inline" value="^^^" onClick={() => toggleCollapse("sentence")} />
-            <div onClick={() => toggleCollapse("maincontent-nw")}>vvv</div>
+            <input type='submit' className="button-12 inline" value="Source" onClick={() => toggleCollapse("maincontent-nw")} />
+            <input type='submit' className="button-12 inline" value="+/-" onClick={() => toggleCollapse("sentence")} />
             <div id="maincontent-nw" className='collapse-content bolder'>
                 <textarea id='sentence-text' value={orgText} onChange={(event) => {
                     setOrgText(event.target.value);
                 }}
                 ></textarea>
             </div>
-            <MulAI size = {4} prefix ='nxt' enableHis = {false}></MulAI>
+            <MulAI size = {4} prefix ='nxt' enableHis = {false} heightProp={heightProp}></MulAI>
         </div>
     )
 

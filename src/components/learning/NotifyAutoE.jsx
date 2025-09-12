@@ -17,19 +17,28 @@ import { toggleCollapse } from '../../common/common.js';
 
 
 const SHEET_NAME = [
-    {range:"Words1!A1:C500", name:"Words1"},
-    {range:"Words2!A1:C500", name:"Words2"},
-    {range:"Words3!A1:C500", name:"Words3"},
-    {range:"Batch1!A1:C500", name:"Batch1"},
-    {range:"Batch2!A1:C500", name:"Batch2"},
-    {range:"Batch3!A1:C500", name:"Batch3"},
-    {range:"temp1!A1:C500", name:"temp1"},
-    {range:"temp2!A1:C500", name:"temp2"},
-    {range:"Note!A1:C500", name:"Note"},
-    {range:"Sentence1!A1:C500", name:"Sentence1"},
-    {range:"Sentence2!A1:C500", name:"Sentence2"},
-    {range:"Sentence3!A1:C500", name:"Sentence3"},
+    {range:"Notify!A2:C500", name:"Board1"},
+    {range:"Notify!E2:G500", name:"Board2"},
+    {range:"Notify!I2:K500", name:"Board3"},
+    {range:"Notify!M2:O500", name:"Board4"},
+    {range:"Notify!Q2:S500", name:"Board5"},
+    {range:"Notify!U2:W500", name:"Board6"},
+    {range:"Notify!Y2:AA500", name:"Board7"},
 ]
+// const SHEET_NAME = [
+//     {range:"Words1!A1:C500", name:"Words1"},
+//     {range:"Words2!A1:C500", name:"Words2"},
+//     {range:"Words3!A1:C500", name:"Words3"},
+//     {range:"Batch1!A1:C500", name:"Batch1"},
+//     {range:"Batch2!A1:C500", name:"Batch2"},
+//     {range:"Batch3!A1:C500", name:"Batch3"},
+//     {range:"temp1!A1:C500", name:"temp1"},
+//     {range:"temp2!A1:C500", name:"temp2"},
+//     {range:"Note!A1:C500", name:"Note"},
+//     {range:"Sentence1!A1:C500", name:"Sentence1"},
+//     {range:"Sentence2!A1:C500", name:"Sentence2"},
+//     {range:"Sentence3!A1:C500", name:"Sentence3"},
+// ]
 
 const NotifyAuto = () => {
     const onEnd = () => {
@@ -105,7 +114,6 @@ const NotifyAuto = () => {
     }, [voices]);
 
     useEffect(() => {
-        console.log("useEffect [countNotify]");
         let valueTime = document.getElementById('timeValue').value;
         if (!isStop) {
             setIntervalId(setTimeout(() => {
@@ -117,22 +125,17 @@ const NotifyAuto = () => {
 
     useEffect(() => {
         getDataFromExcel();
-        console.log("useEffect [sheet]");
     }, [sheet]);
 
 
     useEffect(() => {
         onGSheetApi();
-        console.log("useEffect [items]");
     }, [items]);
 
     useEffect(() => {
         let expires = new Date()
         expires.setDate(expires.getDate() + 100);
         setCookie('cookieContinue', strContinue, { path: '/', expires })
-        console.log('useEffect strContinue');
-        console.log(strContinue);
-        console.log(cookies);
     }, [strContinue]);
 
 
@@ -219,7 +222,6 @@ const NotifyAuto = () => {
 
     /** */
     const execute = () => {
-        console.log('onStart2');
         let line = null;
 
         let oderRandom = document.getElementById("slGenData").value;
@@ -232,9 +234,7 @@ const NotifyAuto = () => {
             line = lineSheet[0];
             lineSheet.shift();
         }
-        console.log(strContinue);
         let indexOrg = items.findIndex(x => x.eng === line.eng);
-        console.log('' + strContinue + (_.isEmpty(strContinue) ? indexOrg.toString() : ',' + indexOrg.toString()));
         const strC = (_.isEmpty(strContinue) ? indexOrg.toString() : String(strContinue) + ',' + indexOrg.toString())
         setStrContinue(strC);
         if (_.isEmpty(lineSheet)) {
@@ -248,7 +248,6 @@ const NotifyAuto = () => {
 
     /** */
     const onNotiExc = (line) => {
-        console.log(line);
         if (!window.Notification) {
             console.log('Browser does not support notifications.');
         } else {
@@ -500,17 +499,17 @@ const NotifyAuto = () => {
                 </div>
                
             </div>
-            {/* <FaStop/> */}
-            {/* <button className='button-12 inline' onClick={() => getDataFromExcel()}><FaRedo/></button> */}
            
-            <div style={styleContainerRatePitch}>
-                <div style={styleFlexRow}>
+            <span id='btnHideWhenPrac' onClick={() => onHideWhenPrac()} ><FaCircleNotch /></span>
+            {/* <button id='btnHideWhenPrac' className="button-12 inline" onClick={() => onHideWhenPrac()} ><FaCircleNotch /></button> */}
+            {/* <div style={styleContainerRatePitch}> */}
+                {/* <div style={styleFlexRow}> */}
                     <label htmlFor="volumn"><FaVolumeUp className='iconSound'/> </label>
-                    <div className="rate-value">{volumn}</div>
-                </div>
+                    <span className="rate-value">{volumn}</span>
+                {/* </div> */}
                 <input
                     type="range"
-                    className="range-input"
+                    className="width-220 range-color"
                     min="0.1"
                     max="1"
                     defaultValue="0.6"
@@ -520,7 +519,8 @@ const NotifyAuto = () => {
                         setVolumn(event.target.value);
                     }}
                 />
-            </div>
+            {/* </div> */}
+            <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
             <div id='pracWord'>
                 <PractWords items={items} oderRandom={oderRandomS}
                     speakText={speakText}
@@ -530,8 +530,6 @@ const NotifyAuto = () => {
                     SHEET_NAME = {SHEET_NAME}
                     />
             </div>
-            <div> {speakStrEng}:  {speakStrVie}{_.isEmpty(speakStrEng) ? <div></div> : <FaVolumeUp className='iconSound' onClick={() => speakText(speakStrEng, true)} />}</div>
-            <div id='btnHideWhenPrac' onClick={() => onHideWhenPrac()} ><FaCircleNotch /></div>
 
             {/* <input type='submit' className="button-12 inline" value="AI" onClick={() => toggleCollapse("ai-section")} />
 
