@@ -85,6 +85,13 @@ export const isEqualStr = (str1, str2, isCaseInte) => {
     }
     return _.isEqual(str1, str2);
 }
+export function isVisible(id) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+
+  const style = window.getComputedStyle(el);
+  return style.display !== "none" && style.visibility !== "hidden" && style.opacity !== "0";
+}
 
 export const setCharAt = (str,index,chr) => {
     if(index > str.length-1) return str;
@@ -94,6 +101,10 @@ export const setCharAt = (str,index,chr) => {
 export function toggleCollapse(id) {
     const content = document.getElementById(id);
     content.classList.toggle('open'); // Add or remove the 'open' class
+}
+export function collapseElement(id) {
+    const content = document.getElementById(id);
+    content.classList.remove('open'); // Add or remove the 'open' class
 }
 export const copyContent = (nm) => {
     let val = document.getElementById(nm).value

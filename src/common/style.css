@@ -9,7 +9,7 @@
 }
 
 html {
-    width: 100vw;
+    /* width: 100vw; */
 }
 
 .area-sql{
@@ -149,7 +149,7 @@ html {
     }
 
     .prac {
-        width: 400px;
+        /* width: 400px; */
         margin: 15px 15px 15px 15px;
         padding: 15px 15px 15px 15px;
     }
@@ -197,7 +197,7 @@ html {
     }
 
     .prac {
-        width: calc(100% - 6px);
+        /* width: calc(100% - 6px); */
     }
 
     .control-footer {

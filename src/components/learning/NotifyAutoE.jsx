@@ -65,6 +65,7 @@ const NotifyAuto = () => {
     const [isStop, setIsStop] = useState(true);
     const [intervalId, setIntervalId] = useState(-1);
     const [countNotify, setCountNotify] = useState(0);
+    const [isShowPract, setIsShowPract] = useState(false);
     // const isDarkRef = useRef(null);
 
     const styleFlexRow = { display: 'flex', flexDirection: 'row' };
@@ -337,9 +338,10 @@ const NotifyAuto = () => {
         setIsLoadQuestion(true);
 
         if (prac.style.display === "block") {
-
+            setIsShowPract(false)
             document.getElementById('pracWord').style.display = "none";
         } else {
+            setIsShowPract(true)
             document.getElementById('pracWord').style.display = "block";
             onHideWhenPrac();
         }
@@ -528,6 +530,7 @@ const NotifyAuto = () => {
                     getDataFromExcel = {getDataFromExcel}
                     setSheet = {setSheet}
                     SHEET_NAME = {SHEET_NAME}
+                    isShowPract = {isShowPract}
                     />
             </div>
 

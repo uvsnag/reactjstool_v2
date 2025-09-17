@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AICk from './AIBoard';
+import AIBoard from './AIBoard';
 import StackBtn from './StackButton';
 import './style-common-module.css';
 
@@ -49,7 +49,7 @@ const MulAI = ({size, prefix, enableHis, heightProp}) => {
             <div class='container-block'>
                 {/* Create an array of a specific length and then map over it */}
                 {Array.from({ length: numAI }).map((_, index) => (
-                    <div className={`block block-${column}cols`}><AICk key={index} index={index} prefix={prefix}
+                    <div className={`block block-${column}cols`}><AIBoard key={index} index={index} prefix={prefix}
                     enableHis={enableHis} heightRes ={height} /></div>
                 ))}
 

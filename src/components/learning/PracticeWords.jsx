@@ -5,6 +5,7 @@ import _ from 'lodash';
 import '../../common/style-template.css';
 import { FaVolumeUp, FaRedo, FaVolumeMute } from 'react-icons/fa';
 import VoiceToText from '../common/VoiceToText';
+import AIBoard from '../common/AIBoard';
 
 import { validateArrStrCheck, arrStrCheckToStr} from "./commonElearn";
 
@@ -24,6 +25,7 @@ const PractWords = (props) => {
     const [mode, setMode] = useState(MODE_NONE);
     const [isStartRecord, setIsStartRecord] = useState(false);
     const [randomAns, setRandomAns] = useState([]);
+    const [remainCount, setRemainCount] = useState(0);
     const inputAns = useRef(null)
 
     useEffect(() => {
@@ -66,6 +68,7 @@ const PractWords = (props) => {
             // setArrLineTemp(arrTemp);
             arrLineTemp = arrTemp;
             console.log('arrTemp:', arrTemp)
+            setRemainCount(arrTemp.length)
             let quest = '';
             if (_.isEmpty(item.customDefine)) {
                 // setQuestion(item.vi);
@@ -176,6 +179,7 @@ const PractWords = (props) => {
     }
 
     return (
+        <div className="container-55">
         <div className='prac'>
            
             <div>{_.isEmpty(lastEng) ? <div></div> : <i> {lastEng} : {lastVie}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastEng, true)} />  </i>}
@@ -222,17 +226,26 @@ const PractWords = (props) => {
            
            <input className='button-12 inline' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
             
-         <div class="tooltip">?
-                    <span class="tooltiptext">
-                        <p>ArrowUp: Record/Stop</p>
-                        <p>ShiftLeft: Show answer</p>
-                        <p>ShiftRight: Speak Last Eng</p>
-                        <p>ControlLeft: Speak Current</p>
-                        <p>ControlRight: Turn On/Off Speak</p>
-                        <p>Home: Reload data</p>
-                        <p> End: Next Answer</p>
-                        </span>
-                </div>
+            <div class="tooltip">?
+                <span class="tooltiptext">
+                    <p>ArrowUp: Record/Stop</p>
+                    <p>ShiftLeft: Show answer</p>
+                    <p>ShiftRight: Speak Last Eng</p>
+                    <p>ControlLeft: Speak Current</p>
+                    <p>ControlRight: Turn On/Off Speak</p>
+                    <p>Home: Reload data</p>
+                    <p> End: Next Answer</p>
+                    </span>
+            </div>
+            <span >    {remainCount}</span>
+        </div>
+        <div>
+            <AIBoard key={0} index={0} prefix='pract_eng'
+                    enableHis={false} heightRes ={140} 
+                    isMini = {true} statement ={question}
+                    isShowPract = {props.isShowPract}
+                    />
+        </div>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { GoogleGenAI } from "@google/genai";
 import { Configuration, OpenAIApi } from "openai-edge"
-import { toggleCollapse, KEY_GPT_NM, KEY_GEMINI_NM } from '../../common/common.js';
+import { toggleCollapse, KEY_GPT_NM, KEY_GEMINI_NM, collapseElement } from '../../common/common.js';
 import VoiceToText from './VoiceToText.jsx';
 import './style-common-module.css';
 import loadingImg from './loading.webp';
@@ -16,7 +16,7 @@ const MODEL_AI = [
     { value: "gpt-4o", name: "gpt-4o", type: TP_GPT },
 ]
 
-const AICk = ({ index, prefix, enableHis, heightRes }) => {
+const AIBoard = ({ index, prefix, enableHis, heightRes , isMini, statement, isShowPract}) => {
     const keyGeminiNm = `gemi-key-${prefix}${index}`;
     const keyChatGptNm = `gpt-key-${prefix}${index}`;
     const sysPromptNm = `sys-promt-${prefix}${index}`;
@@ -32,6 +32,7 @@ const AICk = ({ index, prefix, enableHis, heightRes }) => {
 
     const [prompt, setPrompt] = useState("");
     const [sysPrompt, setSysPrompt] = useState("");
+    const [isUseAIMini, setIsUseAIMini] = useState(false);
     useEffect(() => {
         let gmLcal =  localStorage.getItem(keyGeminiNm);
         let gptLcal =  localStorage.getItem(keyChatGptNm);
@@ -50,6 +51,10 @@ const AICk = ({ index, prefix, enableHis, heightRes }) => {
         aiGem.current = new GoogleGenAI({ apiKey: locGem });
         openai.current = new OpenAIApi(new Configuration({ apiKey: locgpt }));
     }, []);
+
+    useEffect(() => {
+       onAskMini();
+    }, [statement]);
 
     useEffect(() => {
         aiType = model.type;
@@ -98,7 +103,21 @@ const AICk = ({ index, prefix, enableHis, heightRes }) => {
         }
     }, [sysPrompt]);
 
-
+    function onAskMini(){
+        let isUseMiniAI=  document.getElementById(`enable-ai-mini-${prefix}${index}`)?.checked;
+        if (isMini && statement && isShowPract && isUseMiniAI) {
+            let isToggleMiniAI=  document.getElementById(`toggle-ai-mini-${prefix}${index}`)?.checked;
+            askDec(statement)
+            console.log('ask: ', statement)
+            if(isToggleMiniAI){
+                collapseElement(`gemini-${prefix}${index}`)
+            }
+        }
+    }
+    function reloadMini(){
+       onAskMini()
+       collapseElement(`gemini-${prefix}${index}`)
+    }
 
     async function askGemini(promVal) {
         const aiResponse = await aiGem.current.models.generateContent({
@@ -246,7 +265,11 @@ const AICk = ({ index, prefix, enableHis, heightRes }) => {
 
     return (
         <div>
-            <div onClick={() => toggleCollapse(`gemini-${prefix}${index}`)}>{`Instance ${index + 1}`}</div>
+            <div onClick={() => toggleCollapse(`gemini-${prefix}${index}`)}>{`Instance ${index + 1}`} 
+                 {isMini &&<label> <input  id= {`enable-ai-mini-${prefix}${index}`} type="checkbox" defaultChecked={false}/>Enable</label>}
+                 {isMini && <label> <input  id= {`toggle-ai-mini-${prefix}${index}`} type="checkbox" defaultChecked={false}/>Toggle</label>}
+                 {isMini && <input onClick={() => reloadMini()} type="submit" value="Reload"/>}
+                 </div>
             <div className='collapse-content bolder' id={`gemini-${prefix}${index}`}>
                 <img id={`loading${prefix}${index}`} className='collapse-content loading' src={loadingImg} />
                 <div style={{ height: `${heightRes}px` }} id={`response-ai-${prefix}${index}`} className="response-ai">
@@ -301,4 +324,4 @@ const AICk = ({ index, prefix, enableHis, heightRes }) => {
     )
 
 };
-export default AICk;
+export default AIBoard;
