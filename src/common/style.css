@@ -209,7 +209,7 @@ html {
     position: relative;
     display: inline-block;
     border-bottom: 1px dotted black;
-    margin-left: 20%;
+    margin-left: 10%;
 }
 
 .tooltip .tooltiptext {

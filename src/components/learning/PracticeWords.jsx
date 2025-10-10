@@ -26,6 +26,7 @@ const PractWords = (props) => {
     const [isStartRecord, setIsStartRecord] = useState(false);
     const [randomAns, setRandomAns] = useState([]);
     const [remainCount, setRemainCount] = useState(0);
+    const [currEng, setCurrEng] = useState(null);
     const inputAns = useRef(null)
 
     useEffect(() => {
@@ -51,9 +52,14 @@ const PractWords = (props) => {
         isCheckedRevert = document.getElementById("revertAsw").checked;
         
         if (!_.isEmpty(props.items)) {
+            let isStore = props?.sheet?.startsWith(props?.STORE_ALIAS);
+            let listSents = isStore? (localStorage.getItem(props.sheet) ?  JSON.parse(localStorage.getItem(props.sheet)) : []) : props.items;
             let item = null;
-            let arrTemp = (_.isEmpty(arrLineTemp)|| isInit )? _.cloneDeep(props.items) : _.cloneDeep(arrLineTemp);
+            let arrTemp = (_.isEmpty(arrLineTemp)|| isInit )? _.cloneDeep(listSents) : _.cloneDeep(arrLineTemp);
             let fullanswers = _.cloneDeep(props.items)
+            if(_.isEmpty(arrTemp)){
+                return
+            }
             if (props.oderRandom === 'random') {
                 const validOptions = arrTemp.filter(item => item.eng !== lastEngVar);
 
@@ -69,6 +75,7 @@ const PractWords = (props) => {
             arrLineTemp = arrTemp;
             console.log('arrTemp:', arrTemp)
             setRemainCount(arrTemp.length)
+            setCurrEng(item.eng)
             let quest = '';
             if (_.isEmpty(item.customDefine)) {
                 // setQuestion(item.vi);
@@ -183,16 +190,18 @@ const PractWords = (props) => {
         <div className='prac'>
            
             <div>{_.isEmpty(lastEng) ? <div></div> : <i> {lastEng} : {lastVie}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastEng, true)} />  </i>}
-             </div>
-             <select className='button-33 inline ' name="sheet" id="slsheet" onChange={(e) => {
-                            props.setSheet(e.target.value)
-                        }}>
-                            {props.SHEET_NAME.map((option, index) => (
-                                <option key={option.range} value={option.range}>
-                                    {`${option.name}`}
-                                </option>
-                            ))}
-                        </select>
+                </div>
+                <select className='button-33 inline ' value={props.sheet} name="sheet" id="slsheet" onChange={(e) => {
+                    if (e.target.value && e.target.value != props.sheet) {
+                        props.setSheet(e.target.value)
+                    }
+                }}>
+                    {props.SHEET_NAME.map((option, index) => (
+                        <option key={option.range} value={option.range}>
+                            {`${option.name}`}
+                        </option>
+                    ))}
+                </select>
             <input type="number" className='width-30'id='num-of-ans' defaultValue={3}  />
             <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>⇆</label>
            
@@ -208,6 +217,7 @@ const PractWords = (props) => {
                
              <VoiceToText setText={setInputAns} index ={0}></VoiceToText>
               <br/>
+              <input className='button-12 inline' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
             <select className='button-33'
                 id="combo-answer"
                 name="combo-ans"
@@ -224,8 +234,12 @@ const PractWords = (props) => {
             </select>
            {/*  <div className='msg'>{errorMs === 'wrong!' ? <FaRegFrown /> : <FaRegSmile />}</div> */}
            
-           <input className='button-12 inline' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
+           
             
+           <button className='button-12 inline' onClick={() => { 
+                props.onRemoveStoreItem(currEng, onChangeQuestion);
+            }}>X</button>
+           <button className='button-12 inline' onClick={() => onChangeQuestion()}>N</button>
             <div class="tooltip">?
                 <span class="tooltiptext">
                     <p>ArrowUp: Record/Stop</p>
@@ -234,7 +248,7 @@ const PractWords = (props) => {
                     <p>ControlLeft: Speak Current</p>
                     <p>ControlRight: Turn On/Off Speak</p>
                     <p>Home: Reload data</p>
-                    <p> End: Next Answer</p>
+                    <p>End: Next Answer</p>
                     </span>
             </div>
             <span >    {remainCount}</span>

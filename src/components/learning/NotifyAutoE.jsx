@@ -15,7 +15,7 @@ import { useCookies } from 'react-cookie'
 import MulAI from '../common/MultiAI.jsx';
 import { toggleCollapse } from '../../common/common.js';
 
-
+const STORE_ALIAS ='STORE_E'
 const SHEET_NAME = [
     {range:"Notify!A2:C500", name:"Board1"},
     {range:"Notify!E2:G500", name:"Board2"},
@@ -24,6 +24,9 @@ const SHEET_NAME = [
     {range:"Notify!Q2:S500", name:"Board5"},
     {range:"Notify!U2:W500", name:"Board6"},
     {range:"Notify!Y2:AA500", name:"Board7"},
+    {range:`${STORE_ALIAS}1`, name:"Store1"},
+    {range:`${STORE_ALIAS}2`, name:"Store2"},
+    {range:`${STORE_ALIAS}3`, name:"Store3"},
 ]
 // const SHEET_NAME = [
 //     {range:"Words1!A1:C500", name:"Words1"},
@@ -141,9 +144,15 @@ const NotifyAuto = () => {
 
 
     /** */
-    const getDataFromExcel = () => {
-        gapi.load("client:auth2", initClient);
-
+  const getDataFromExcel = () => {
+        if(sheet?.startsWith(STORE_ALIAS)){
+            let storeData = localStorage.getItem(sheet) ?  JSON.parse(localStorage.getItem(sheet)) : [];
+            if(!_.isEmpty(storeData)){
+                setItems(storeData)
+            }
+        }else{
+            gapi.load("client:auth2", initClient);
+        }
     }
 
     /** */
@@ -396,6 +405,29 @@ const NotifyAuto = () => {
     const handleChangeCookie = e => {
         setStrContinue(e.target.value);
     };
+
+    
+    function addStore() {
+        const storeName = document.getElementById("store-index")?.value;
+        let storeData = localStorage.getItem(storeName) ? JSON.parse(localStorage.getItem(storeName)) : []
+        localStorage.setItem(storeName, JSON.stringify([...storeData, ...items]));
+    }
+
+    function clearStore() {
+        const storeName = document.getElementById("store-index")?.value;
+        localStorage.setItem(storeName, []);
+    }
+
+    function onRemoveStoreItem(currEng, callback) {
+        console.log('sadsa')
+        if(sheet?.startsWith(STORE_ALIAS)){
+            let storeData = localStorage.getItem(sheet) ? JSON.parse(localStorage.getItem(sheet)) : []
+            storeData = storeData.filter(itm => itm.eng != currEng);
+            localStorage.setItem(sheet, JSON.stringify([...storeData]));
+            callback();
+        }
+    }
+
     return (
         <div className="">
             <div id='notify-control'>
@@ -405,8 +437,10 @@ const NotifyAuto = () => {
                         <br />
                     </div>
                     <div className='option-right notify-right'>
-                        <select className='button-33 inline' name="sheet" id="slsheet" onChange={(e) => {
-                            setSheet(e.target.value)
+                        <select className='button-33 inline' value ={sheet} name="sheet" id="slsheet" onChange={(e) => {
+                            if(e.target.value && e.target.value != sheet){
+                                setSheet(e.target.value)
+                            }
                         }}>
                             {SHEET_NAME.map((option, index) => (
                                 <option key={option.range} value={option.range}>
@@ -415,7 +449,15 @@ const NotifyAuto = () => {
                             ))}
                         </select>
                         <button className='button-12 inline' onClick={() => getDataFromExcel()}><FaRedo/></button>
-
+                        <div className="inline">
+                            <select id="store-index" name="store-index" className='button-12'>
+                                <option value={`${STORE_ALIAS}1`}>Store1</option>
+                                <option value={`${STORE_ALIAS}2`}>Store2</option>
+                                <option value={`${STORE_ALIAS}3`}>Store3</option>
+                            </select>
+                            <button className='button-12 inline' onClick={() => addStore()}>Add</button>
+                            <button className='button-12 inline' onClick={() => clearStore()}>Clear</button>
+                        </div>
                         <select className='button-33' name="genData" id="slGenData" onChange={(e) => {
                             onChangeOrder(e.target.value)
                         }}>
@@ -528,8 +570,11 @@ const NotifyAuto = () => {
                     speakText={speakText}
                     isLoadQuestion={isLoadQuestion} 
                     getDataFromExcel = {getDataFromExcel}
+                    onRemoveStoreItem = {onRemoveStoreItem}
                     setSheet = {setSheet}
+                    sheet = {sheet}
                     SHEET_NAME = {SHEET_NAME}
+                    STORE_ALIAS = {STORE_ALIAS}
                     isShowPract = {isShowPract}
                     />
             </div>
