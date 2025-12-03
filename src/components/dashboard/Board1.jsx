@@ -21,9 +21,9 @@ const Board1 = () => {
     return (
         <div className="">
             <div className="title-board" onClick={() => toggleCollapse("pract-section")}>Practice</div>
-            <div className="container-64 collapse-content" id="pract-section">
+            <div className="container-91 collapse-content" id="pract-section">
 
-                <NotifyAuto></NotifyAuto>
+                <NotifyAuto></NotifyAuto><br/>
                 <div>
                     <div className="title-board" onClick={() => toggleCollapse("speed-section")}>Speed</div>
                     <div id="speed-section" className='collapse-content '>

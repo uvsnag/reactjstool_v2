@@ -51,6 +51,7 @@ const NextSentence =  ({heightProp}) =>  {
                                 enableHis={false} heightRes ={140} 
                                 isMini = {true} statement ={currentSentence}
                                 isShowPract = {true}
+                                lastSentence = {null}
                                 />
                     </div>
                 </div>

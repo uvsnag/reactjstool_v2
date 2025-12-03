@@ -16,7 +16,7 @@ const MODEL_AI = [
     { value: "gpt-4o", name: "gpt-4o", type: TP_GPT },
 ]
 
-const AIBoard = ({ index, prefix, enableHis, heightRes , isMini, statement, isShowPract}) => {
+const AIBoard = ({ index, prefix, enableHis, heightRes , isMini, statement, isShowPract, lastSentence}) => {
     const keyGeminiNm = `gemi-key-${prefix}${index}`;
     const keyChatGptNm = `gpt-key-${prefix}${index}`;
     const sysPromptNm = `sys-promt-${prefix}${index}`;
@@ -103,19 +103,24 @@ const AIBoard = ({ index, prefix, enableHis, heightRes , isMini, statement, isSh
         }
     }, [sysPrompt]);
 
-    function onAskMini(){
+    function onAskMini(isProcess=false, spSentence = null){
+        let promp = spSentence ?? statement;
         let isUseMiniAI=  document.getElementById(`enable-ai-mini-${prefix}${index}`)?.checked;
-        if (isMini && statement && isShowPract && isUseMiniAI) {
+        if (isMini && promp && isShowPract && (isUseMiniAI || isProcess)) {
             let isToggleMiniAI=  document.getElementById(`toggle-ai-mini-${prefix}${index}`)?.checked;
-            askDec(statement)
-            console.log('ask: ', statement)
+            askDec(promp)
+            console.log('ask: ', promp)
             if(isToggleMiniAI){
                 collapseElement(`gemini-${prefix}${index}`)
             }
         }
     }
     function reloadMini(){
-       onAskMini()
+       onAskMini(true)
+       collapseElement(`gemini-${prefix}${index}`)
+    }
+    function specSentAIMini(spSentence){
+       onAskMini(true, spSentence)
        collapseElement(`gemini-${prefix}${index}`)
     }
 
@@ -268,7 +273,8 @@ const AIBoard = ({ index, prefix, enableHis, heightRes , isMini, statement, isSh
             <div onClick={() => toggleCollapse(`gemini-${prefix}${index}`)}>{`Instance ${index + 1}`} 
                  {isMini &&<label> <input  id= {`enable-ai-mini-${prefix}${index}`} type="checkbox" defaultChecked={false}/>Enable</label>}
                  {isMini && <label> <input  id= {`toggle-ai-mini-${prefix}${index}`} type="checkbox" defaultChecked={false}/>Toggle</label>}
-                 {isMini && <input onClick={() => reloadMini()} type="submit" value="Reload"/>}
+                 {isMini && <input onClick={() => reloadMini()} type="submit" value="Curr"/>}
+                 {isMini && <input onClick={() => specSentAIMini(lastSentence)} type="submit" value="Last"/>}
                  </div>
             <div className='collapse-content bolder' id={`gemini-${prefix}${index}`}>
                 <img id={`loading${prefix}${index}`} className='collapse-content loading' src={loadingImg} />

@@ -133,7 +133,7 @@ html {
      width: 15% !important
  }
     
-@media (min-width: 700px) {
+/* @media (min-width: 700px) { */
     .option-right {
         width: 37%;
         float: right;
@@ -153,19 +153,15 @@ html {
         margin: 15px 15px 15px 15px;
         padding: 15px 15px 15px 15px;
     }
-}
+/* } */
 
-@media (min-width: 700px) {
+/* @media (min-width: 700px) { */
     .block {
         padding: 5px 5px 35px 5px;
     }
-}
+/* } */
 
-@media (max-width: 700px) {
-    /* .option-right {
-        text-align: center;
-        width: 100%;
-    } */
+/* @media (max-width: 700px) {
 
     .button-33,
     .button-59,
@@ -197,13 +193,12 @@ html {
     }
 
     .prac {
-        /* width: calc(100% - 6px); */
     }
 
     .control-footer {
         text-align: center;
     }
-}
+} */
 
 .tooltip {
     position: relative;
@@ -489,6 +484,14 @@ img.flip  {
     grid-template-columns: 60% 40%; /* Two equal columns */
     gap: 3px;
 }
+.container-91 {
+    display: grid !important;
+    grid-template-columns: 90% 10%; /* Two equal columns */
+    gap: 3px;
+}
 .title-board{
     font-weight: bold;
+}
+.hide-ai .ai-pract{
+    display: none;
 }

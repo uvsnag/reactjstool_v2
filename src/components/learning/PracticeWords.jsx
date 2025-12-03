@@ -22,6 +22,7 @@ const PractWords = (props) => {
     const [showAns, setShowAns] = useState('');
     const [lastEng, setLastEng] = useState('');
     const [lastVie, setLastVie] = useState('');
+    const [classPract, setClassPract] = useState('container-55');
     const [mode, setMode] = useState(MODE_NONE);
     const [isStartRecord, setIsStartRecord] = useState(false);
     const [randomAns, setRandomAns] = useState([]);
@@ -113,6 +114,14 @@ const PractWords = (props) => {
         }
         setRandomAns([...randomAns].sort());
     };
+
+    function onNextQuestion() {
+        if (_.isEmpty(showAns)) {
+            onShow()
+        } else {
+            nextQuestion();
+        }
+    }
     const onCheck = () => {
         // const isChecked = document.getElementById("revertAsw").checked;
         var ans = document.getElementById('answer').value;
@@ -124,25 +133,26 @@ const PractWords = (props) => {
             var answ = answer
             if (ans.trim().toUpperCase() === answ.toUpperCase().trim()) {
                 /* setErrorMs('correct!'); */
-                document.getElementById('answer').value = "";
-                if (isCheckedRevert) {
-                    lastEngVar = question;
-                     setLastEng(question);
-                     setLastVie(answer);
+                // document.getElementById('answer').value = "";
+                // if (isCheckedRevert) {
+                //     lastEngVar = question;
+                //      setLastEng(question);
+                //      setLastVie(answer);
                      
-                }else{
-                    lastEngVar = answer;
-                    setLastEng(answer);
-                    setLastVie(question);
-                }
-                if(mode === MODE_SPEAKE_CHANGE_QUST){
-                    if(isCheckedRevert){
-                        props.speakText(question, true);
-                    }else{
-                        props.speakText(answer, true);
-                    }
-                }
-                onChangeQuestion();
+                // }else{
+                //     lastEngVar = answer;
+                //     setLastEng(answer);
+                //     setLastVie(question);
+                // }
+                // if(mode === MODE_SPEAKE_CHANGE_QUST){
+                //     if(isCheckedRevert){
+                //         props.speakText(question, true);
+                //     }else{
+                //         props.speakText(answer, true);
+                //     }
+                // }
+                // onChangeQuestion();
+                nextQuestion();
             } else {
                 let arr = validateArrStrCheck(ans, answer, 0)
                 setShowAns(arrStrCheckToStr(arr))
@@ -150,6 +160,28 @@ const PractWords = (props) => {
             }
         }
     };
+
+    function nextQuestion() {
+        document.getElementById('answer').value = "";
+        if (isCheckedRevert) {
+            lastEngVar = question;
+            setLastEng(question);
+            setLastVie(answer);
+
+        } else {
+            lastEngVar = answer;
+            setLastEng(answer);
+            setLastVie(question);
+        }
+        if (mode === MODE_SPEAKE_CHANGE_QUST) {
+            if (isCheckedRevert) {
+                props.speakText(question, true);
+            } else {
+                props.speakText(answer, true);
+            }
+        }
+        onChangeQuestion();
+    }
     const handleKeyDown = (e) => {
         if (e.key === 'ArrowUp') {
             // processRecord();
@@ -170,7 +202,7 @@ const PractWords = (props) => {
             setMode(mode===MODE_NONE?MODE_SPEAKE_CHANGE_QUST:MODE_NONE);
         }
         if (e.nativeEvent.code === 'End') {
-            onChangeQuestion();
+            nextQuestion();
         }
         if (e.nativeEvent.code === 'Home') {
             props.getDataFromExcel();
@@ -184,10 +216,19 @@ const PractWords = (props) => {
         }
         
     }
+    const hideAI = () => {
+         if (classPract!=='container-55') {
+            setClassPract('container-55')
+        } else {
+             setClassPract('hide-ai')
+        }
+        
+    }
 
     return (
-        <div className="container-55">
+        <div className={classPract}>
         <div className='prac'>
+            
            
             <div>{_.isEmpty(lastEng) ? <div></div> : <i> {lastEng} : {lastVie}<FaVolumeUp className='iconSound' onClick={() => props.speakText(lastEng, true)} />  </i>}
                 </div>
@@ -205,8 +246,12 @@ const PractWords = (props) => {
             <input type="number" className='width-30'id='num-of-ans' defaultValue={3}  />
             <label><input id = 'revertAsw' type="checkbox" defaultChecked={false}/>⇆</label>
            
-            <input className='button-12 inline' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
-            <button className='button-12 inline' onClick={() => setMode(mode === MODE_NONE ? MODE_SPEAKE_CHANGE_QUST : MODE_NONE)}>{mode === MODE_NONE ? <FaVolumeMute /> : <FaVolumeUp />}</button>
+           
+            <button className='button-12 inline' onClick={() => onNextQuestion()}>Next</button>
+            <button className='button-12 inline' onClick={() => { 
+                props.onRemoveStoreItem(currEng, nextQuestion);
+            }}>X</button>
+           
             <button className='button-12 inline' onClick={() => props.getDataFromExcel()}><FaRedo /></button>
              
             <br />
@@ -216,6 +261,7 @@ const PractWords = (props) => {
             <input type="text" id='answer' autocomplete="off" ref={inputAns} onKeyDown={e => handleKeyDown(e)} />
                
              <VoiceToText setText={setInputAns} index ={0}></VoiceToText>
+              
               <br/>
               <input className='button-12 inline' type='submit' value="Check" id='btnSubmit' onClick={() => onCheck()} />
             <select className='button-33'
@@ -234,12 +280,8 @@ const PractWords = (props) => {
             </select>
            {/*  <div className='msg'>{errorMs === 'wrong!' ? <FaRegFrown /> : <FaRegSmile />}</div> */}
            
-           
-            
-           <button className='button-12 inline' onClick={() => { 
-                props.onRemoveStoreItem(currEng, onChangeQuestion);
-            }}>X</button>
-           <button className='button-12 inline' onClick={() => onChangeQuestion()}>N</button>
+            <input className='button-12 inline' type='submit' value="Show Ans" id='btnShowAns' onClick={() => onShow()} />
+          <button className='button-12 inline' onClick={() => setMode(mode === MODE_NONE ? MODE_SPEAKE_CHANGE_QUST : MODE_NONE)}>{mode === MODE_NONE ? <FaVolumeMute /> : <FaVolumeUp />}</button>
             <div class="tooltip">?
                 <span class="tooltiptext">
                     <p>ArrowUp: Record/Stop</p>
@@ -252,12 +294,14 @@ const PractWords = (props) => {
                     </span>
             </div>
             <span >    {remainCount}</span>
+            <button  onClick={() => hideAI()}>Hide AI</button>
         </div>
-        <div>
+        <div className ="ai-pract">
             <AIBoard key={0} index={0} prefix='pract_eng'
                     enableHis={false} heightRes ={140} 
                     isMini = {true} statement ={question}
                     isShowPract = {props.isShowPract}
+                    lastSentence = {lastVie}
                     />
         </div>
         </div>
