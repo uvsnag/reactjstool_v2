@@ -7,13 +7,8 @@ import MulAI from '../common/MultiAI.jsx';
 import StackBtn from '../common/StackButton.jsx';
 let player;
 let interval;
-let currentTime;
-let startTime = 0;
-let nextTime = 100000;
 let oldClickClass = null;
 let isReplay = true;
-let modeReplay = '';
-let mode = '';
 let indexOfCurrSub = 0;
 
 let customLoopMode = null;
@@ -28,44 +23,22 @@ console.log("int..ed variables");
 const YoutubeSub = () => {
 
     const [arrSub, setArrSub] = useState([]);
-    const [widthYt, setWidthYt] = useState(1080);
-    const [heightYt, setHeightYt] = useState(720);
     const [customLoopAs, setCustomLoopAs] = useState("");
     const [customLoopBs, setCustomLoopBs] = useState("");
     const [size, setSize] = useState(390);
     const [height, setHeight] = useState(10);
     const [top, setTop] = useState(0);
+    const [subHeight, setSubHeight] = useState(300);
 
     const [url, setUrl] = useState("");
     const [sub, setSub] = useState("");
 
-    const MODE_NOMAL = 'NOMAL';
-    const MODE_FOCUS_SUB = 'FOCUS_SUB';
-    const MODE_FOCUS_SUB2 = 'FOCUS_SUB2';
-
-    const REPLAY_NO = 'REPLACE_NO';
-    const REPLAY_YES = 'REPLACE_YES';
-
-
-
     const LOOP_CUSTOM = 'LOOP_CUSTOM';
-    const LOOP_NONE = 'LOOP_NONE';
 
     const NOT_VALUE_TIME = 1;
     const FIXED_VALUE = 3;
     const TIME_MAIN_INTERVAL = 1000;
 
-    const SIZE_1200X700 = '1200X700';
-    const SIZE_900X630 = '900X630';
-    const SIZE_800X560 = '800X560';
-    const SIZE_640X390 = '640X390';
-    const SIZE_400X280 = '400X280';
-    const SIZE_300X210 = '300X210';
-    const SIZE_150X120 = '150X120';
-    const SIZE_100X80 = '100X80';
-    const SIZE_70X50 = '70X50';
-    const SIZE_1X1 = '1X1';
-    const SIZE_CUSTOM = 'custom';
 
     useEffect(() => {
         if (!_.isEmpty(localStorage)) {
@@ -77,29 +50,26 @@ const YoutubeSub = () => {
             const tag = document.createElement('script');
             tag.src = 'https://www.youtube.com/iframe_api';
 
-            // onYouTubeIframeAPIReady will load the video after the script is loaded
             window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
             const firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
         } else { // If script is already there, load the video directly
-            // loadVideo();
             onYouTubeIframeAPIReady();
         }
+        toggleCollapse("mobile-control");
+        toggleCollapse("hide2");
         document.getElementById(`cus-loop-control`).style.display = "block";
         document.getElementById(`timemisus`).value = 2;
-        mode = MODE_NOMAL;
         customLoopMode = LOOP_CUSTOM;
         customLoopAVal = NOT_VALUE_TIME;
         customLoopBVal = NOT_VALUE_TIME;
-        modeReplay = REPLAY_YES;
         return () => {
             clearInterval(interval);
             clearInterval(intervalCusLoop);
         };
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
         if (_.isEmpty(arrSub)) {
@@ -121,7 +91,7 @@ const YoutubeSub = () => {
         }
     };
     const handleBlurB = () => {
-         if (customLoopBs) {
+        if (customLoopBs) {
             customLoopBVal = Number(customLoopBs);
             clearInterval(intervalCusLoop);
             createInteval();
@@ -139,7 +109,7 @@ const YoutubeSub = () => {
         } else {
             let value = (Number(customLoopBs) + (isCre ? (SECOND_UNIT) : (-SECOND_UNIT))).toFixed(FIXED_VALUE);
             setCustomLoopBs(value);
-             clearInterval(intervalCusLoop);
+            clearInterval(intervalCusLoop);
             customLoopBVal = value;
             createInteval();
         }
@@ -150,6 +120,11 @@ const YoutubeSub = () => {
         localStorage.setItem(subCookieNm, sub);
     }, [sub]);
 
+    useEffect(() => {
+        localStorage.setItem(subCookieNm, sub);
+        document.getElementById(`sub-control`).style.height = `${subHeight}px`;
+    }, [subHeight]);
+
     const handleSizeChange = (event) => {
         let valueSz = event.target.value;
         setSize(valueSz); // Set the size based on the slider value
@@ -157,6 +132,9 @@ const YoutubeSub = () => {
         setTop(0); // Set the size based on the slider value
         setAttTop(0);
         player.setSize(valueSz * 1.7, valueSz);
+    };
+    const handleSubChange = (event) => {
+        setSubHeight(event.target.value); 
     };
     const handleMaskMedia = (event) => {
         console.log(size)
@@ -174,11 +152,15 @@ const YoutubeSub = () => {
     }
     const onYouTubeIframeAPIReady = () => {
         player = new window.YT.Player('player', {
-            height: 390,
-            width: 640,
+            height: 390 / 3,
+            width: 640 / 3,
             videoId: "",
             playerVars: {
-                'playsinline': 1
+                fs: 0,
+                iv_load_policy: 3,
+                'playsinline': 1,
+                modestbranding: 0,
+                controls: 0
             },
             events: {
                 'onReady': onPlayerReady,
@@ -206,7 +188,6 @@ const YoutubeSub = () => {
                 if (hour > 0) {
                     mmss = `${hour}:${mmss}`
                 }
-                currentTime = currTime;
                 let currentSubEle = null;
                 let offsetOgr = document.getElementById(`sub-item0:00`);
                 let arrTimeNums = arrTime.map(itm => {
@@ -238,26 +219,18 @@ const YoutubeSub = () => {
                 }
 
                 if (currentSubEle && offsetOgr) {
-                    let MINUS_TOP = _.isEqual(mode, MODE_FOCUS_SUB) ? -10 :
-                        document.getElementById(`sub-control`).offsetHeight / 3;
+                    let MINUS_TOP =  document.getElementById(`sub-control`).offsetHeight / 3;
                     let distanTop = (offsetOgr) ? offsetOgr.offsetTop : 0;
                     var scrollDiv = currentSubEle.offsetTop - distanTop - MINUS_TOP;
                     let subControl = document.getElementById('sub-control');
                     subControl.scrollTo({ top: (scrollDiv), behavior: 'smooth' });
                 }
 
-                if (_.isEqual(customLoopMode, LOOP_NONE) && _.isEqual(currentTime, nextTime.toString()) && isReplay === true && modeReplay === REPLAY_YES) {
-                    player.seekTo(startTime, true)
-                }
             }
         }, TIME_MAIN_INTERVAL);
 
     }
 
-    const onChangeWith = (value) => {
-        setWidthYt(value);
-        setHeightYt(value * 0.7);
-    };
     const loadSub = () => {
         var txtSub = document.getElementById('media-sub').value;
         var lineSubArr = txtSub.split('\n');
@@ -265,6 +238,17 @@ const YoutubeSub = () => {
         let tempTime = '';
         let arrTemp = [];
         arrTime = []
+
+        // const timeRegex = /^\d{2}:\d{2}/;
+
+        // lineSubArr = lineSubArr.filter((line, index) => {
+        //     if (index % 2 === 0) {           // odd index
+        //         return timeRegex.test(line);  // must start with HH:MM
+        //     }
+        //     return true;                    // keep even lines
+        // });
+
+
         lineSubArr.forEach((line, index) => {
             let lineSub = line.trim();
             if (count === 1) {
@@ -295,7 +279,6 @@ const YoutubeSub = () => {
     const onClickSub = (time, value) => {
         console.log("=====onClickSub=====");
         isReplay = true;
-        startTime = time.split(':').reduce((acc, time) => (60 * acc) + +time);
         indexOfCurrSub = arrSub.length - 1;
 
         for (let i = 0; i < arrSub.length; i++) {
@@ -303,9 +286,7 @@ const YoutubeSub = () => {
                 indexOfCurrSub = i;
             }
         }
-        nextTime = arrSub[indexOfCurrSub + 1].time.split(':').reduce((acc, time) => (60 * acc) + +time);
-
-        player.seekTo(startTime, true);
+        loopSub(arrSub[indexOfCurrSub], arrSub[indexOfCurrSub + 1]);
 
     };
     const onProcess = () => {
@@ -324,46 +305,6 @@ const YoutubeSub = () => {
     }
     const onChangeReplay = () => {
         isReplay = false;
-    }
-    const onChangeSize = (value) => {
-        switch (value) {
-            case SIZE_1200X700:
-                player.setSize(1200, 700);
-                break;
-            case SIZE_900X630:
-                player.setSize(900, 630);
-                break;
-            case SIZE_800X560:
-                player.setSize(800, 650);
-                break;
-            case SIZE_640X390:
-                player.setSize(640, 390);
-                break;
-            case SIZE_300X210:
-                player.setSize(300, 210);
-                break;
-            case SIZE_150X120:
-                player.setSize(150, 120);
-                break;
-            case SIZE_100X80:
-                player.setSize(100, 80);
-                break;
-            case SIZE_70X50:
-                player.setSize(70, 50);
-                break;
-            case SIZE_400X280:
-                player.setSize(400, 280);
-                break;
-            case SIZE_1X1:
-                player.setSize(1, 1);
-                break;
-            case SIZE_CUSTOM:
-                player.setSize(widthYt, heightYt);
-                break;
-            default:
-                console.log("Error: Not have data to set size!");
-                break;
-        }
     }
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -388,18 +329,23 @@ const YoutubeSub = () => {
     }
     const onNextLine = (e) => {
         indexOfCurrSub++;
-        startTime = arrSub[indexOfCurrSub].time.split(':').reduce((acc, time) => (60 * acc) + +time);
-        nextTime = arrSub[indexOfCurrSub + 1].time.split(':').reduce((acc, time) => (60 * acc) + +time);
-        player.seekTo(startTime, true);
+        loopSub(arrSub[indexOfCurrSub], arrSub[indexOfCurrSub + 1]);
     }
     const onPrevLine = (e) => {
         if (indexOfCurrSub > 0) {
             indexOfCurrSub--;
-            startTime = arrSub[indexOfCurrSub].time.split(':').reduce((acc, time) => (60 * acc) + +time);
-            nextTime = arrSub[indexOfCurrSub + 1].time.split(':').reduce((acc, time) => (60 * acc) + +time);
-            player.seekTo(startTime, true);
+            loopSub(arrSub[indexOfCurrSub], arrSub[indexOfCurrSub + 1]);
         }
     }
+    const loopSub = (currtSub, nextSub) => {
+        customLoopAVal = currtSub?.time.split(':').reduce((acc, time) => (60 * acc) + +time)?.toFixed(FIXED_VALUE);
+        customLoopBVal = nextSub?.time.split(':').reduce((acc, time) => (60 * acc) + +time)?.toFixed(FIXED_VALUE);
+        setCustomLoopBs(customLoopBVal)
+        setCustomLoopAs(customLoopAVal)
+        clearInterval(intervalCusLoop);
+        createInteval();
+    }
+
     const onStartStop = (e) => {
         if (player.getVideoUrl() === "https://www.youtube.com/watch") {
             onProcess();
@@ -459,18 +405,6 @@ const YoutubeSub = () => {
             document.getElementById('timemisus').value = Number(e.key)
         }
     }
-    const onControlKeyListen = (e) => {
-        console.log(e.nativeEvent.code)
-        if (e.key === 'ArrowLeft') {
-            onPrevLine()
-        }
-        if (e.key === 'ArrowRight') {
-            onNextLine()
-        }
-        if (e.key === 'ArrowDown') {
-            onStartStop(e);
-        }
-    }
 
     const onClearCusLoop = () => {
         customLoopAVal = NOT_VALUE_TIME;
@@ -491,7 +425,8 @@ const YoutubeSub = () => {
         } else {
             customLoopBVal = player.getCurrentTime().toFixed(FIXED_VALUE);
             setCustomLoopBs(customLoopBVal);
-            if (isReplay === true && modeReplay === REPLAY_YES && customLoopAVal > 1 && customLoopBVal > 1) {
+            if (isReplay === true
+                && customLoopAVal > 1 && customLoopBVal > 1) {
                 createInteval();
             }
         }
@@ -499,17 +434,15 @@ const YoutubeSub = () => {
 
     const createInteval = () => {
         let periodLoop = customLoopBVal - customLoopAVal
-        // console.log(periodLoop)
         player.seekTo(customLoopAVal, true)
         intervalCusLoop = setInterval(() => {
             if (customLoopAVal == NOT_VALUE_TIME || customLoopBVal == NOT_VALUE_TIME) {
                 clearInterval(intervalCusLoop);
                 return
             }
-            // console.log('loop')
             if (_.isEqual(customLoopMode, LOOP_CUSTOM)) {
-                // let cusCurrentTime = player.getCurrentTime().toFixed(FIXED_VALUE);
-                if (isReplay === true && modeReplay === REPLAY_YES) {
+                if (isReplay === true
+                ) {
                     console.log("replay at:" + customLoopAVal);
                     player.seekTo(customLoopAVal, true)
                 }
@@ -517,19 +450,6 @@ const YoutubeSub = () => {
         }, periodLoop * 1000);
     }
 
-    const onChangeLoop = () => {
-        onClearCusLoop();
-        customLoopMode = (customLoopMode === LOOP_CUSTOM) ? LOOP_NONE : LOOP_CUSTOM;
-
-        if (customLoopMode === LOOP_NONE) {
-            document.getElementById(`cus-loop-control`).style.display = "none";
-            console.log("destroy intervalCusLoop:" + intervalCusLoop);
-            clearInterval(intervalCusLoop);
-        } else {
-            document.getElementById(`cus-loop-control`).style.display = "block";
-        }
-
-    }
     const onShowAll = () => {
         document.getElementById('hide1').style.display = "block";
         document.getElementById('hide2').style.display = "block";
@@ -539,39 +459,17 @@ const YoutubeSub = () => {
         document.getElementById('hide1').style.display = "none";
         document.getElementById('hide2').style.display = "none";
     }
-    const onChangeMode = (value) => {
-        mode = value;
-        switch (mode) {
-            case MODE_NOMAL:
-                document.getElementById(`sub-control`).style.height = '300px';
-                break;
-            case MODE_FOCUS_SUB:
-                document.getElementById(`sub-control`).style.height = '30px';
-                // document.getElementById('vd-control').style.display = "none";
-                break;
-            case MODE_FOCUS_SUB2:
-                document.getElementById(`sub-control`).style.height = '100px';
-                // document.getElementById('vd-control').style.display = "none";
-                break;
-            default:
-                console.log("Error: Not have data to set mode!");
-                break;
-        }
-
-    }
     return (
-        <div className="yt-sub" id="main-content"  tabIndex={0} onKeyDown={e => onControlKey(e)} >
+        <div className="yt-sub" id="main-content" tabIndex={0} onKeyDown={e => onControlKey(e)} >
             <div id="maincontent-yt" className='media-left '>
-        
+
                 <div id='vd-control'>
 
-                    {/* <div className="mask-media"></div> */}
                     <div id="player"></div><br />
 
                 </div>
-                {/* <div class="sidebar-cus"> */}
                 <div>
-                    <input className="width-60" placeholder="control-form" onKeyDown={e => onControlKey(e)} /> <input className="width-30" id="timemisus" />
+                    <input className="width-30" id="timemisus" />
                     <span onClick={() => toggleCollapse("hide-control-frame")}>+/-</span>
                     <div id="hide-control-frame" class="collapse-content bolder">
                         <input type="range" className="range-input" id="size" name="vol" min="0" max="1000" value={size} onChange={handleSizeChange}></input><br />
@@ -580,24 +478,24 @@ const YoutubeSub = () => {
                     </div>
 
                 </div>
-                <div onClick={() => toggleCollapse("mobile-control")}>Control</div>
+                <div className="width-100" onClick={() => toggleCollapse("mobile-control")}>Control</div>
                 <div id="mobile-control" className="collapse-content bolder">
-                    <input type="text" id="txtSrcMedia"  value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
+                    <input type="text" id="txtSrcMedia" value={url} onKeyDown={e => handleKeyDown(e)} onChange={(event) => {
                         setUrl(event.target.value);
                     }} />
                     <input type='submit' className="button-12 inline" value="Load" id='btnExecute' onClick={() => onProcess()} />
                     <input type='submit' className="button-12 inline" value="Remove Info" onClick={() => removeLogo()} />
-                    <input type='submit' className="button-12 inline" value="+/-" onClick={() => onShowHideVideo()} /><br/>
-                    
+                    <input type='submit' className="button-12 inline" value="+/-" onClick={() => onShowHideVideo()} /><br />
+
                     <input type='submit' className='button-12 inline' value="<" onClick={() => previous()} />
                     <input type='submit' className='button-12 inline' value="||" onClick={() => onStartStop()} />
                     <input type='submit' className='button-12 inline' value=">" onClick={() => next()} />
-                    <input type='submit' className="button-12 inline" value="Change times" onClick={() => changeTime()} /><br/>
+                    <input type='submit' className="button-12 inline" value="Change times" onClick={() => changeTime()} /><br />
 
                     <input type='submit' className='button-12 inline' value="Add point" onClick={() => onAddPoint()} />
                     <input type='submit' className='button-12 inline' value="clear" onClick={() => onClearCusLoop()} />
                 </div>
-                <div onClick={() => toggleCollapse("hide2")}>Sub</div>
+                <div className="width-100" onClick={() => toggleCollapse("hide2")}>Sub</div>
                 <div id="hide2" class="collapse-content bolder">
                     <div id='cus-loop-control' >
 
@@ -616,7 +514,6 @@ const YoutubeSub = () => {
                     </div>
                     <div id="hide1">
                     </div>
-                    {/* <input type='submit' className="button-12" value="|>" onClick={() => onStartStop()} /> */}
                     <div class="tooltip">???
                         <span class="tooltiptext">
                             arrow , and Crtl: clear/ shift: loop
@@ -624,22 +521,11 @@ const YoutubeSub = () => {
                     </div>
 
                     <div id='subline-control'>
-                        <select onChange={(e) => {
-                            onChangeMode(e.target.value)
-                        }}>
-                            <option value={MODE_NOMAL}>Nomal</option>
-                            <option value={MODE_FOCUS_SUB}>Focus</option>
-                            <option value={MODE_FOCUS_SUB2}>Focus2</option>
-                        </select>
-                        <select onChange={(e) => {
-                            modeReplay = e.target.value;
-                        }}>
-                            <option value={REPLAY_YES}>REPLAY_YES</option>
-                            <option value={REPLAY_NO}>REPLAY_NO</option>
-                        </select>
+                        <input type="range" className="range-input" id="size" name="vol" min="30" max="500" value={subHeight} onChange={handleSubChange}></input>
+                        <br/>
                         <input type='submit' value="Continue" onClick={() => onChangeReplay()} />
 
-                        <input className="width-30" placeholder="control-form" onKeyDown={e => onControlKeyListen(e)} />
+                        {/* <input className="width-30" placeholder="control-form" onKeyDown={e => onControlKeyListen(e)} /> */}
                         <input type='submit' value="<<" onClick={() => onPrevLine()} />
                         <input type='submit' value=">>" onClick={() => onNextLine()} />
                         <div id='sub-control' >
