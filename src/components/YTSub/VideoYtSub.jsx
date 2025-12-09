@@ -21,7 +21,8 @@ const urlCookieNm = 'lis-url';
 const subCookieNm = 'lis-sub';
 console.log("int..ed variables");
 const YoutubeSub = () => {
-
+    const REPLAY_NO = 'REPLACE_NO';
+    const REPLAY_YES = 'REPLACE_YES';
     const [arrSub, setArrSub] = useState([]);
     const [customLoopAs, setCustomLoopAs] = useState("");
     const [customLoopBs, setCustomLoopBs] = useState("");
@@ -30,6 +31,8 @@ const YoutubeSub = () => {
     const [top, setTop] = useState(0);
     const [subHeight, setSubHeight] = useState(300);
 
+    const [modeReplay, setModeReplay] = useState(REPLAY_NO);
+
     const [url, setUrl] = useState("");
     const [sub, setSub] = useState("");
 
@@ -37,9 +40,9 @@ const YoutubeSub = () => {
 
     const NOT_VALUE_TIME = 1;
     const FIXED_VALUE = 3;
-    const TIME_MAIN_INTERVAL = 1000;
+    const TIME_MAIN_INTERVAL = 500;
 
-
+    
     useEffect(() => {
         if (!_.isEmpty(localStorage)) {
             setUrl(localStorage.getItem(urlCookieNm));
@@ -193,13 +196,12 @@ const YoutubeSub = () => {
                 let arrTimeNums = arrTime.map(itm => {
                     return {
                         str: itm,
-                        num: Number(itm.replaceAll(":", ""))
+                        num: Number(itm.replaceAll(":", "")),
+                        timeS:toSeconds(itm),
                     }
                 })
 
-
-
-                let currTm = Number(`${hour}${mmss}`.replaceAll(":", ""));
+                let currTm = Number(`${mmss}`.replaceAll(":", ""));
                 console.log(currTm)
                 for (let i = 0; i < arrTimeNums.length; i++) {
                     if (currTm < arrTimeNums[i].num) {
@@ -213,6 +215,17 @@ const YoutubeSub = () => {
                         currentSubEle = document.getElementById(`sub-item${mmss}`);
                         currentSubEle.classList.add("active");
                         oldClickClass = `sub-item${mmss}`;
+
+                                const el = document.querySelector('.sub-item.active');
+
+                        let periodLoop = i == 0 ? arrTimeNums[i].timeS : arrTimeNums[i].timeS - arrTimeNums[i - 1].timeS;
+                        // let periodLoop = i == 0 ? getTimeFromSub(arrTimeNums[i].str) : getTimeFromSub(arrTimeNums[i].str) - getTimeFromSub(arrTimeNums[i - 1].str);
+                        console.log( arrTimeNums[i-1])
+                        console.log( arrTimeNums[i])
+                        console.log(periodLoop)
+                        currentSubEle.style.animationDuration = periodLoop + 's';
+
+
                         break;
                     }
 
@@ -231,6 +244,25 @@ const YoutubeSub = () => {
 
     }
 
+    function toSeconds(timeStr) {
+        const parts = timeStr.split(':').map(Number);
+
+        if (parts.length === 1) {
+            // SS
+            return parts[0];
+        } else if (parts.length === 2) {
+            // MM:SS
+            const [m, s] = parts;
+            return m * 60 + s;
+        } else if (parts.length === 3) {
+            // HH:MM:SS
+            const [h, m, s] = parts;
+            return h * 3600 + m * 60 + s;
+        } else {
+            throw new Error("Invalid time format");
+        }
+    }
+
     const loadSub = () => {
         var txtSub = document.getElementById('media-sub').value;
         var lineSubArr = txtSub.split('\n');
@@ -238,10 +270,11 @@ const YoutubeSub = () => {
         let tempTime = '';
         let arrTemp = [];
         arrTime = []
+        let istime =false;
 
-        // const timeRegex = /^\d{2}:\d{2}/;
+        const timeRegex = /^\d{1,2}:\d{2}/;
 
-        // lineSubArr = lineSubArr.filter((line, index) => {
+        // let array = lineSubArr.filter((line, index) => {
         //     if (index % 2 === 0) {           // odd index
         //         return timeRegex.test(line);  // must start with HH:MM
         //     }
@@ -250,6 +283,14 @@ const YoutubeSub = () => {
 
 
         lineSubArr.forEach((line, index) => {
+            if(!istime && !timeRegex.test(line)){
+                return;
+            }
+            if (timeRegex.test(line)) {
+                istime = true;
+            }else{
+                istime = false;
+            }
             let lineSub = line.trim();
             if (count === 1) {
                 tempTime = lineSub;
@@ -286,9 +327,18 @@ const YoutubeSub = () => {
                 indexOfCurrSub = i;
             }
         }
-        loopSub(arrSub[indexOfCurrSub], arrSub[indexOfCurrSub + 1]);
+        if (modeReplay === REPLAY_YES) {
+            loopSub(arrSub[indexOfCurrSub], arrSub[indexOfCurrSub + 1]);
+        } else {
+            let startTime = getTimeFromSub(arrSub[indexOfCurrSub]);
+            // player.seekTo(startTime, true)
+            onReplay(startTime)
+        }
 
     };
+    const onReplay = (startTime)=>{
+          player.seekTo(startTime, true);
+    }
     const onProcess = () => {
         var txtSrcMedia = document.getElementById('txtSrcMedia').value;
         var url = txtSrcMedia.substring(txtSrcMedia.lastIndexOf('=') + 1, txtSrcMedia.length).trim();
@@ -338,13 +388,17 @@ const YoutubeSub = () => {
         }
     }
     const loopSub = (currtSub, nextSub) => {
-        customLoopAVal = currtSub?.time.split(':').reduce((acc, time) => (60 * acc) + +time)?.toFixed(FIXED_VALUE);
-        customLoopBVal = nextSub?.time.split(':').reduce((acc, time) => (60 * acc) + +time)?.toFixed(FIXED_VALUE);
+        customLoopAVal = getTimeFromSub(currtSub);
+        customLoopBVal = getTimeFromSub(nextSub);
         setCustomLoopBs(customLoopBVal)
         setCustomLoopAs(customLoopAVal)
         clearInterval(intervalCusLoop);
         createInteval();
     }
+    const getTimeFromSub = (sub) => {
+        return sub?.time.split(':').reduce((acc, time) => (60 * acc) + +time)?.toFixed(FIXED_VALUE);
+    }
+
 
     const onStartStop = (e) => {
         if (player.getVideoUrl() === "https://www.youtube.com/watch") {
@@ -361,12 +415,14 @@ const YoutubeSub = () => {
     const previous = () => {
         let currTime = player.getCurrentTime();
         let timemisus = document.getElementById('timemisus').value;
-        player.seekTo(Number(currTime - Number(timemisus)), true);
+        // player.seekTo(Number(currTime - Number(timemisus)), true);
+         onReplay(Number(currTime - Number(timemisus)))
     }
     const next = () => {
         let currTime = player.getCurrentTime();
         let timemisus = document.getElementById('timemisus').value;
-        player.seekTo(Number(currTime + Number(timemisus)), true);
+        // player.seekTo(Number(currTime + Number(timemisus)), true);
+        onReplay(Number(currTime + Number(timemisus)))
     }
     const changeTime = () => {
         let timemisus = document.getElementById('timemisus').value;
@@ -434,7 +490,8 @@ const YoutubeSub = () => {
 
     const createInteval = () => {
         let periodLoop = customLoopBVal - customLoopAVal
-        player.seekTo(customLoopAVal, true)
+        // player.seekTo(customLoopAVal, true)
+         onReplay(customLoopAVal)
         intervalCusLoop = setInterval(() => {
             if (customLoopAVal == NOT_VALUE_TIME || customLoopBVal == NOT_VALUE_TIME) {
                 clearInterval(intervalCusLoop);
@@ -444,7 +501,8 @@ const YoutubeSub = () => {
                 if (isReplay === true
                 ) {
                     console.log("replay at:" + customLoopAVal);
-                    player.seekTo(customLoopAVal, true)
+                    // player.seekTo(customLoopAVal, true)
+                    onReplay(customLoopAVal)
                 }
             }
         }, periodLoop * 1000);
@@ -523,6 +581,12 @@ const YoutubeSub = () => {
                     <div id='subline-control'>
                         <input type="range" className="range-input" id="size" name="vol" min="30" max="500" value={subHeight} onChange={handleSubChange}></input>
                         <br/>
+                        <select value={modeReplay} onChange={(e) => {
+                            setModeReplay(e.target.value);
+                        }}>
+                            <option value={REPLAY_YES}>REPLAY_YES</option>
+                            <option value={REPLAY_NO}>REPLAY_NO</option>
+                        </select>
                         <input type='submit' value="Continue" onClick={() => onChangeReplay()} />
 
                         {/* <input className="width-30" placeholder="control-form" onKeyDown={e => onControlKeyListen(e)} /> */}
