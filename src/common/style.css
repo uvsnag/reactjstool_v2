@@ -435,23 +435,23 @@ img.flip  {
 .sub-item.active{
     /* background-color: #a6a6a6 !important; */
     width: fit-content;
+    /* background: linear-gradient(to right, #a6a6a6 15%, transparent 0) !important; */
+
 }
-.sub-item.active {
-  /* gradient set so half is color A and half is color B */
+/* .sub-item.active {
   background-image: linear-gradient(to right, #a6a6a6 0%, #a6a6a6 50%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 100%);
   background-size: 200% 100%;
-  background-position: 100% 0;  /* start with "blue" off-screen to the right */
+  background-position: 100% 0; 
   background-repeat: no-repeat;
   animation-name: wipe;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
 }
 
-/* keyframes move the background from right -> left */
 @keyframes wipe {
   from { background-position: 100% 0; }
   to   { background-position: 0 0; }
-}
+} */
 .yt-sub,
 .yt-sub input{
     font-family: 'Courier New', Courier, monospace;

@@ -189,6 +189,9 @@ const YoutubeSub = () => {
                 }
                 let mmss = sec > 9 ? `${min}:${sec}` : `${min}:0${sec}`;
                 if (hour > 0) {
+                    if(mmss.length<5){
+                        mmss = `0${mmss}`
+                    }
                     mmss = `${hour}:${mmss}`
                 }
                 let currentSubEle = null;
@@ -202,29 +205,35 @@ const YoutubeSub = () => {
                 })
 
                 let currTm = Number(`${mmss}`.replaceAll(":", ""));
-                console.log(currTm)
                 for (let i = 0; i < arrTimeNums.length; i++) {
                     if (currTm < arrTimeNums[i].num) {
                         let oldClass = document.getElementById(`${oldClickClass}`)
                         if (oldClass) {
                             oldClass.classList.remove("active");
+                            oldClass.style.background ="transparent";
                         }
                         mmss = arrTimeNums[i >= 1 ? i - 1 : i].str;
-                        console.log(arrTimeNums[i > 1 ? i - 1 : i])
-                        console.log(mmss)
                         currentSubEle = document.getElementById(`sub-item${mmss}`);
                         currentSubEle.classList.add("active");
                         oldClickClass = `sub-item${mmss}`;
 
-                                const el = document.querySelector('.sub-item.active');
-
-                        let periodLoop = i == 0 ? arrTimeNums[i].timeS : arrTimeNums[i].timeS - arrTimeNums[i - 1].timeS;
-                        // let periodLoop = i == 0 ? getTimeFromSub(arrTimeNums[i].str) : getTimeFromSub(arrTimeNums[i].str) - getTimeFromSub(arrTimeNums[i - 1].str);
-                        console.log( arrTimeNums[i-1])
-                        console.log( arrTimeNums[i])
-                        console.log(periodLoop)
-                        currentSubEle.style.animationDuration = periodLoop + 's';
-
+                        if(i>0){
+                            let periodLoop =  arrTimeNums[i].timeS - arrTimeNums[i - 1].timeS;
+                            let passedTime = Number(currTime) - arrTimeNums[i-1].timeS;
+                            let percentBar = periodLoop === 0 
+                                            ? 0 
+                                            : Number((passedTime / periodLoop * 100).toFixed(0));
+        
+        
+                            // let periodLoop = i == 0 ? getTimeFromSub(arrTimeNums[i].str) : getTimeFromSub(arrTimeNums[i].str) - getTimeFromSub(arrTimeNums[i - 1].str);
+                            // currentSubEle.style.animationDuration = periodLoop + 's';
+                            
+                            currentSubEle.style.setProperty(
+                            "background",
+                            `linear-gradient(to right, #a6a6a6 ${Math.abs(percentBar == 0? 10:percentBar)}%, transparent 0)`,
+                            "important"
+                            );
+                        }
 
                         break;
                     }
