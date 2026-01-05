@@ -391,7 +391,7 @@ img.flip  {
     /* width: 100%; */
 }
 #mobile-control{
-    height: 90px;
+    height: 120px;
 }
 .dark-90{
     background-color: #2a2929;
@@ -511,4 +511,8 @@ img.flip  {
 }
 .hide-ai .ai-pract{
     display: none;
+}
+#vd-control{
+    position: relative;
+   float: right;
 }

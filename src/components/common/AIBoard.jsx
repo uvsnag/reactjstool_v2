@@ -270,7 +270,7 @@ const AIBoard = ({ index, prefix, enableHis, heightRes , isMini, statement, isSh
 
     return (
         <div>
-            <div onClick={() => toggleCollapse(`gemini-${prefix}${index}`)}>{`Instance ${index + 1}`} 
+            <div className="width-100" onClick={() => toggleCollapse(`gemini-${prefix}${index}`)}>{`Instance ${index + 1}`} 
                  {isMini &&<label> <input  id= {`enable-ai-mini-${prefix}${index}`} type="checkbox" defaultChecked={false}/>Enable</label>}
                  {isMini && <label> <input  id= {`toggle-ai-mini-${prefix}${index}`} type="checkbox" defaultChecked={false}/>Toggle</label>}
                  {isMini && <input onClick={() => reloadMini()} type="submit" value="Curr"/>}

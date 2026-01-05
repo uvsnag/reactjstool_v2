@@ -19,7 +19,6 @@ let intervalCusLoop;
 var arrTime = [];
 const urlCookieNm = 'lis-url';
 const subCookieNm = 'lis-sub';
-console.log("int..ed variables");
 const YoutubeSub = () => {
     const REPLAY_NO = 'REPLACE_NO';
     const REPLAY_YES = 'REPLACE_YES';
@@ -32,6 +31,7 @@ const YoutubeSub = () => {
     const [subHeight, setSubHeight] = useState(300);
 
     const [modeReplay, setModeReplay] = useState(REPLAY_NO);
+    const [modeKara, setModeKara] = useState("N");
 
     const [url, setUrl] = useState("");
     const [sub, setSub] = useState("");
@@ -62,7 +62,9 @@ const YoutubeSub = () => {
             onYouTubeIframeAPIReady();
         }
         toggleCollapse("mobile-control");
-        toggleCollapse("hide2");
+        // toggleCollapse("hide2");
+        toggleCollapse("ai-section-yt");
+        toggleCollapse("hide-control-frame");
         document.getElementById(`cus-loop-control`).style.display = "block";
         document.getElementById(`timemisus`).value = 2;
         customLoopMode = LOOP_CUSTOM;
@@ -155,15 +157,15 @@ const YoutubeSub = () => {
     }
     const onYouTubeIframeAPIReady = () => {
         player = new window.YT.Player('player', {
-            height: 390 / 3,
-            width: 640 / 3,
+            height: 390 * 1.5,
+            width: 640 * 1.5,
             videoId: "",
             playerVars: {
                 fs: 0,
                 iv_load_policy: 3,
                 'playsinline': 1,
                 modestbranding: 0,
-                controls: 0
+                // controls: 0
             },
             events: {
                 'onReady': onPlayerReady,
@@ -217,17 +219,13 @@ const YoutubeSub = () => {
                         currentSubEle.classList.add("active");
                         oldClickClass = `sub-item${mmss}`;
 
-                        if(i>0){
-                            let periodLoop =  arrTimeNums[i].timeS - arrTimeNums[i - 1].timeS;
-                            let passedTime = Number(currTime) - arrTimeNums[i-1].timeS;
-                            let percentBar = periodLoop === 0 
-                                            ? 0 
-                                            : Number((passedTime / periodLoop * 100).toFixed(0));
-        
-        
-                            // let periodLoop = i == 0 ? getTimeFromSub(arrTimeNums[i].str) : getTimeFromSub(arrTimeNums[i].str) - getTimeFromSub(arrTimeNums[i - 1].str);
-                            // currentSubEle.style.animationDuration = periodLoop + 's';
-                            
+                        if(i>0 ){
+                            let percentBar  = 100;
+                                let periodLoop = arrTimeNums[i].timeS - arrTimeNums[i - 1].timeS;
+                                let passedTime = player.getCurrentTime() - arrTimeNums[i - 1].timeS;
+                                percentBar = periodLoop === 0
+                                    ? 0
+                                    : Number((passedTime / periodLoop * 100).toFixed(0));
                             currentSubEle.style.setProperty(
                             "background",
                             `linear-gradient(to right, #a6a6a6 ${Math.abs(percentBar == 0? 10:percentBar)}%, transparent 0)`,
@@ -249,7 +247,7 @@ const YoutubeSub = () => {
                 }
 
             }
-        }, TIME_MAIN_INTERVAL);
+        }, 200);
 
     }
 
@@ -339,9 +337,9 @@ const YoutubeSub = () => {
         if (modeReplay === REPLAY_YES) {
             loopSub(arrSub[indexOfCurrSub], arrSub[indexOfCurrSub + 1]);
         } else {
-            let startTime = getTimeFromSub(arrSub[indexOfCurrSub]);
-            // player.seekTo(startTime, true)
-            onReplay(startTime)
+            // let startTime = getTimeFromSub(arrSub[indexOfCurrSub]);
+            // // player.seekTo(startTime, true)
+            // onReplay(startTime)
         }
 
     };
@@ -466,6 +464,18 @@ const YoutubeSub = () => {
         if (e.key === 'Control') {
             onClearCusLoop()
         }
+        if (e.key === '.') {
+            changeTimeLoop(false, false)
+        }
+        if (e.key === '/') {
+           changeTimeLoop(false, true)
+        }
+        if (e.key === ';') {
+            changeTimeLoop(true, false)
+        }
+        if (e.key === '\'') {
+            changeTimeLoop(true, true)
+        }
         if (!Number.isNaN(Number(e.key))) {
             document.getElementById('timemisus').value = Number(e.key)
         }
@@ -561,10 +571,7 @@ const YoutubeSub = () => {
 
                     <input type='submit' className='button-12 inline' value="Add point" onClick={() => onAddPoint()} />
                     <input type='submit' className='button-12 inline' value="clear" onClick={() => onClearCusLoop()} />
-                </div>
-                <div className="width-100" onClick={() => toggleCollapse("hide2")}>Sub</div>
-                <div id="hide2" class="collapse-content bolder">
-                    <div id='cus-loop-control' >
+                      <div id='cus-loop-control' >
 
                         <input type="text" value={customLoopAs} onChange={(event) => {
                             setCustomLoopAs(event.target.value);
@@ -579,6 +586,14 @@ const YoutubeSub = () => {
                         <StackBtn onUp={() => changeTimeLoop(false, true)} onDown={() => changeTimeLoop(false, false)}></StackBtn>
 
                     </div>
+                </div>
+                  <div className="width-100" onClick={() => toggleCollapse("ai-section-yt")}>AI</div>       
+                <div id="ai-section-yt" className='collapse-content '>
+                        <MulAI size = {2} prefix ='yts' enableHis = {false} heightProp={200}></MulAI>
+                    </div>
+                <div className="width-100" onClick={() => toggleCollapse("hide2")}>Sub</div>
+                <div id="hide2" class="collapse-content bolder">
+                  
                     <div id="hide1">
                     </div>
                     <div class="tooltip">???
@@ -596,6 +611,12 @@ const YoutubeSub = () => {
                             <option value={REPLAY_YES}>REPLAY_YES</option>
                             <option value={REPLAY_NO}>REPLAY_NO</option>
                         </select>
+                        <select value={modeKara} onChange={(e) => {
+                            setModeKara(e.target.value);
+                        }}>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
                         <input type='submit' value="Continue" onClick={() => onChangeReplay()} />
 
                         {/* <input className="width-30" placeholder="control-form" onKeyDown={e => onControlKeyListen(e)} /> */}
@@ -609,7 +630,7 @@ const YoutubeSub = () => {
                         </div>
                         <input type='submit' value="+/-" onClick={() => onShowHide()} />
                     </div>
-
+                     
                     <div className='option-right'> <br />
                     </div>
                     <div id='load-sub'>
